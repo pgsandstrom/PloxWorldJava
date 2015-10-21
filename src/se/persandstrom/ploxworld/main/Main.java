@@ -15,11 +15,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+//TODO: This is truly crappy code and very insecure. Plox change it someday :-)
 public class Main {
-
-	//TODO: This is truly crappy code and very insecure. Plox change it someday :-)
-
-	static World world = new World();
 
 	public static void main(String[] args) throws Exception {
 
@@ -30,21 +27,26 @@ public class Main {
 		server.setExecutor(null); // creates a default executor
 		server.start();
 	}
+
 	private static class FrontendHandler implements HttpHandler {
 
 		@Override
 		public void handle(HttpExchange httpExchange) throws IOException {
 
 			URI uri = httpExchange.getRequestURI();
+			String path = uri.getPath();
 
-			File file = new File("." + uri.getPath());
+			if ("/".equals(path)) {
+				path = "/index.html";
+			}
 
-//			System.out.println(file.getAbsoluteFile());
+			File file = new File("." + path);
+
+			System.out.println(uri.getPath());
 
 			httpExchange.sendResponseHeaders(200, file.length());
 			try (OutputStream out = httpExchange.getResponseBody()) {
-				Path path = file.toPath();
-				Files.copy(path, out);
+				Files.copy(file.toPath(), out);
 				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -59,7 +61,7 @@ public class Main {
 			try {
 
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-				String response = gson.toJson(world);
+				String response = gson.toJson(new World());
 
 
 				Headers headers = httpExchange.getResponseHeaders();
