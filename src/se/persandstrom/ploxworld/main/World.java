@@ -19,9 +19,16 @@ public class World {
 
 	@Expose final Set<Planet> planets;
 
+	@Expose int turn = 0;
+
 	public World() {
 		PlanetCreater planetCreater = new PlanetCreater(this);
 		planets = planetCreater.createPlanets(25);
+	}
+
+	public void progressTurn() {
+		planets.forEach(Planet::progressTurn);
+		turn++;
 	}
 
 	public Point getRandomPoint(int border) {

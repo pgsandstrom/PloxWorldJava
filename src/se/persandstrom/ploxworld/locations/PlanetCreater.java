@@ -16,6 +16,9 @@ public class PlanetCreater {
 	private static final int PLANET_BORDER_DISTANCE = 30;
 	private static final int PLANET_BORDER_DISTANCE_RIGHT = 60;
 
+	private static final int PLANET_MIN_POPULATION_CAP = 1;
+	private static final int PLANET_MAX_POPULATION_CAP = 25;
+
 	private final List<String> names = new ArrayList<>(Arrays.asList("Mercurius", "Venus", "Tellus", "Mars", "Jupiter", "Saturnus", "Neptunus",
 			"Uranus", "Pluto", "X", "Xero", "Ygdra", "Jakop", "Crea", "Ando", "Estal", "Zzyr", "Sol", "Tyl", "Mega", "Terra", "Eve", "Ada", "Omega",
 			"Orion"));
@@ -42,7 +45,10 @@ public class PlanetCreater {
 			position = world.getRandomPoint(PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE_RIGHT, PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE);
 		} while (!validPlanetPosition(position));
 
-		return new Planet(name, position);
+		int populationMax = Rand.bound(PLANET_MIN_POPULATION_CAP, PLANET_MAX_POPULATION_CAP);
+		double population = Rand.percentage() * (populationMax - 1) + 1;
+
+		return new Planet(name, position, populationMax, population);
 	}
 
 	private String getRandomName() {

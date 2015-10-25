@@ -10,9 +10,16 @@ public class Planet {
 	@Expose private final String name;
 	@Expose private final Point point;
 
-	public Planet(String name, Point point) {
+	@Expose private int maxPopulation;
+	@Expose private double population;
+
+	public Planet(String name, Point point, int maxPopulation, double population) {
 		this.name = name;
 		this.point = point;
+	}
+
+	public void progressTurn() {
+
 	}
 
 	public double getDistance(Point point) {

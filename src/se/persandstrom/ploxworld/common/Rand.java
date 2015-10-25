@@ -20,4 +20,12 @@ public class Rand {
 		return r.nextInt(max - min) + max;
 	}
 
+	public static double percentage() {
+		return r.nextDouble();
+	}
+
+	public static double percentage(double min, double max) {
+		return (r.nextDouble() * (max-min))+min;
+	}
+
 }
