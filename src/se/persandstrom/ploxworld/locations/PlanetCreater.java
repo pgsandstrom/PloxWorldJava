@@ -14,6 +14,7 @@ public class PlanetCreater {
 
 	private static final int PLANET_MIN_DISTANCE = 50;
 	private static final int PLANET_BORDER_DISTANCE = 30;
+	private static final int PLANET_BORDER_DISTANCE_RIGHT = 60;
 
 	private final List<String> names = new ArrayList<>(Arrays.asList("Mercurius", "Venus", "Tellus", "Mars", "Jupiter", "Saturnus", "Neptunus",
 			"Uranus", "Pluto", "X", "Xero", "Ygdra", "Jakop", "Crea", "Ando", "Estal", "Zzyr", "Sol", "Tyl", "Mega", "Terra", "Eve", "Ada", "Omega",
@@ -38,7 +39,7 @@ public class PlanetCreater {
 
 		Point position;
 		do {
-			position = world.getRandomPoint(PLANET_BORDER_DISTANCE);
+			position = world.getRandomPoint(PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE_RIGHT, PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE);
 		} while (!validPlanetPosition(position));
 
 		return new Planet(name, position);
@@ -56,6 +57,11 @@ public class PlanetCreater {
 			if (planet.getDistance(point) < PLANET_MIN_DISTANCE) {
 				return false;
 			}
+			// To make sure planets don't cover the planet names on the map:
+			if (Math.abs(planet.getPoint().y - point.y) < 35 && Math.abs(planet.getPoint().x - point.x) < 100) {
+				return false;
+			}
+
 		}
 		return true;
 	}

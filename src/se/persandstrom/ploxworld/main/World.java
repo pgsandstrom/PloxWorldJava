@@ -11,7 +11,7 @@ import com.google.gson.annotations.Expose;
 
 public class World {
 
-	private static final int SIZE_X = 500;
+	private static final int SIZE_X = 800;
 	private static final int SIZE_Y = 500;
 
 	@Expose private final int height = SIZE_Y;
@@ -21,11 +21,15 @@ public class World {
 
 	public World() {
 		PlanetCreater planetCreater = new PlanetCreater(this);
-		planets = planetCreater.createPlanets(20);
+		planets = planetCreater.createPlanets(25);
 	}
 
 	public Point getRandomPoint(int border) {
-		return new Point(Rand.bound(SIZE_X - border * 2) + border, Rand.bound(SIZE_Y - border * 2) + border);
+		return getRandomPoint(border, border, border, border);
+	}
+
+	public Point getRandomPoint(int borderTop, int borderRight, int borderBottom, int borderLeft) {
+		return new Point(Rand.bound(SIZE_X - borderLeft - borderRight) + borderLeft, Rand.bound(SIZE_Y - borderTop - borderBottom) + borderBottom);
 	}
 
 }

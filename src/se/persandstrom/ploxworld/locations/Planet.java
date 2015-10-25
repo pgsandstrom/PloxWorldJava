@@ -18,4 +18,12 @@ public class Planet {
 	public double getDistance(Point point) {
 		return Geo.getDistance(this.point, point);
 	}
+
+	public Point getPoint() {
+		return point;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

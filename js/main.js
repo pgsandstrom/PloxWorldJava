@@ -26,9 +26,7 @@ var Main = React.createClass({
 
 		return (
 			<div className="main">
-				<p onClick={this.showPlanetList}>
-					Planet list
-				</p>
+				<button onClick={this.showPlanetList}>Planet list</button>
 
 				<ploxworld.Board url={this.props.url} data={this.state.data}></ploxworld.Board>
 
