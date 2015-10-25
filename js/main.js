@@ -1,4 +1,4 @@
-var World = React.createClass({
+var Main = React.createClass({
 	getInitialState: function () {
 		return {data: {height: 500, width: 500, planets: []}};
 	},
@@ -24,61 +24,22 @@ var World = React.createClass({
 	},
 	render: function () {
 
-		var style = {
-			'height': this.state.data.height + 'px',
-			'width': this.state.data.width + 'px'
-		};
-
 		return (
-			<div className="world" style={style}>
-
+			<div className="main">
 				<p onClick={this.showPlanetList}>
 					Planet list
 				</p>
 
-				<PlanetList data={this.state.data.planets}/>
+				<ploxworld.Board url={this.props.url} data={this.state.data}></ploxworld.Board>
+
 				{ this.state.showPlanetList ? <ploxworld.PlanetDialog data={this.state.data.planets} requestClose={this.closePlanetList}/> : null }
 			</div>
 
 		);
 	}
 });
-var PlanetList = React.createClass({
-	render: function () {
-		var planetNodes = this.props.data.map(function (planet) {
-			return (
-				<Planet key={planet.name} data={planet}>
-				</Planet>
-			);
-		});
-		return (
-			<div className="planetList">
-				{planetNodes}
-			</div>
-		);
-	}
-});
-var Planet = React.createClass({
-	render: function () {
-
-		var style = {
-			'left': (this.props.data.point.x - 15) + 'px',
-			'top': (this.props.data.point.y - 15) + 'px'
-		};
-
-		return (
-			<div className="planet" style={style}>
-				<img src="img/planet.png"/>
-				<span>
-					{this.props.data.name}
-				</span>
-			</div>
-		);
-	}
-});
-
 
 ReactDOM.render(
-	<World className="world" url="/backend"/>,
+	<Main url="/backend"/>,
 	document.getElementById('content')
 );

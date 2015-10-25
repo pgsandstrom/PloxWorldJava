@@ -1,7 +1,8 @@
-.world {
+.board {
 	font: 80%/0 sans-serif;
 	color: white;
 	background: black;
+	position: relative;
 }
 
 .planet {
