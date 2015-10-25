@@ -7,6 +7,8 @@ import com.google.gson.annotations.Expose;
 
 public class Planet {
 
+	private static final double POPULATION_GROWTH = 1.01;
+
 	@Expose private final String name;
 	@Expose private final Point point;
 
@@ -19,7 +21,10 @@ public class Planet {
 	}
 
 	public void progressTurn() {
-
+		population = population * POPULATION_GROWTH;
+		if (population > maxPopulation) {
+			population = maxPopulation;
+		}
 	}
 
 	public double getDistance(Point point) {
