@@ -42,7 +42,7 @@ public class Main {
 
 			File file = new File("." + path);
 
-			System.out.println(uri.getPath());
+//			System.out.println(uri.getPath());
 
 			httpExchange.sendResponseHeaders(200, file.length());
 			try (OutputStream out = httpExchange.getResponseBody()) {

@@ -1,4 +1,5 @@
-// tutorial1.js
+//var MyClass = require('./planetDialog');
+
 var World = React.createClass({
 	getInitialState: function () {
 		return {data: {planets: []}};
@@ -18,11 +19,24 @@ var World = React.createClass({
 			}.bind(this)
 		});
 	},
+	showPlanetList: function () {
+		this.setState({showPlanetList: true});
+	},
+	closePlanetList: function () {
+		this.setState({showPlanetList: false});
+	},
 	render: function () {
 		return (
 			<div className="world">
+
+				<p onClick={this.showPlanetList}>
+					Planet list
+				</p>
+
 				<PlanetList data={this.state.data.planets}/>
+				{ this.state.showPlanetList ? <PlanetDialog data={this.state.data.planets} requestClose={this.closePlanetList}/> : null }
 			</div>
+
 		);
 	}
 });
@@ -31,7 +45,6 @@ var PlanetList = React.createClass({
 		var planetNodes = this.props.data.map(function (planet) {
 			return (
 				<Planet data={planet}>
-					{planet.point.x}
 				</Planet>
 			);
 		});
@@ -46,8 +59,8 @@ var Planet = React.createClass({
 	render: function () {
 
 		var divStyle = {
-			'padding-left': this.props.data.point.x + 'px',
-			'padding-top': this.props.data.point.y + 'px'
+			'paddingLeft': this.props.data.point.x + 'px',
+			'paddingTop': this.props.data.point.y + 'px'
 		};
 
 		return (
@@ -57,6 +70,38 @@ var Planet = React.createClass({
 		);
 	}
 });
+
+var PlanetDialog = React.createClass({
+	render: function () {
+		var planetNodes = this.props.data.map(function (planet) {
+			return (
+				<PlanetDialogItem data={planet}>
+				</PlanetDialogItem>
+			);
+		});
+		return (
+			<div className="planetDialog dialog">
+				<button onClick={this.props.requestClose}>
+					close
+				</button>
+
+
+				{planetNodes}
+			</div>
+		);
+	}
+});
+
+var PlanetDialogItem = React.createClass({
+	render: function () {
+		return (
+			<div>
+				{this.props.data.name}
+			</div>
+		);
+	}
+});
+
 ReactDOM.render(
 	<World url="/backend"/>,
 	document.getElementById('content')
