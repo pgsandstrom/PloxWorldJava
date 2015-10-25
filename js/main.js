@@ -42,7 +42,7 @@ var PlanetList = React.createClass({
 	render: function () {
 		var planetNodes = this.props.data.map(function (planet) {
 			return (
-				<Planet data={planet}>
+				<Planet key={planet.name} data={planet}>
 				</Planet>
 			);
 		});

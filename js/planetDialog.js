@@ -4,7 +4,7 @@ ploxworld.PlanetDialog = React.createClass({
 	render: function () {
 		var planetNodes = this.props.data.map(function (planet) {
 			return (
-				<PlanetDialogItem data={planet}>
+				<PlanetDialogItem key={planet.name} data={planet}>
 				</PlanetDialogItem>
 			);
 		});
