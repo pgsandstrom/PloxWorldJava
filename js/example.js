@@ -1,5 +1,3 @@
-//var MyClass = require('./planetDialog');
-
 var World = React.createClass({
 	getInitialState: function () {
 		return {data: {planets: []}};
@@ -34,7 +32,7 @@ var World = React.createClass({
 				</p>
 
 				<PlanetList data={this.state.data.planets}/>
-				{ this.state.showPlanetList ? <PlanetDialog data={this.state.data.planets} requestClose={this.closePlanetList}/> : null }
+				{ this.state.showPlanetList ? <ploxworld.PlanetDialog data={this.state.data.planets} requestClose={this.closePlanetList}/> : null }
 			</div>
 
 		);
@@ -71,36 +69,7 @@ var Planet = React.createClass({
 	}
 });
 
-var PlanetDialog = React.createClass({
-	render: function () {
-		var planetNodes = this.props.data.map(function (planet) {
-			return (
-				<PlanetDialogItem data={planet}>
-				</PlanetDialogItem>
-			);
-		});
-		return (
-			<div className="planetDialog dialog">
-				<button onClick={this.props.requestClose}>
-					close
-				</button>
 
-
-				{planetNodes}
-			</div>
-		);
-	}
-});
-
-var PlanetDialogItem = React.createClass({
-	render: function () {
-		return (
-			<div>
-				{this.props.data.name}
-			</div>
-		);
-	}
-});
 
 ReactDOM.render(
 	<World url="/backend"/>,
