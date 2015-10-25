@@ -3,7 +3,6 @@ var World = React.createClass({
 		return {data: {planets: []}};
 	},
 	componentDidMount: function () {
-		console.log("gonna request");
 		$.ajax({
 			url: this.props.url,
 			dataType: 'json',
@@ -57,8 +56,8 @@ var Planet = React.createClass({
 	render: function () {
 
 		var divStyle = {
-			'paddingLeft': this.props.data.point.x + 'px',
-			'paddingTop': this.props.data.point.y + 'px'
+			'marginLeft': this.props.data.point.x + 'px',
+			'marginTop': this.props.data.point.y + 'px'
 		};
 
 		return (

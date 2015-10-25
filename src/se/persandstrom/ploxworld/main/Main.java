@@ -44,6 +44,11 @@ public class Main {
 
 //			System.out.println(uri.getPath());
 
+			Headers headers = httpExchange.getResponseHeaders();
+			if (path.endsWith(".css")) {
+				headers.set("Content-Type", "text/css");
+			}
+
 			httpExchange.sendResponseHeaders(200, file.length());
 			try (OutputStream out = httpExchange.getResponseBody()) {
 				Files.copy(file.toPath(), out);
