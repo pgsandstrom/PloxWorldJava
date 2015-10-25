@@ -18,6 +18,8 @@ public class Planet {
 	public Planet(String name, Point point, int maxPopulation, double population) {
 		this.name = name;
 		this.point = point;
+		this.maxPopulation = maxPopulation;
+		this.population = population;
 	}
 
 	public void progressTurn() {

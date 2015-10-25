@@ -17,7 +17,7 @@ public class Rand {
 	}
 
 	public static int bound(int min, int max) {
-		return r.nextInt(max - min) + max;
+		return r.nextInt(max - min) + min;
 	}
 
 	public static double percentage() {
