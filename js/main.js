@@ -1,6 +1,6 @@
 var World = React.createClass({
 	getInitialState: function () {
-		return {data: {planets: []}};
+		return {data: {height: 500, width: 500, planets: []}};
 	},
 	componentDidMount: function () {
 		$.ajax({
@@ -8,7 +8,7 @@ var World = React.createClass({
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
-				console.log("data: " + data);
+				console.log("data: " + JSON.stringify(data));
 				this.setState({data: data});
 			}.bind(this),
 			error: function (xhr, status, err) {
@@ -23,8 +23,14 @@ var World = React.createClass({
 		this.setState({showPlanetList: false});
 	},
 	render: function () {
+
+		var style = {
+			'height': this.state.data.height + 'px',
+			'width': this.state.data.width + 'px'
+		};
+
 		return (
-			<div className="world">
+			<div className="world" style={style}>
 
 				<p onClick={this.showPlanetList}>
 					Planet list
@@ -55,22 +61,24 @@ var PlanetList = React.createClass({
 var Planet = React.createClass({
 	render: function () {
 
-		var divStyle = {
-			'marginLeft': this.props.data.point.x + 'px',
-			'marginTop': this.props.data.point.y + 'px'
+		var style = {
+			'left': (this.props.data.point.x - 15) + 'px',
+			'top': (this.props.data.point.y - 15) + 'px'
 		};
 
 		return (
-			<div className="planet" style={divStyle}>
-				{this.props.data.name}
+			<div className="planet" style={style}>
+				<img src="img/planet.png"/>
+				<span>
+					{this.props.data.name}
+				</span>
 			</div>
 		);
 	}
 });
 
 
-
 ReactDOM.render(
-	<World url="/backend"/>,
+	<World className="world" url="/backend"/>,
 	document.getElementById('content')
 );

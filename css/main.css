@@ -1,3 +1,9 @@
+.world {
+	font: 80%/0 sans-serif;
+	color: white;
+	background: black;
+}
+
 .planet {
 	position: absolute;
 }

@@ -13,7 +13,7 @@ import se.persandstrom.ploxworld.main.World;
 public class PlanetCreater {
 
 	private static final int PLANET_MIN_DISTANCE = 50;
-	private static final int PLANET_BORDER_DISTANCE = 10;
+	private static final int PLANET_BORDER_DISTANCE = 30;
 
 	private final List<String> names = new ArrayList<>(Arrays.asList("Mercurius", "Venus", "Tellus", "Mars", "Jupiter", "Saturnus", "Neptunus",
 			"Uranus", "Pluto", "X", "Xero", "Ygdra", "Jakop", "Crea", "Ando", "Estal", "Zzyr", "Sol", "Tyl", "Mega", "Terra", "Eve", "Ada", "Omega",

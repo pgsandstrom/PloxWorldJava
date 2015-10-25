@@ -14,7 +14,10 @@ public class World {
 	private static final int SIZE_X = 500;
 	private static final int SIZE_Y = 500;
 
-	@Expose Set<Planet> planets;
+	@Expose private final int height = SIZE_Y;
+	@Expose private final int width = SIZE_X;
+
+	@Expose final Set<Planet> planets;
 
 	public World() {
 		PlanetCreater planetCreater = new PlanetCreater(this);
