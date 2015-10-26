@@ -4,7 +4,21 @@ var Main = React.createClass({
 	},
 	componentDidMount: function () {
 		$.ajax({
-			url: this.props.url,
+			url: this.props.startUrl,
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				console.log("data: " + JSON.stringify(data));
+				this.setState({data: data});
+			}.bind(this),
+			error: function (xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
+	progressTurn: function () {
+		$.ajax({
+			url: this.props.progressTurnUrl,
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
@@ -26,9 +40,9 @@ var Main = React.createClass({
 
 		return (
 			<div className="main">
-				<button onClick={this.showPlanetList}>Planet list</button>
+				<button onClick={this.progressTurn}>Progress Turn</button><button onClick={this.showPlanetList}>Planet list</button>
 
-				<ploxworld.Board url={this.props.url} data={this.state.data}></ploxworld.Board>
+				<ploxworld.Board data={this.state.data}></ploxworld.Board>
 
 				{ this.state.showPlanetList ? <ploxworld.PlanetDialog data={this.state.data.planets} requestClose={this.closePlanetList}/> : null }
 			</div>
@@ -38,6 +52,6 @@ var Main = React.createClass({
 });
 
 ReactDOM.render(
-	<Main url="/backend"/>,
+	<Main startUrl="/backend" progressTurnUrl="/backend/progressTurn"/>,
 	document.getElementById('content')
 );

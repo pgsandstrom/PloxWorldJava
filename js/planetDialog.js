@@ -1,8 +1,17 @@
 var ploxworld = window.ploxworld = window.ploxworld || {};
 
 ploxworld.PlanetDialog = React.createClass({
-	selectPlanet: function (planet) {
-		this.setState({planet: planet});
+	selectPlanet: function (selectedPlanetName) {
+		this.setState({selectedPlanetName: selectedPlanetName});
+	},
+	getPlanet: function (planetName) {
+		return this.props.data.find(function (element) {
+			if (element.name == planetName) {
+				return element;
+			} else {
+				return false;
+			}
+		});
 	},
 	render: function () {
 		var self = this;
@@ -15,7 +24,7 @@ ploxworld.PlanetDialog = React.createClass({
 
 					{this.props.data.map(function (planet) {
 						return (
-							<div key={planet.name} onClick={self.selectPlanet.bind(self, planet)}>
+							<div key={planet.name} onClick={self.selectPlanet.bind(self, planet.name)}>
 								{planet.name}
 							</div>
 						);
@@ -23,7 +32,7 @@ ploxworld.PlanetDialog = React.createClass({
 				</div>
 
 				<div style={{float:'left'}}>
-					{this.state != undefined ? <PlanetDetails planet={this.state.planet}></PlanetDetails> : 'Choose a planet'}
+					{this.state != undefined ? <PlanetDetails planet={this.getPlanet(this.state.selectedPlanetName)}></PlanetDetails> : 'Choose a planet'}
 				</div>
 			</div>
 		);
@@ -32,11 +41,12 @@ ploxworld.PlanetDialog = React.createClass({
 
 var PlanetDetails = React.createClass({
 	render: function () {
+		console.log("planetDetails render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<h1>{this.props.planet.name}</h1>
 
-				Population: {Number(this.props.planet.population).toFixed(2)} / {this.props.planet.maxPopulation}
+				Population: {this.props.planet.population} / {this.props.planet.maxPopulation}
 			</div>
 		);
 	}

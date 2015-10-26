@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +16,8 @@ import com.sun.net.httpserver.HttpServer;
 
 //TODO: This is truly crappy code and very insecure. Plox change it someday :-)
 public class Main {
+
+	static World world;
 
 	public static void main(String[] args) throws Exception {
 
@@ -65,8 +66,21 @@ public class Main {
 
 			try {
 
+				URI uri = httpExchange.getRequestURI();
+				String path = uri.getPath();
+
+//				System.out.println(path);
+
+				//TODO: Make some mechanism so the server can hold many worlds for different games :-)
+				String response;
+				if ("/backend".equals(path)) {
+					world = new World();
+				} else if ("/backend/progressTurn".equals(path)) {
+					world.progressTurn();
+				}
+
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-				String response = gson.toJson(new World());
+				response = gson.toJson(world);
 
 
 				Headers headers = httpExchange.getResponseHeaders();
