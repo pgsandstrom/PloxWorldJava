@@ -46,7 +46,7 @@ var PlanetDetails = React.createClass({
 			<div>
 				<h1>{this.props.planet.name}</h1>
 
-				Population: {this.props.planet.population} / {this.props.planet.maxPopulation}
+				Population: {Number(this.props.planet.population).toFixed(2)} / {this.props.planet.maxPopulation}
 			</div>
 		);
 	}
