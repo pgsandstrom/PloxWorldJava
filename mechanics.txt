@@ -1,0 +1,6 @@
+stuff:
+
+money
+commodity
+production <- material
+science <- crystal
