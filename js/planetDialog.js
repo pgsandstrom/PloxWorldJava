@@ -2,11 +2,9 @@ var ploxworld = window.ploxworld = window.ploxworld || {};
 
 ploxworld.PlanetDialog = React.createClass({
 	selectPlanet: function (selectedPlanetName) {
-		console.log("selected planet: "+ JSON.stringify(selectedPlanetName));
 		this.setState({selectedPlanetName: selectedPlanetName});
 	},
 	getPlanet: function (planetName) {
-		console.log("getPlanet: "+JSON.stringify(planetName));
 		return this.props.planets.find(function (element) {
 			if (element.name == planetName) {
 				return element;
@@ -50,7 +48,7 @@ ploxworld.PlanetDialog = React.createClass({
 
 var PlanetDetails = React.createClass({
 	render: function () {
-		console.log("planetDetails render: " + JSON.stringify(this.props));
+		//console.log("planetDetails render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<h1>{this.props.planet.name}</h1>

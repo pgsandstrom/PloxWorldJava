@@ -36,7 +36,7 @@ var Main = React.createClass({
 		});
 	},
 	showPlanetList: function () {
-		this.setState({showPlanetList: true});
+		this.setState({showPlanetList: true, selectedPlanetName: undefined});
 	},
 	showPlanet: function (selectedPlanetName) {
 		this.setState({showPlanetList: true, selectedPlanetName: selectedPlanetName});
