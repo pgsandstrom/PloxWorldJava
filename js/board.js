@@ -32,19 +32,17 @@ var PlanetList = React.createClass({
 	}
 });
 var Planet = React.createClass({
-	rofl: function() {
+	showPlanet: function() {
 		MessageSystem.dispatch(MessageSystem.selectPlanet, this.props.data.name);
 	},
 	render: function () {
-		var self = this;
-
 		var style = {
 			'left': (this.props.data.point.x - 15) + 'px',
 			'top': (this.props.data.point.y - 15) + 'px'
 		};
 
 		return (
-			<div className="planet" style={style} onClick={self.rofl}>
+			<div className="planet" style={style} onClick={this.showPlanet}>
 				<img src="img/planet.png"/>
 				<span>
 					{this.props.data.name}
