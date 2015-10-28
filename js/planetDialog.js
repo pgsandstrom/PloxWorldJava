@@ -5,13 +5,19 @@ ploxworld.PlanetDialog = React.createClass({
 		this.setState({selectedPlanetName: selectedPlanetName});
 	},
 	getPlanet: function (planetName) {
-		return this.props.data.find(function (element) {
+		return this.props.planets.find(function (element) {
 			if (element.name == planetName) {
 				return element;
 			} else {
 				return false;
 			}
 		});
+	},
+	componentDidMount: function () {
+		var selectedPlanetName = this.props.selectedPlanetName;
+		if(selectedPlanetName !== undefined) {
+			this.selectPlanet(selectedPlanetName);
+		}
 	},
 	render: function () {
 		var self = this;
@@ -22,7 +28,7 @@ ploxworld.PlanetDialog = React.createClass({
 						close
 					</button>
 
-					{this.props.data.map(function (planet) {
+					{this.props.planets.map(function (planet) {
 						return (
 							<div key={planet.name} onClick={self.selectPlanet.bind(self, planet.name)}>
 								{planet.name}
@@ -41,7 +47,7 @@ ploxworld.PlanetDialog = React.createClass({
 
 var PlanetDetails = React.createClass({
 	render: function () {
-		console.log("planetDetails render: " + JSON.stringify(this.props));
+		//console.log("planetDetails render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<h1>{this.props.planet.name}</h1>
