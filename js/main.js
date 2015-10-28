@@ -5,7 +5,7 @@ var Main = React.createClass({
 	componentDidMount: function () {
 		var self = this;
 		MessageSystem.subscribe(MessageSystem.selectPlanet, function (selectedPlanetName) {
-			self.showPlanetList(selectedPlanetName);
+			self.showPlanet(selectedPlanetName);
 		});
 
 		$.ajax({
@@ -35,7 +35,10 @@ var Main = React.createClass({
 			}.bind(this)
 		});
 	},
-	showPlanetList: function (selectedPlanetName) {
+	showPlanetList: function () {
+		this.setState({showPlanetList: true});
+	},
+	showPlanet: function (selectedPlanetName) {
 		this.setState({showPlanetList: true, selectedPlanetName: selectedPlanetName});
 	},
 	closePlanetList: function () {
