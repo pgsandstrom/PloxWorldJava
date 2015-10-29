@@ -73,12 +73,12 @@ public class Planet {
 		int crystalUsed = this.science.progressTurn();
 		this.crystal.addStorage(-crystalUsed);
 
-//		if (this.material.getStorage() < 0) {
-//			throw new IllegalStateException("Material is " + this.material.getStorage() + " at " + this.name + ".");
-//		}
-//		if (this.crystal.getStorage() < 0) {
-//			throw new IllegalStateException("Crystal is " + this.crystal.getStorage() + " at " + this.name + ".");
-//		}
+		if (this.material.getStorage() < 0) {
+			throw new IllegalStateException("Material is " + this.material.getStorage() + " at " + this.name + ".");
+		}
+		if (this.crystal.getStorage() < 0) {
+			throw new IllegalStateException("Crystal is " + this.crystal.getStorage() + " at " + this.name + ".");
+		}
 	}
 
 	public void redistributePopulation() {
@@ -87,8 +87,28 @@ public class Planet {
 			production.setWorkers(0);
 		}
 		Collections.sort(productions);
-		Production production = productions.get(productions.size() - 1);
-		production.setWorkers((int) population);
+
+		int freeWorkers = (int) population;
+
+		int indexOfProduction = 1;
+		while (freeWorkers > 0) {
+			Production production = productions.get(productions.size() - indexOfProduction);
+			int productionMaxWorkers = getProductionMaxWorkers(production);
+			int productionWorkers = Math.min(freeWorkers, productionMaxWorkers);
+			production.setWorkers(productionWorkers);
+			freeWorkers -= productionWorkers;
+			indexOfProduction++;
+		}
+	}
+
+	private int getProductionMaxWorkers(Production production) {
+		if (production instanceof Construction) {
+			return material.getStorage() / production.getMultiplier();
+		} else if (production instanceof Science) {
+			return crystal.getStorage() / production.getMultiplier();
+		} else {
+			return Integer.MAX_VALUE;
+		}
 	}
 
 	public double getDistance(Point point) {
