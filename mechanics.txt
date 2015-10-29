@@ -2,5 +2,5 @@ stuff:
 
 money
 commodity
-production <- material
+construction <- material
 science <- crystal

@@ -1,7 +1,18 @@
 package se.persandstrom.ploxworld.locations;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+
 import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
+import se.persandstrom.ploxworld.production.Commodity;
+import se.persandstrom.ploxworld.production.Construction;
+import se.persandstrom.ploxworld.production.Crystal;
+import se.persandstrom.ploxworld.production.Material;
+import se.persandstrom.ploxworld.production.Production;
+import se.persandstrom.ploxworld.production.Science;
 
 import com.google.gson.annotations.Expose;
 
@@ -16,63 +27,68 @@ public class Planet {
 	@Expose private double population;
 
 	@Expose private int money;
-	@Expose private int commodity;
-	@Expose private int commodityMultiplier;
-	@Expose private int commodityWorkers;
-	@Expose private int production;
-	@Expose private int productionMultiplier;
-	@Expose private int productionWorkers;
-	@Expose private int material;
-	@Expose private int materialMultiplier;
-	@Expose private int materialWorkers;
-	@Expose private int science;
-	@Expose private int scienceMultiplier;
-	@Expose private int scienceWorkers;
-	@Expose private int crystal;
-	@Expose private int crystalMultiplier;
-	@Expose private int crystalWorkers;
+	@Expose private Commodity commodity;
+	@Expose private Material material;
+	@Expose private Construction construction;
+	@Expose private Crystal crystal;
+	@Expose private Science science;
+	private final List<Production> productions = new ArrayList<>();
 
-	public Planet(String name, Point point, int maxPopulation, double population, int money, int commodity, int commodityMultiplier,
-			int production, int productionMultiplier, int material, int materialMultiplier,
-			int science, int scienceMultiplier, int crystal, int crystalMultiplier) {
+	public Planet(String name, Point point, int maxPopulation, double population, int money,
+			Commodity commodity, Material material, Construction construction, Crystal crystal, Science science) {
 		this.name = name;
 		this.point = point;
 		this.maxPopulation = maxPopulation;
 		this.population = population;
 		this.money = money;
 		this.commodity = commodity;
-		this.commodityMultiplier = commodityMultiplier;
-		this.production = production;
-		this.productionMultiplier = productionMultiplier;
 		this.material = material;
-		this.materialMultiplier = materialMultiplier;
-		this.science = science;
-		this.scienceMultiplier = scienceMultiplier;
+		this.construction = construction;
 		this.crystal = crystal;
-		this.crystalMultiplier = crystalMultiplier;
+		this.science = science;
+
+		this.productions.add(commodity);
+		this.productions.add(material);
+		this.productions.add(construction);
+		this.productions.add(crystal);
+		this.productions.add(science);
+
+		redistributePopulation();
 	}
 
 	public void progressTurn() {
+
+		redistributePopulation();
+
 		population = population * POPULATION_GROWTH;
 		if (population > maxPopulation) {
 			population = maxPopulation;
 		}
-		this.commodity += this.commodityWorkers * this.commodityMultiplier;
-		this.material += this.materialWorkers * this.materialMultiplier;
-		int productionProduced = this.productionWorkers * this.productionMultiplier;
-		this.production += productionProduced;
-		this.material -= productionProduced;
-		this.crystal += this.crystalWorkers * this.crystalMultiplier;
-		int scienceProduced = this.scienceWorkers * this.scienceMultiplier;
-		this.science += scienceProduced;
-		this.crystalMultiplier -= scienceProduced;
 
-		if (this.material < 0) {
-			throw new IllegalStateException("Material is " + this.material + " at " + this.name + ".");
+		this.commodity.progressTurn();
+		this.material.progressTurn();
+		int materialUsed = this.construction.progressTurn();
+		this.material.addStorage(-materialUsed);
+		this.crystal.progressTurn();
+		int crystalUsed = this.science.progressTurn();
+		this.crystal.addStorage(-crystalUsed);
+
+//		if (this.material.getStorage() < 0) {
+//			throw new IllegalStateException("Material is " + this.material.getStorage() + " at " + this.name + ".");
+//		}
+//		if (this.crystal.getStorage() < 0) {
+//			throw new IllegalStateException("Crystal is " + this.crystal.getStorage() + " at " + this.name + ".");
+//		}
+	}
+
+	public void redistributePopulation() {
+		productions.forEach(production -> production.setWorkers(0));
+		for (Production production : productions) {
+			production.setWorkers(0);
 		}
-		if (this.crystal < 0) {
-			throw new IllegalStateException("Crystal is " + this.crystal + " at " + this.name + ".");
-		}
+		Collections.sort(productions);
+		Production production = productions.get(productions.size() - 1);
+		production.setWorkers((int) population);
 	}
 
 	public double getDistance(Point point) {

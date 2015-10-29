@@ -60,19 +60,19 @@ var PlanetDetails = React.createClass({
 					Money: {this.props.planet.money}
 				</div>
 				<div>
-					Commodity: {this.props.planet.commodity}. {this.props.planet.commodityWorkers} * {this.props.planet.commodityMultiplier}
+					Commodity: {this.props.planet.commodity.storage}. {this.props.planet.commodity.workers} * {this.props.planet.commodity.multiplier}
 				</div>
 				<div>
-					Material: {this.props.planet.material}. {this.props.planet.materialWorkers} * {this.props.planet.materialMultiplier}
+					Material: {this.props.planet.material.storage}. {this.props.planet.material.workers} * {this.props.planet.material.multiplier}
 				</div>
 				<div>
-					Production: {this.props.planet.production}. {this.props.planet.productionWorkers} * {this.props.planet.productionMultiplier}
+					Construction: {this.props.planet.construction.storage}. {this.props.planet.construction.workers} * {this.props.planet.construction.multiplier}
 				</div>
 				<div>
-					Crystal: {this.props.planet.crystal}. {this.props.planet.crystalWorkers} * {this.props.planet.crystalMultiplier}
+					Crystal: {this.props.planet.crystal.storage}. {this.props.planet.crystal.workers} * {this.props.planet.crystal.multiplier}
 				</div>
 				<div>
-					Science: {this.props.planet.science}. {this.props.planet.scienceWorkers} * {this.props.planet.scienceMultiplier}
+					Science: {this.props.planet.science.storage}. {this.props.planet.science.workers} * {this.props.planet.science.multiplier}
 				</div>
 			</div>
 		);

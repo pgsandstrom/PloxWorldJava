@@ -9,8 +9,12 @@ import java.util.Set;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.main.World;
-
-import com.google.gson.annotations.Expose;
+import se.persandstrom.ploxworld.production.Commodity;
+import se.persandstrom.ploxworld.production.Construction;
+import se.persandstrom.ploxworld.production.Crystal;
+import se.persandstrom.ploxworld.production.Material;
+import se.persandstrom.ploxworld.production.Production;
+import se.persandstrom.ploxworld.production.Science;
 
 public class PlanetCreater {
 
@@ -52,20 +56,18 @@ public class PlanetCreater {
 
 		int money = 500;
 
-		int commodityMultiplier = Rand.bound(3);
-		int commodity = commodityMultiplier * 10;
-		int productionMultiplier = Rand.bound(3);
-		int production = productionMultiplier * 10;
-		int materialMultiplier = Rand.bound(3);
-		int material = materialMultiplier * 10;
-		int scienceMultiplier = Rand.bound(3);
-		int science = scienceMultiplier * 10;
-		int crystalMultiplier = Rand.bound(3);
-		int crystal = crystalMultiplier * 10;
+		Commodity commodity = new Commodity();
+		initProduction(commodity);
+		Material material = new Material();
+		initProduction(material);
+		Construction construction = new Construction();
+		initProduction(construction);
+		Crystal crystal = new Crystal();
+		initProduction(crystal);
+		Science science = new Science();
+		initProduction(science);
 
-		return new Planet(name, position, populationMax, population, money,
-				commodity, commodityMultiplier, production, productionMultiplier,
-				material, materialMultiplier, science, scienceMultiplier, crystal, crystalMultiplier);
+		return new Planet(name, position, populationMax, population, money, commodity, material, construction, crystal, science);
 	}
 
 	private String getRandomName() {
@@ -87,5 +89,13 @@ public class PlanetCreater {
 
 		}
 		return true;
+	}
+
+	public void initProduction(Production production) {
+		int multiplier = Rand.bound(1, 6);
+		int storage = multiplier * 10;
+		production.setMultiplier(multiplier);
+		production.setStorage(storage);
+		production.setWorkers(0);
 	}
 }
