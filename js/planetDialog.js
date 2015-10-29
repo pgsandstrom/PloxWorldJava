@@ -53,7 +53,27 @@ var PlanetDetails = React.createClass({
 			<div>
 				<h1>{this.props.planet.name}</h1>
 
-				Population: {Number(this.props.planet.population).toFixed(2)} / {this.props.planet.maxPopulation}
+				<div>
+					Population: {Number(this.props.planet.population).toFixed(2)} / {this.props.planet.maxPopulation}
+				</div>
+				<div>
+					Money: {this.props.planet.money}
+				</div>
+				<div>
+					Commodity: {this.props.planet.commodity}. {this.props.planet.commodityWorkers} * {this.props.planet.commodityMultiplier}
+				</div>
+				<div>
+					Material: {this.props.planet.material}. {this.props.planet.materialWorkers} * {this.props.planet.materialMultiplier}
+				</div>
+				<div>
+					Production: {this.props.planet.production}. {this.props.planet.productionWorkers} * {this.props.planet.productionMultiplier}
+				</div>
+				<div>
+					Crystal: {this.props.planet.crystal}. {this.props.planet.crystalWorkers} * {this.props.planet.crystalMultiplier}
+				</div>
+				<div>
+					Science: {this.props.planet.science}. {this.props.planet.scienceWorkers} * {this.props.planet.scienceMultiplier}
+				</div>
 			</div>
 		);
 	}

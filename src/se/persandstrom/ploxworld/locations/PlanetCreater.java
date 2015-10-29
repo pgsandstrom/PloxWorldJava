@@ -10,6 +10,8 @@ import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.main.World;
 
+import com.google.gson.annotations.Expose;
+
 public class PlanetCreater {
 
 	private static final int PLANET_MIN_DISTANCE = 50;
@@ -48,7 +50,22 @@ public class PlanetCreater {
 		int populationMax = Rand.bound(PLANET_MIN_POPULATION_CAP, PLANET_MAX_POPULATION_CAP);
 		double population = Rand.percentage() * (populationMax - 1) + 1;
 
-		return new Planet(name, position, populationMax, population);
+		int money = 500;
+
+		int commodityMultiplier = Rand.bound(3);
+		int commodity = commodityMultiplier * 10;
+		int productionMultiplier = Rand.bound(3);
+		int production = productionMultiplier * 10;
+		int materialMultiplier = Rand.bound(3);
+		int material = materialMultiplier * 10;
+		int scienceMultiplier = Rand.bound(3);
+		int science = scienceMultiplier * 10;
+		int crystalMultiplier = Rand.bound(3);
+		int crystal = crystalMultiplier * 10;
+
+		return new Planet(name, position, populationMax, population, money,
+				commodity, commodityMultiplier, production, productionMultiplier,
+				material, materialMultiplier, science, scienceMultiplier, crystal, crystalMultiplier);
 	}
 
 	private String getRandomName() {
