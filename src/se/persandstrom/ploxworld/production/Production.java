@@ -1,7 +1,5 @@
 package se.persandstrom.ploxworld.production;
 
-import java.util.Comparator;
-
 import com.google.gson.annotations.Expose;
 
 public abstract class Production implements Comparable<Production> {
@@ -61,5 +59,9 @@ public abstract class Production implements Comparable<Production> {
 	@Override
 	public int compareTo(Production other) {
 		return this.multiplier - other.multiplier;
+	}
+
+	public int getProduced() {
+		return this.workers * this.multiplier;
 	}
 }

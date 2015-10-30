@@ -1,7 +1,4 @@
 var Main = React.createClass({
-	getInitialState: function () {
-		return {data: {height: 500, width: 500, planets: []}};
-	},
 	componentDidMount: function () {
 		var self = this;
 		MessageSystem.subscribe(MessageSystem.selectPlanet, function (selectedPlanetName) {
@@ -46,12 +43,23 @@ var Main = React.createClass({
 	},
 	render: function () {
 
+		if (!this.state) {
+			console.log("laoding");
+			return (<div className="main">
+				laodin
+			</div>);
+		} else {
+			console.log("not loadin: " + JSON.stringify(this.state.data));
+		}
+
 		return (
 			<div className="main">
 				<button onClick={this.progressTurn}>Progress Turn</button>
 				<button onClick={this.showPlanetList}>Planet list</button>
 
 				<ploxworld.Board data={this.state.data}></ploxworld.Board>
+
+				<ploxworld.WorldStats className="WorldStats" data={this.state.data.worldData}></ploxworld.WorldStats>
 
 				{ this.state.showPlanetList ? <ploxworld.PlanetDialog planets={this.state.data.planets}
 																	  selectedPlanetName={this.state.selectedPlanetName}

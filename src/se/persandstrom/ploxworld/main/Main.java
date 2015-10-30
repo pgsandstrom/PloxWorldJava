@@ -75,6 +75,7 @@ public class Main {
 				String response;
 				if ("/backend".equals(path)) {
 					world = new World();
+					world.progressTurn();
 				} else if ("/backend/progressTurn".equals(path)) {
 					world.progressTurn();
 				}

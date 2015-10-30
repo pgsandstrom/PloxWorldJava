@@ -17,8 +17,9 @@ public class World {
 	@Expose private final int height = SIZE_Y;
 	@Expose private final int width = SIZE_X;
 
-	@Expose final Set<Planet> planets;
+	@Expose private final Set<Planet> planets;
 
+	@Expose WorldData worldData;
 	@Expose int turn = 0;
 
 	public World() {
@@ -29,6 +30,7 @@ public class World {
 	public void progressTurn() {
 		planets.forEach(Planet::progressTurn);
 		turn++;
+		worldData = new WorldData(this);
 	}
 
 	public Point getRandomPoint(int border) {
@@ -39,4 +41,7 @@ public class World {
 		return new Point(Rand.bound(SIZE_X - borderLeft - borderRight) + borderLeft, Rand.bound(SIZE_Y - borderTop - borderBottom) + borderBottom);
 	}
 
+	public Set<Planet> getPlanets() {
+		return planets;
+	}
 }

@@ -3,7 +3,6 @@ package se.persandstrom.ploxworld.locations;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
@@ -12,6 +11,7 @@ import se.persandstrom.ploxworld.production.Construction;
 import se.persandstrom.ploxworld.production.Crystal;
 import se.persandstrom.ploxworld.production.Material;
 import se.persandstrom.ploxworld.production.Production;
+import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.production.Science;
 
 import com.google.gson.annotations.Expose;
@@ -52,8 +52,6 @@ public class Planet {
 		this.productions.add(construction);
 		this.productions.add(crystal);
 		this.productions.add(science);
-
-		redistributePopulation();
 	}
 
 	public void progressTurn() {
@@ -117,5 +115,22 @@ public class Planet {
 
 	public Point getPoint() {
 		return point;
+	}
+
+	public Production getProduction(ProductionType productionType) {
+		switch (productionType) {
+			case COMMODITY:
+				return commodity;
+			case MATERIAL:
+				return material;
+			case CONSTRUCTION:
+				return construction;
+			case CRYSTAL:
+				return crystal;
+			case SCIENCE:
+				return science;
+			default:
+				throw new IllegalStateException();
+		}
 	}
 }
