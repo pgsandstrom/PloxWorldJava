@@ -2,8 +2,9 @@ package se.persandstrom.ploxworld.main;
 
 import java.util.Set;
 
-import se.persandstrom.ploxworld.character.*;
-import se.persandstrom.ploxworld.character.Character;
+import se.persandstrom.ploxworld.ai.DecisionMaker;
+import se.persandstrom.ploxworld.person.*;
+import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
@@ -20,7 +21,7 @@ public class World {
 	@Expose private final int width = SIZE_X;
 
 	@Expose private final Set<Planet> planets;
-	@Expose private final Set<Character> characters;
+	@Expose private final Set<Person> persons;
 
 	@Expose WorldData worldData;
 	@Expose int turn = 0;
@@ -28,11 +29,15 @@ public class World {
 	public World() {
 		PlanetCreater planetCreater = new PlanetCreater(this);
 		planets = planetCreater.createPlanets(25);
-		CharacterCreater characterCreater = new CharacterCreater(this);
-		characters = characterCreater.createCharacters(25);
+		PersonCreater characterCreater = new PersonCreater(this);
+		persons = characterCreater.createPersons(25);
 	}
 
 	public void progressTurn() {
+		for (Person person : persons) {
+			DecisionMaker.makeDecision(this, person);
+		}
+		persons.forEach(Person::executeDecision);
 		planets.forEach(Planet::progressTurn);
 		turn++;
 		worldData = new WorldData(this);

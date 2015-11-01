@@ -1,4 +1,4 @@
-package se.persandstrom.ploxworld.character;
+package se.persandstrom.ploxworld.person;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,18 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
-import se.persandstrom.ploxworld.production.Commodity;
-import se.persandstrom.ploxworld.production.Construction;
-import se.persandstrom.ploxworld.production.Crystal;
-import se.persandstrom.ploxworld.production.Material;
-import se.persandstrom.ploxworld.production.Production;
-import se.persandstrom.ploxworld.production.Science;
 
-public class CharacterCreater {
+public class PersonCreater {
 
 	private static final int PLANET_MIN_DISTANCE = 50;
 	private static final int PLANET_BORDER_DISTANCE = 30;
@@ -43,23 +36,23 @@ public class CharacterCreater {
 			"Anabi Gorskovsky", "Dara Khepora", "Bruna Beline", "Idani Garina", "Nessa Gerschiko", "Vilma Renky", "Yeksaga Boveli", "Alyale Rinova"));
 
 	private final World world;
-	private Set<Character> characters = new HashSet<Character>();
+	private Set<Person> persons = new HashSet<Person>();
 
-	public CharacterCreater(World world) {
+	public PersonCreater(World world) {
 		this.world = world;
 	}
 
-	public Set<Character> createCharacters(int number) {
+	public Set<Person> createPersons(int number) {
 		while (number-- > 0) {
-			characters.add(createCharacter());
+			persons.add(createPerson());
 		}
-		return characters;
+		return persons;
 	}
 
-	private Character createCharacter() {
+	private Person createPerson() {
 		String name = getRandomName();
 		Planet planet = Rand.getRandom(world.getPlanets());
-		return new Character(name, planet);
+		return new Person(name, planet);
 	}
 
 	private String getRandomName() {

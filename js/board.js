@@ -16,10 +16,10 @@ ploxworld.Board = React.createClass({
 						</Planet>
 					);
 				})}
-				{this.props.data.characters.map(function (character) {
+				{this.props.data.persons.map(function (person) {
 					return (
-						<Character key={character.name} data={character}>
-						</Character>
+						<Person key={person.name} data={person}>
+						</Person>
 					);
 				})}
 			</div>
@@ -48,8 +48,8 @@ var Planet = React.createClass({
 	}
 });
 
-var Character = React.createClass({
-	showCharacter: function () {
+var Person = React.createClass({
+	showPerson: function () {
 		//MessageSystem.dispatch(MessageSystem.selectPlanet, this.props.data.name);
 	},
 	render: function () {
@@ -59,7 +59,7 @@ var Character = React.createClass({
 		};
 
 		return (
-			<div className="character" style={style} onClick={this.showCharacter}>
+			<div className="person" style={style} onClick={this.showPerson}>
 				<img src="img/ship_ai.png"/>
 			</div>
 		);

@@ -8,7 +8,7 @@
 .planet {
 	position: absolute;
 }
-.character {
+.person {
 	position: absolute;
 	pointer-events: none;
 }
