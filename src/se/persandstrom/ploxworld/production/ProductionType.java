@@ -16,7 +16,7 @@ public enum ProductionType {
 			case SCIENCE:
 				return new Science();
 			default:
-				throw new IllegalStateException();
+				throw new AssertionError();
 		}
 	}
 

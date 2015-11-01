@@ -1,6 +1,9 @@
 package se.persandstrom.ploxworld.common;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Rand {
 
@@ -25,7 +28,24 @@ public class Rand {
 	}
 
 	public static double percentage(double min, double max) {
-		return (r.nextDouble() * (max-min))+min;
+		return (r.nextDouble() * (max - min)) + min;
 	}
 
+	public static boolean bool() {
+		return r.nextBoolean();
+	}
+
+	public static <T> T getRandom(List<T> list) {
+		return list.get(r.nextInt(list.size()));
+	}
+
+	public static <T> T getRandom(Collection<T> collection) {
+		int index = (int) (Math.random() * collection.size());
+		for(T t: collection) {
+			if (--index < 0) {
+				return t;
+			}
+		}
+		throw new AssertionError();
+	}
 }

@@ -130,7 +130,7 @@ public class Planet {
 			case SCIENCE:
 				return science;
 			default:
-				throw new IllegalStateException();
+				throw new AssertionError();
 		}
 	}
 }
