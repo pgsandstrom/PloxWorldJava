@@ -30,7 +30,7 @@ public class World {
 		PlanetCreater planetCreater = new PlanetCreater(this);
 		planets = planetCreater.createPlanets(25);
 		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(25);
+		persons = characterCreater.createPersons(1);
 	}
 
 	public void progressTurn() {

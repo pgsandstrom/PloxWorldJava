@@ -7,8 +7,15 @@ import se.persandstrom.ploxworld.person.Person;
 
 public class DecisionMaker {
 
+	static Planet planet;
+
 	public static void makeDecision(World world, Person person) {
-		Planet planet = Rand.getRandom(world.getPlanets());
+
+		if (planet == null) {
+			planet = Rand.getRandom(world.getPlanets());
+			System.out.println("travel to: " + planet.getName());
+		}
+
 		TravelDecision travelDecision = new TravelDecision(person, planet);
 		person.setDecision(travelDecision);
 	}

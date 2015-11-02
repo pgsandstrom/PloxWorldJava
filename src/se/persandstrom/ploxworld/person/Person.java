@@ -17,8 +17,7 @@ public class Person {
 
 	public Person(String name, Planet planet) {
 		this.name = name;
-		this.point = planet.getPoint();
-		this.planet = planet;
+		setPlanet(planet);
 	}
 
 	public void executeDecision() {
@@ -35,5 +34,10 @@ public class Person {
 
 	public void setPoint(Point point) {
 		this.point = point;
+	}
+
+	public void setPlanet(Planet planet) {
+		this.planet = planet;
+		this.point = planet.getPoint();
 	}
 }

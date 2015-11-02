@@ -19,11 +19,37 @@ public class TravelDecision implements Decision {
 		Point from = person.getPoint();
 		Point to = toPlanet.getPoint();
 
-		int xDiff = from.x - to.x;
-		int yDiff = from.y - to.y;
+		double xDiff = to.x - from.x;
+		double yDiff = to.y - from.y;
 
-		//TODO: Fixa klart denna...
+		double speed = 25;
 
+		double distance = toPlanet.getDistance(from);
+		if (distance < speed) {    // Arrived!
+			person.setPlanet(toPlanet);
+		} else if (yDiff == 0) {
+			if(xDiff < 0) {
+				person.setPoint(new Point(from, (int) -speed, 0));
+			} else {
+				person.setPoint(new Point(from, (int) speed, 0));
+			}
+		} else {
+			double xRationToY = Math.abs(xDiff) / Math.abs(yDiff);
 
+			double traveled = Math.sqrt(xRationToY * xRationToY + 1);
+
+			double speedAdjust = speed / traveled;
+
+			double yChange = speedAdjust;
+			double xChange = speedAdjust * xRationToY;
+
+			if (xDiff < 0) {
+				xChange *= -1;
+			}
+			if (yDiff < 0) {
+				yChange *= -1;
+			}
+			person.setPoint(new Point(from, (int) xChange, (int) yChange));
+		}
 	}
 }

@@ -12,4 +12,9 @@ public class Point {
 		this.y = y;
 	}
 
+	public Point(Point oldPoint, int xDiff, int yDiff) {
+		this.x = oldPoint.x + xDiff;
+		this.y = oldPoint.y + yDiff;
+	}
+
 }

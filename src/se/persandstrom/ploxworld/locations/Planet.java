@@ -133,4 +133,8 @@ public class Planet {
 				throw new AssertionError();
 		}
 	}
+
+	public String getName() {
+		return name;
+	}
 }
