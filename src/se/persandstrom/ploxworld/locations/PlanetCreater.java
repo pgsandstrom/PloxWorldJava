@@ -92,7 +92,12 @@ public class PlanetCreater {
 	}
 
 	public void initProduction(Production production) {
-		int multiplier = Rand.bound(1, 6);
+		int multiplier;
+		if (production.isRawMaterial()) {
+			multiplier = Rand.bound(1, 4);
+		} else {
+			multiplier = Rand.bound(1, 6);
+		}
 		int storage = multiplier * 10;
 		production.setMultiplier(multiplier);
 		production.setStorage(storage);

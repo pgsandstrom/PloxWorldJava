@@ -10,6 +10,11 @@ public class Material extends Production {
 	}
 
 	@Override
+	public boolean isRawMaterial() {
+		return true;
+	}
+
+	@Override
 	public ProductionType getProductionType() {
 		return ProductionType.MATERIAL;
 	}

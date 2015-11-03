@@ -26,6 +26,14 @@ public abstract class Production implements Comparable<Production> {
 		return produced;
 	}
 
+	public abstract boolean isRawMaterial();
+
+	public abstract ProductionType getProductionType();
+
+	public int getProduced() {
+		return this.workers * this.multiplier;
+	}
+
 	public int getStorage() {
 		return storage;
 	}
@@ -54,14 +62,10 @@ public abstract class Production implements Comparable<Production> {
 		this.workers = workers;
 	}
 
-	public abstract ProductionType getProductionType();
 
 	@Override
 	public int compareTo(Production other) {
 		return this.multiplier - other.multiplier;
 	}
 
-	public int getProduced() {
-		return this.workers * this.multiplier;
-	}
 }
