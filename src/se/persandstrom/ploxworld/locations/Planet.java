@@ -56,14 +56,16 @@ public class Planet {
 
 	public void progressTurn() {
 
-		redistributePopulation();
-
 		population = population * POPULATION_GROWTH;
 		if (population > maxPopulation) {
 			population = maxPopulation;
 		}
 
+		redistributePopulation();
+
 		this.commodity.progressTurn();
+		this.commodity.addStorage(-getPopulation());
+
 		this.material.progressTurn();
 		int materialUsed = this.construction.progressTurn();
 		this.material.addStorage(-materialUsed);
@@ -71,6 +73,9 @@ public class Planet {
 		int crystalUsed = this.science.progressTurn();
 		this.crystal.addStorage(-crystalUsed);
 
+		if (this.commodity.getStorage() < 0) {
+			throw new IllegalStateException("Commodity is " + this.commodity.getStorage() + " at " + this.name + ".");
+		}
 		if (this.material.getStorage() < 0) {
 			throw new IllegalStateException("Material is " + this.material.getStorage() + " at " + this.name + ".");
 		}
@@ -81,19 +86,27 @@ public class Planet {
 
 	public void redistributePopulation() {
 		productions.forEach(production -> production.setWorkers(0));
-		for (Production production : productions) {
-			production.setWorkers(0);
-		}
-		Collections.sort(productions);
+
+		Collections.sort(productions);    // Sort according to multiplier
 
 		int freeWorkers = (int) population;
 
 		int indexOfProduction = 1;
+
+		// If we are not only producing commodity, produce enough to survive:
+		if (productions.get(productions.size() - indexOfProduction).getProductionType() != ProductionType.COMMODITY) {
+			int remainingCommodity = commodity.getStorage() - getPopulation();
+			if(remainingCommodity < 0) {
+				commodity.addWorkers(-remainingCommodity);
+				freeWorkers += remainingCommodity;
+			}
+		}
+
 		while (freeWorkers > 0) {
 			Production production = productions.get(productions.size() - indexOfProduction);
 			int productionMaxWorkers = getProductionMaxWorkers(production);
 			int productionWorkers = Math.min(freeWorkers, productionMaxWorkers);
-			production.setWorkers(productionWorkers);
+			production.addWorkers(productionWorkers);
 			freeWorkers -= productionWorkers;
 			indexOfProduction++;
 		}
@@ -136,5 +149,9 @@ public class Planet {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getPopulation() {
+		return (int) population;
 	}
 }

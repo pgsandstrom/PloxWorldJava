@@ -57,15 +57,15 @@ public class PlanetCreater {
 		int money = 500;
 
 		Commodity commodity = new Commodity();
-		initProduction(commodity);
+		initProduction(commodity, population);
 		Material material = new Material();
-		initProduction(material);
+		initProduction(material, population);
 		Construction construction = new Construction();
-		initProduction(construction);
+		initProduction(construction, population);
 		Crystal crystal = new Crystal();
-		initProduction(crystal);
+		initProduction(crystal, population);
 		Science science = new Science();
-		initProduction(science);
+		initProduction(science, population);
 
 		return new Planet(name, position, populationMax, population, money, commodity, material, construction, crystal, science);
 	}
@@ -91,14 +91,14 @@ public class PlanetCreater {
 		return true;
 	}
 
-	public void initProduction(Production production) {
+	public void initProduction(Production production, double population) {
 		int multiplier;
 		if (production.isRawMaterial()) {
 			multiplier = Rand.bound(1, 4);
 		} else {
 			multiplier = Rand.bound(1, 6);
 		}
-		int storage = multiplier * 10;
+		int storage = multiplier * 10 + (int) population;
 		production.setMultiplier(multiplier);
 		production.setStorage(storage);
 		production.setWorkers(0);

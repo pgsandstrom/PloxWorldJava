@@ -62,6 +62,9 @@ public abstract class Production implements Comparable<Production> {
 		this.workers = workers;
 	}
 
+	public void addWorkers(int workers) {
+		this.workers += workers;
+	}
 
 	@Override
 	public int compareTo(Production other) {
