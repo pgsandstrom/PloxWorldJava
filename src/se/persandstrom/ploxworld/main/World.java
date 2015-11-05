@@ -3,12 +3,12 @@ package se.persandstrom.ploxworld.main;
 import java.util.Set;
 
 import se.persandstrom.ploxworld.ai.DecisionMaker;
-import se.persandstrom.ploxworld.person.*;
-import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.locations.PlanetCreater;
+import se.persandstrom.ploxworld.person.Person;
+import se.persandstrom.ploxworld.person.PersonCreater;
 
 import com.google.gson.annotations.Expose;
 

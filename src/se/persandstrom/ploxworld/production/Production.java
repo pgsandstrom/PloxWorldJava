@@ -7,6 +7,7 @@ public abstract class Production implements Comparable<Production> {
 	@Expose private int storage;
 	@Expose private int multiplier;
 	@Expose private int workers;
+	@Expose private int need = 0;
 
 	public Production() {
 	}
@@ -64,6 +65,14 @@ public abstract class Production implements Comparable<Production> {
 
 	public void addWorkers(int workers) {
 		this.workers += workers;
+	}
+
+	public int getNeed() {
+		return need;
+	}
+
+	public void setNeed(int need) {
+		this.need = need;
 	}
 
 	@Override

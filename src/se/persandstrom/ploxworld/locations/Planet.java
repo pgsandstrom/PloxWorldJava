@@ -73,6 +73,8 @@ public class Planet {
 		int crystalUsed = this.science.progressTurn();
 		this.crystal.addStorage(-crystalUsed);
 
+		calculateNeed();
+
 		if (this.commodity.getStorage() < 0) {
 			throw new IllegalStateException("Commodity is " + this.commodity.getStorage() + " at " + this.name + ".");
 		}
@@ -96,7 +98,7 @@ public class Planet {
 		// If we are not only producing commodity, produce enough to survive:
 		if (productions.get(productions.size() - indexOfProduction).getProductionType() != ProductionType.COMMODITY) {
 			int remainingCommodity = commodity.getStorage() - getPopulation();
-			if(remainingCommodity < 0) {
+			if (remainingCommodity < 0) {
 				commodity.addWorkers(-remainingCommodity);
 				freeWorkers += remainingCommodity;
 			}
@@ -119,6 +121,36 @@ public class Planet {
 			return crystal.getStorage() / production.getMultiplier();
 		} else {
 			return Integer.MAX_VALUE;
+		}
+	}
+
+	public void calculateNeed() {
+		Collections.sort(productions);
+		Production bestProduction = productions.get(productions.size() - 1);
+		if (bestProduction.getProductionType() != ProductionType.COMMODITY) {
+			int commodityNeed = (bestProduction.getMultiplier() - commodity.getMultiplier()) * (int) population;
+			commodity.setNeed(commodityNeed);
+		}
+		if (bestProduction.getProductionType() == ProductionType.COMMODITY) {
+			int commodityNeed = commodity.getMultiplier() * (int) population;
+			commodity.setNeed(-commodityNeed);
+		}
+
+		if (bestProduction.getProductionType() == ProductionType.SCIENCE) {
+			int crystalNeed = (bestProduction.getMultiplier() - crystal.getMultiplier()) * (int) population;
+			crystal.setNeed(crystalNeed);
+		}
+		if (bestProduction.getProductionType() == ProductionType.CONSTRUCTION) {
+			int materialNeed = (bestProduction.getMultiplier() - material.getMultiplier()) * (int) population;
+			material.setNeed(materialNeed);
+		}
+		if (bestProduction.getProductionType() == ProductionType.MATERIAL) {
+			int materialNeed = bestProduction.getMultiplier() * (int) population;
+			material.setNeed(-materialNeed);
+		}
+		if (bestProduction.getProductionType() == ProductionType.CRYSTAL) {
+			int crystalNeed = bestProduction.getMultiplier() * (int) population;
+			crystal.setNeed(-crystalNeed);
 		}
 	}
 
