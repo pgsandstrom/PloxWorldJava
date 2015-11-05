@@ -12,3 +12,10 @@
 	outline: none;
 	padding: 20px;
 }
+
+.cell {
+	display: inline-block;
+	height: 25px;
+	width:100px;
+	border: 1px solid #cccccc;
+}

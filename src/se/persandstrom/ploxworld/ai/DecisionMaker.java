@@ -1,22 +1,25 @@
 package se.persandstrom.ploxworld.ai;
 
-import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
+import se.persandstrom.ploxworld.production.Production;
 
 public class DecisionMaker {
 
-	static Planet planet;
-
 	public static void makeDecision(World world, Person person) {
 
-		if (planet == null) {
-			planet = Rand.getRandom(world.getPlanets());
-			System.out.println("travel to: " + planet.getName());
-		}
+		System.out.println("hej");
 
-		TravelDecision travelDecision = new TravelDecision(person, planet);
+		Planet planetMax = world.getPlanetMax((o1, o2) -> o1.getMostNeeded().getNeed() - o2.getMostNeeded().getNeed());
+
+		System.out.println(planetMax);
+
+		TravelDecision travelDecision = new TravelDecision(person, planetMax);
 		person.setDecision(travelDecision);
+		Production mostNeeded = planetMax.getMostNeeded();
+		mostNeeded.setNeed(mostNeeded.getNeed() - 3);
+
+		System.out.println(person.getName() + " travels to " + planetMax.getName());
 	}
 }

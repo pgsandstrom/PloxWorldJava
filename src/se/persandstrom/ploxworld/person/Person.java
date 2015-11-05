@@ -40,4 +40,8 @@ public class Person {
 		this.planet = planet;
 		this.point = planet.getPoint();
 	}
+
+	public String getName() {
+		return name;
+	}
 }

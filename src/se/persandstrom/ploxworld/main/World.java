@@ -1,5 +1,7 @@
 package se.persandstrom.ploxworld.main;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 
 import se.persandstrom.ploxworld.ai.DecisionMaker;
@@ -30,7 +32,9 @@ public class World {
 		PlanetCreater planetCreater = new PlanetCreater(this);
 		planets = planetCreater.createPlanets(25);
 		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(1);
+		persons = characterCreater.createPersons(25);
+
+		planets.forEach(Planet::prepareStuff);
 	}
 
 	public void progressTurn() {
@@ -53,5 +57,10 @@ public class World {
 
 	public Set<Planet> getPlanets() {
 		return planets;
+	}
+
+	public Planet getPlanetMax(Comparator<Planet> comparator) {
+		Planet planet = planets.stream().max(comparator).get();
+		return planet;
 	}
 }

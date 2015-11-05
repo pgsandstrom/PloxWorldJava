@@ -54,25 +54,120 @@ var PlanetDetails = React.createClass({
 				<h1>{this.props.planet.name}</h1>
 
 				<div>
-					Population: {Number(this.props.planet.population).toFixed(2)} / {this.props.planet.maxPopulation}
+					<span className="cell">
+					Population
+					</span>
+					{Number(this.props.planet.population) | 0 } / {this.props.planet.maxPopulation}
 				</div>
 				<div>
-					Money: {this.props.planet.money}
+					<span className="cell">
+					Info
+					</span>
+					<span className="cell">
+					Storage
+					</span>
+					<span className="cell">
+					Workers
+					</span>
+					<span className="cell">
+					Effectivity
+					</span>
+					<span className="cell">
+					Need
+					</span>
 				</div>
 				<div>
-					Commodity: {this.props.planet.commodity.storage}. {this.props.planet.commodity.workers} * {this.props.planet.commodity.multiplier}
+					<span className="cell">
+					Money
+					</span>
+					<span className="cell">
+					{this.props.planet.money}
+					</span>
 				</div>
 				<div>
-					Material: {this.props.planet.material.storage}. {this.props.planet.material.workers} * {this.props.planet.material.multiplier}
+					<span className="cell">
+					Commodity
+					</span>
+					<span className="cell">
+					{this.props.planet.commodity.storage}
+					</span>
+					<span className="cell">
+					{this.props.planet.commodity.workers}
+					</span>
+					<span className="cell">
+					{this.props.planet.commodity.multiplier}
+					</span>
+					<span className="cell">
+					{this.props.planet.commodity.need}
+					</span>
 				</div>
 				<div>
-					Construction: {this.props.planet.construction.storage}. {this.props.planet.construction.workers} * {this.props.planet.construction.multiplier}
+					<span className="cell">
+					Material
+					</span>
+					<span className="cell">
+					{this.props.planet.material.storage}
+					</span>
+					<span className="cell">
+					{this.props.planet.material.workers}
+					</span>
+					<span className="cell">
+					{this.props.planet.material.multiplier}
+					</span>
+					<span className="cell">
+					{this.props.planet.material.need}
+					</span>
 				</div>
 				<div>
-					Crystal: {this.props.planet.crystal.storage}. {this.props.planet.crystal.workers} * {this.props.planet.crystal.multiplier}
+					<span className="cell">
+					Construction
+					</span>
+					<span className="cell">
+					{this.props.planet.construction.storage}
+					</span>
+					<span className="cell">
+					{this.props.planet.construction.workers}
+					</span>
+					<span className="cell">
+					{this.props.planet.construction.multiplier}
+					</span>
+					<span className="cell">
+					{this.props.planet.construction.need}
+					</span>
 				</div>
 				<div>
-					Science: {this.props.planet.science.storage}. {this.props.planet.science.workers} * {this.props.planet.science.multiplier}
+					<span className="cell">
+					Crystal
+					</span>
+					<span className="cell">
+					{this.props.planet.crystal.storage}
+					</span>
+					<span className="cell">
+					{this.props.planet.crystal.workers}
+					</span>
+					<span className="cell">
+					{this.props.planet.crystal.multiplier}
+					</span>
+					<span className="cell">
+					{this.props.planet.crystal.need}
+					</span>
+				</div>
+				<div>
+					<span className="cell">
+					Science
+					</span>
+					<span className="cell">
+					{this.props.planet.science.storage}
+					</span>
+					<span className="cell">
+					{this.props.planet.science.workers}
+					</span>
+					<span className="cell">
+					{this.props.planet.science.multiplier}
+					</span>
+					<span className="cell">
+					{this.props.planet.science.need}
+					</span>
 				</div>
 			</div>
 		);

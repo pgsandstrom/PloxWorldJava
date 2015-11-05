@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.locations;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import se.persandstrom.ploxworld.common.Geo;
@@ -54,6 +55,11 @@ public class Planet {
 		this.productions.add(science);
 	}
 
+	public void prepareStuff() {
+		redistributePopulation();
+		calculateNeed();
+	}
+
 	public void progressTurn() {
 
 		population = population * POPULATION_GROWTH;
@@ -86,7 +92,7 @@ public class Planet {
 		}
 	}
 
-	public void redistributePopulation() {
+	private void redistributePopulation() {
 		productions.forEach(production -> production.setWorkers(0));
 
 		Collections.sort(productions);    // Sort according to multiplier
@@ -124,7 +130,7 @@ public class Planet {
 		}
 	}
 
-	public void calculateNeed() {
+	private void calculateNeed() {
 		Collections.sort(productions);
 		Production bestProduction = productions.get(productions.size() - 1);
 		if (bestProduction.getProductionType() != ProductionType.COMMODITY) {
@@ -156,6 +162,12 @@ public class Planet {
 
 	public double getDistance(Point point) {
 		return Geo.getDistance(this.point, point);
+	}
+
+	public Production getMostNeeded() {
+		return productions.stream()
+				.max((o1, o2) -> o1.getNeed() - o2.getNeed())
+				.get();
 	}
 
 	public Point getPoint() {
