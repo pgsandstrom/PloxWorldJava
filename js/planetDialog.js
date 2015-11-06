@@ -73,7 +73,10 @@ var PlanetDetails = React.createClass({
 					Effectivity
 					</span>
 					<span className="cell">
-					Need
+					Buy
+					</span>
+					<span className="cell">
+					Sell
 					</span>
 				</div>
 				<div>
@@ -98,7 +101,10 @@ var PlanetDetails = React.createClass({
 					{this.props.planet.commodity.multiplier}
 					</span>
 					<span className="cell">
-					{this.props.planet.commodity.need}
+					{this.props.planet.commodity.buyPrice}
+					</span>
+					<span className="cell">
+					{this.props.planet.commodity.sellPrice}
 					</span>
 				</div>
 				<div>
@@ -115,7 +121,10 @@ var PlanetDetails = React.createClass({
 					{this.props.planet.material.multiplier}
 					</span>
 					<span className="cell">
-					{this.props.planet.material.need}
+					{this.props.planet.material.buyPrice}
+					</span>
+					<span className="cell">
+					{this.props.planet.material.sellPrice}
 					</span>
 				</div>
 				<div>
@@ -132,7 +141,10 @@ var PlanetDetails = React.createClass({
 					{this.props.planet.construction.multiplier}
 					</span>
 					<span className="cell">
-					{this.props.planet.construction.need}
+					{this.props.planet.construction.buyPrice}
+					</span>
+					<span className="cell">
+					{this.props.planet.construction.sellPrice}
 					</span>
 				</div>
 				<div>
@@ -149,7 +161,10 @@ var PlanetDetails = React.createClass({
 					{this.props.planet.crystal.multiplier}
 					</span>
 					<span className="cell">
-					{this.props.planet.crystal.need}
+					{this.props.planet.crystal.buyPrice}
+					</span>
+					<span className="cell">
+					{this.props.planet.crystal.sellPrice}
 					</span>
 				</div>
 				<div>
@@ -166,7 +181,10 @@ var PlanetDetails = React.createClass({
 					{this.props.planet.science.multiplier}
 					</span>
 					<span className="cell">
-					{this.props.planet.science.need}
+					{this.props.planet.science.buyPrice}
+					</span>
+					<span className="cell">
+					{this.props.planet.science.sellPrice}
 					</span>
 				</div>
 			</div>

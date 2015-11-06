@@ -18,4 +18,9 @@ public class Crystal extends Production {
 	public ProductionType getProductionType() {
 		return ProductionType.CRYSTAL;
 	}
+
+	@Override
+	public double getBasePrice() {
+		return 100;
+	}
 }

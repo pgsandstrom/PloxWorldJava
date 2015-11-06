@@ -18,4 +18,9 @@ public class Construction extends Production {
 	public ProductionType getProductionType() {
 		return ProductionType.CONSTRUCTION;
 	}
+
+	@Override
+	public double getBasePrice() {
+		return 300;
+	}
 }

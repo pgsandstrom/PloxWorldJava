@@ -18,4 +18,9 @@ public class Science extends Production {
 	public ProductionType getProductionType() {
 		return ProductionType.SCIENCE;
 	}
+
+	@Override
+	public double getBasePrice() {
+		return 300;
+	}
 }

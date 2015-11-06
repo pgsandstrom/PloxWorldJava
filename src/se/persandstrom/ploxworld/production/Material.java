@@ -18,4 +18,9 @@ public class Material extends Production {
 	public ProductionType getProductionType() {
 		return ProductionType.MATERIAL;
 	}
+
+	@Override
+	public double getBasePrice() {
+		return 100;
+	}
 }

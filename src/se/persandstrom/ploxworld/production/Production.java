@@ -7,7 +7,8 @@ public abstract class Production implements Comparable<Production> {
 	@Expose private int storage;
 	@Expose private int multiplier;
 	@Expose private int workers;
-	@Expose private int need = 0;
+	@Expose private int sellPrice = 0;
+	@Expose private int buyPrice = 0;
 
 	public Production() {
 	}
@@ -30,6 +31,8 @@ public abstract class Production implements Comparable<Production> {
 	public abstract boolean isRawMaterial();
 
 	public abstract ProductionType getProductionType();
+
+	public abstract double getBasePrice();
 
 	public int getProduced() {
 		return this.workers * this.multiplier;
@@ -67,12 +70,20 @@ public abstract class Production implements Comparable<Production> {
 		this.workers += workers;
 	}
 
-	public int getNeed() {
-		return need;
+	public int getSellPrice() {
+		return sellPrice;
 	}
 
-	public void setNeed(int need) {
-		this.need = need;
+	public void setSellPrice(int sellPrice) {
+		this.sellPrice = sellPrice;
+	}
+
+	public int getBuyPrice() {
+		return buyPrice;
+	}
+
+	public void setBuyPrice(int buyPrice) {
+		this.buyPrice = buyPrice;
 	}
 
 	@Override

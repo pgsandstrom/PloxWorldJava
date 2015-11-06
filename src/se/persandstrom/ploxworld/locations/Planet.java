@@ -19,7 +19,7 @@ import com.google.gson.annotations.Expose;
 
 public class Planet {
 
-	private static final double POPULATION_GROWTH = 1.01;
+	private static final double POPULATION_GROWTH = 1.005;
 
 	@Expose private final String name;
 	@Expose private final Point point;
@@ -130,45 +130,91 @@ public class Planet {
 		}
 	}
 
+	@SuppressWarnings("Duplicates")
 	private void calculateNeed() {
 		Collections.sort(productions);
 		Production bestProduction = productions.get(productions.size() - 1);
+
+		// Commodity
 		if (bestProduction.getProductionType() != ProductionType.COMMODITY) {
-			int commodityNeed = (bestProduction.getMultiplier() - commodity.getMultiplier()) * (int) population;
-			commodity.setNeed(commodityNeed);
-		}
-		if (bestProduction.getProductionType() == ProductionType.COMMODITY) {
-			int commodityNeed = commodity.getMultiplier() * (int) population;
-			commodity.setNeed(-commodityNeed);
+			int need = 1 + (bestProduction.getMultiplier() - commodity.getMultiplier());
+			int moreStorageWanted = (int) (population * 100 - commodity.getStorage());
+			if (moreStorageWanted > 0) {
+				commodity.setBuyPrice((int) (commodity.getBasePrice() * (1.2 + need * 0.1)));
+				commodity.setSellPrice((int) (commodity.getBuyPrice() * 1.5));
+			} else {
+				commodity.setBuyPrice((int) (commodity.getBasePrice() * 0.5));
+				commodity.setSellPrice((int) (commodity.getBasePrice() * 1.5));
+			}
 		}
 
+		if (bestProduction.getProductionType() == ProductionType.COMMODITY) {
+			commodity.setBuyPrice((int) (commodity.getBasePrice() * 0.3));
+			commodity.setSellPrice((int) (commodity.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+		}
+
+		// Crystal
 		if (bestProduction.getProductionType() == ProductionType.SCIENCE) {
-			int crystalNeed = (bestProduction.getMultiplier() - crystal.getMultiplier()) * (int) population;
-			crystal.setNeed(crystalNeed);
+			int need = 1 + (bestProduction.getMultiplier() - crystal.getMultiplier());
+			int moreStorageWanted = (int) (population * 100 - crystal.getStorage());
+			if (moreStorageWanted > 0) {
+				crystal.setBuyPrice((int) (crystal.getBasePrice() * (1.2 + need * 0.1)));
+				crystal.setSellPrice((int) (crystal.getBuyPrice() * 1.5));
+			} else {
+				crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.5));
+				crystal.setSellPrice((int) (crystal.getBasePrice() * 1.5));
+			}
+		} else {
+			crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.9));
+			crystal.setSellPrice((int) (crystal.getBasePrice() * 1.1));
 		}
-		if (bestProduction.getProductionType() == ProductionType.CONSTRUCTION) {
-			int materialNeed = (bestProduction.getMultiplier() - material.getMultiplier()) * (int) population;
-			material.setNeed(materialNeed);
-		}
-		if (bestProduction.getProductionType() == ProductionType.MATERIAL) {
-			int materialNeed = bestProduction.getMultiplier() * (int) population;
-			material.setNeed(-materialNeed);
-		}
+
 		if (bestProduction.getProductionType() == ProductionType.CRYSTAL) {
-			int crystalNeed = bestProduction.getMultiplier() * (int) population;
-			crystal.setNeed(-crystalNeed);
+			crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.5));
+			crystal.setSellPrice((int) (crystal.getBasePrice() * 1.4));    //TODO: Ska bero på storage
 		}
+
+		// Science
+		science.setBuyPrice((int) (science.getBasePrice() * 0.5));
+		science.setSellPrice((int) (science.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+
+
+		// Material
+		if (bestProduction.getProductionType() == ProductionType.CONSTRUCTION) {
+			int need = 1 + (bestProduction.getMultiplier() - material.getMultiplier());
+			int moreStorageWanted = (int) (population * 100 - material.getStorage());
+			if (moreStorageWanted > 0) {
+				material.setBuyPrice((int) (material.getBasePrice() * (1.2 + need * 0.1)));
+				material.setSellPrice((int) (material.getBuyPrice() * 1.5));
+			} else {
+				material.setBuyPrice((int) (material.getBasePrice() * 0.5));
+				material.setSellPrice((int) (material.getBasePrice() * 1.5));
+			}
+		} else {
+			material.setBuyPrice((int) (material.getBasePrice() * 0.9));
+			material.setSellPrice((int) (material.getBasePrice() * 1.1));
+		}
+
+		if (bestProduction.getProductionType() == ProductionType.MATERIAL) {
+			material.setBuyPrice((int) (material.getBasePrice() * 0.5));
+			material.setSellPrice((int) (material.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+		}
+
+		// Construction
+		construction.setBuyPrice((int) (construction.getBasePrice() * 0.5));
+		construction.setSellPrice((int) (construction.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+
 	}
 
 	public double getDistance(Point point) {
 		return Geo.getDistance(this.point, point);
 	}
 
-	public Production getMostNeeded() {
-		return productions.stream()
-				.max((o1, o2) -> o1.getNeed() - o2.getNeed())
-				.get();
-	}
+//	public Production getMostNeeded() {
+//		return productions.stream()
+//				.max((o1, o2) -> o1.getNeed() - o2.getNeed())
+//				.get();
+//	}
 
 	public Point getPoint() {
 		return point;

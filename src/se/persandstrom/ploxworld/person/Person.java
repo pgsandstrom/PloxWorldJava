@@ -21,7 +21,7 @@ public class Person {
 	}
 
 	public void executeDecision() {
-		decision.execute();
+//		decision.execute();
 	}
 
 	public void setDecision(TravelDecision decision) {

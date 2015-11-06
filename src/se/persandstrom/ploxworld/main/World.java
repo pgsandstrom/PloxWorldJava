@@ -60,7 +60,10 @@ public class World {
 	}
 
 	public Planet getPlanetMax(Comparator<Planet> comparator) {
-		Planet planet = planets.stream().max(comparator).get();
-		return planet;
+		return planets.stream().max(comparator).get();
+	}
+
+	public Planet getPlanetMin(Comparator<Planet> comparator) {
+		return planets.stream().min(comparator).get();
 	}
 }

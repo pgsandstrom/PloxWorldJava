@@ -3,7 +3,7 @@ package se.persandstrom.ploxworld.ai;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
-import se.persandstrom.ploxworld.production.Production;
+import se.persandstrom.ploxworld.production.ProductionType;
 
 public class DecisionMaker {
 
@@ -11,14 +11,15 @@ public class DecisionMaker {
 
 		System.out.println("hej");
 
-		Planet planetMax = world.getPlanetMax((o1, o2) -> o1.getMostNeeded().getNeed() - o2.getMostNeeded().getNeed());
+		ProductionType productionType = ProductionType.getRandom();
+
+		Planet planetMax = world.getPlanetMin((o1, o2) ->
+				o1.getProduction(productionType).getBuyPrice() - o2.getProduction(productionType).getBuyPrice());
 
 		System.out.println(planetMax);
 
 		TravelDecision travelDecision = new TravelDecision(person, planetMax);
 		person.setDecision(travelDecision);
-		Production mostNeeded = planetMax.getMostNeeded();
-		mostNeeded.setNeed(mostNeeded.getNeed() - 3);
 
 		System.out.println(person.getName() + " travels to " + planetMax.getName());
 	}

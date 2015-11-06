@@ -18,4 +18,9 @@ public class Commodity extends Production {
 	public ProductionType getProductionType() {
 		return ProductionType.COMMODITY;
 	}
+
+	@Override
+	public double getBasePrice() {
+		return 50;
+	}
 }

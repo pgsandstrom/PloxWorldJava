@@ -1,7 +1,17 @@
 package se.persandstrom.ploxworld.production;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import se.persandstrom.ploxworld.common.Rand;
+
 public enum ProductionType {
 	COMMODITY, CONSTRUCTION, CRYSTAL, MATERIAL, SCIENCE;
+
+	private static final List<ProductionType> VALUES =
+			Collections.unmodifiableList(Arrays.asList(values()));
+	private static final int SIZE = VALUES.size();
 
 	public static Production getProduction(ProductionType productionType) {
 		switch (productionType) {
@@ -18,6 +28,10 @@ public enum ProductionType {
 			default:
 				throw new AssertionError();
 		}
+	}
+
+	public static ProductionType getRandom() {
+		return VALUES.get(Rand.bound(SIZE));
 	}
 
 	@Override
