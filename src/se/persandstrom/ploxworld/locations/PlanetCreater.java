@@ -54,7 +54,7 @@ public class PlanetCreater {
 		int populationMax = Rand.bound(PLANET_MIN_POPULATION_CAP, PLANET_MAX_POPULATION_CAP);
 		double population = Rand.percentage() * (populationMax - 1) + 1;
 
-		int money = 500;
+		int money = 10000;
 
 		Commodity commodity = new Commodity();
 		initProduction(commodity, population);
@@ -94,7 +94,7 @@ public class PlanetCreater {
 	public void initProduction(Production production, double population) {
 		int multiplier;
 		if (production.isRawMaterial()) {
-			multiplier = Rand.bound(1, 4);
+			multiplier = Rand.bound(1, 6);	//should be less when we get material from other places
 		} else {
 			multiplier = Rand.bound(1, 6);
 		}

@@ -140,11 +140,11 @@ public class Planet {
 			int need = 1 + (bestProduction.getMultiplier() - commodity.getMultiplier());
 			int moreStorageWanted = (int) (population * 100 - commodity.getStorage());
 			if (moreStorageWanted > 0) {
-				commodity.setBuyPrice((int) (commodity.getBasePrice() * (1.2 + need * 0.1)));
-				commodity.setSellPrice((int) (commodity.getBuyPrice() * 1.5));
+				commodity.setBuyPrice((int) (commodity.getBasePrice() * (1.4 + need * 0.1)));
+				commodity.setSellPrice((int) (commodity.getBuyPrice() * 1.8));
 			} else {
 				commodity.setBuyPrice((int) (commodity.getBasePrice() * 0.5));
-				commodity.setSellPrice((int) (commodity.getBasePrice() * 1.5));
+				commodity.setSellPrice((int) (commodity.getBasePrice() * 1.7));
 			}
 		}
 
@@ -158,11 +158,11 @@ public class Planet {
 			int need = 1 + (bestProduction.getMultiplier() - crystal.getMultiplier());
 			int moreStorageWanted = (int) (population * 100 - crystal.getStorage());
 			if (moreStorageWanted > 0) {
-				crystal.setBuyPrice((int) (crystal.getBasePrice() * (1.2 + need * 0.1)));
-				crystal.setSellPrice((int) (crystal.getBuyPrice() * 1.5));
+				crystal.setBuyPrice((int) (crystal.getBasePrice() * (1.4 + need * 0.1)));
+				crystal.setSellPrice((int) (crystal.getBuyPrice() * 1.8));
 			} else {
 				crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.5));
-				crystal.setSellPrice((int) (crystal.getBasePrice() * 1.5));
+				crystal.setSellPrice((int) (crystal.getBasePrice() * 1.7));
 			}
 		} else {
 			crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.9));
@@ -184,11 +184,11 @@ public class Planet {
 			int need = 1 + (bestProduction.getMultiplier() - material.getMultiplier());
 			int moreStorageWanted = (int) (population * 100 - material.getStorage());
 			if (moreStorageWanted > 0) {
-				material.setBuyPrice((int) (material.getBasePrice() * (1.2 + need * 0.1)));
-				material.setSellPrice((int) (material.getBuyPrice() * 1.5));
+				material.setBuyPrice((int) (material.getBasePrice() * (1.4 + need * 0.1)));
+				material.setSellPrice((int) (material.getBuyPrice() * 1.8));
 			} else {
 				material.setBuyPrice((int) (material.getBasePrice() * 0.5));
-				material.setSellPrice((int) (material.getBasePrice() * 1.5));
+				material.setSellPrice((int) (material.getBasePrice() * 1.7));
 			}
 		} else {
 			material.setBuyPrice((int) (material.getBasePrice() * 0.9));
@@ -203,18 +203,42 @@ public class Planet {
 		// Construction
 		construction.setBuyPrice((int) (construction.getBasePrice() * 0.5));
 		construction.setSellPrice((int) (construction.getBasePrice() * 1.4));    //TODO: Ska bero på storage
-
 	}
 
 	public double getDistance(Point point) {
 		return Geo.getDistance(this.point, point);
 	}
 
-//	public Production getMostNeeded() {
-//		return productions.stream()
-//				.max((o1, o2) -> o1.getNeed() - o2.getNeed())
-//				.get();
-//	}
+	public List<Production> getProductionsCheapestFirst() {
+		productions.sort((o1, o2) -> {
+			double sellQuota1 = o1.getSellPrice() / o1.getBasePrice();
+			double sellQuota2 = o2.getSellPrice() / o2.getBasePrice();
+			return sellQuota1 - sellQuota2 > 0 ? 1 : -1;
+		});
+		return productions;
+	}
+
+	/**
+	 * @return amount planet payed
+	 */
+	public int sellTo(ProductionType productionType, int amount) {
+		Production production = getProduction(productionType);
+		production.addStorage(amount);
+		int money = production.getBuyPrice() * amount;
+		this.money -= money;
+		return money;
+	}
+
+	/**
+	 * @return amount person payed
+	 */
+	public int buyFrom(ProductionType productionType, int amount) {
+		Production production = getProduction(productionType);
+		production.addStorage(-amount);
+		int payed = production.getSellPrice() * amount;
+		money += payed;
+		return payed;
+	}
 
 	public Point getPoint() {
 		return point;
@@ -243,5 +267,9 @@ public class Planet {
 
 	public int getPopulation() {
 		return (int) population;
+	}
+
+	public int getMoney() {
+		return money;
 	}
 }

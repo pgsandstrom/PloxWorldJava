@@ -17,4 +17,15 @@ public class Point {
 		this.y = oldPoint.y + yDiff;
 	}
 
+	public Point(String stringPoint) {
+		String substring = stringPoint.substring(1, stringPoint.length() - 1);
+		String[] split = substring.split(",");
+		x = Integer.valueOf(split[0]);
+		y = Integer.valueOf(split[1]);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + x + "," + y + ")";
+	}
 }

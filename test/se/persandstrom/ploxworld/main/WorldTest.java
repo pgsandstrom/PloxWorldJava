@@ -16,4 +16,8 @@ public class WorldTest {
 		}
 	}
 
+	@Test
+	public void lol() {
+	}
+
 }

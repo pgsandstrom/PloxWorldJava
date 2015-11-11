@@ -91,4 +91,8 @@ public abstract class Production implements Comparable<Production> {
 		return this.multiplier - other.multiplier;
 	}
 
+	@Override
+	public String toString() {
+		return getProductionType().toString();
+	}
 }
