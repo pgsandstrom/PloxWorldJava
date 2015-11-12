@@ -69,6 +69,10 @@ public class DecisionMaker {
 		ship.addStorage(production.getProductionType(), buyAmount);
 		person.addMoney(-payAmount);
 
+		if(ship.getFreeStorage() < 0) {
+			System.out.println("fack");
+		}
+
 		System.out.println(person.getName() + " bought " + buyAmount + " " + production + " from " + planet.getName()
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
@@ -98,8 +102,12 @@ public class DecisionMaker {
 		}
 
 		int payAmount = planet.sellTo(production.getProductionType(), sellAmount);
-		person.getShip().addStorage(production.getProductionType(), sellAmount);
+		person.getShip().addStorage(production.getProductionType(), -sellAmount);
 		person.addMoney(payAmount);
+
+		if(ship.getFreeStorage() < 0) {
+			System.out.println("fack");
+		}
 
 		System.out.println(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
