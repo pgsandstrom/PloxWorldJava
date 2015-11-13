@@ -1,9 +1,6 @@
 package se.persandstrom.ploxworld.ai;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
@@ -12,9 +9,9 @@ import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.ship.Ship;
 
-public class DecisionMaker {
+public class TraderAi implements Ai {
 
-	public static void makeDecision(World world, Person person) {
+	public void makeDecision(World world, Person person) {
 
 		if (person.getPlanet() == null) {
 			return;
@@ -41,7 +38,7 @@ public class DecisionMaker {
 		System.out.println();
 	}
 
-	private static void tryToBuy(Person person) {
+	private void tryToBuy(Person person) {
 		Planet planet = person.getPlanet();
 
 		List<Production> productionsCheapestFirst = planet.getProductionsCheapestFirst();
@@ -52,7 +49,7 @@ public class DecisionMaker {
 				.forEach(production -> buyMax(person, planet, production));
 	}
 
-	private static void buyMax(Person person, Planet planet, Production production) {
+	private void buyMax(Person person, Planet planet, Production production) {
 		Ship ship = person.getShip();
 		int freeStorage = ship.getFreeStorage();
 		int afford = person.getMoney() / production.getSellPrice();
@@ -80,7 +77,7 @@ public class DecisionMaker {
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
-	private static void tryToSell(Person person) {
+	private void tryToSell(Person person) {
 		Planet planet = person.getPlanet();
 		for (ProductionType productionType : ProductionType.values()) {
 			Production production = planet.getProduction(productionType);
@@ -90,7 +87,7 @@ public class DecisionMaker {
 		}
 	}
 
-	private static void sellMax(Person person, Planet planet, Production production) {
+	private void sellMax(Person person, Planet planet, Production production) {
 		Ship ship = person.getShip();
 		int maxBuy = planet.getMoney() / production.getBuyPrice();
 		int maxSell = ship.getStorage(production.getProductionType());
@@ -116,7 +113,7 @@ public class DecisionMaker {
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
-	private static void travelToBuy(World world, Person person) {
+	private void travelToBuy(World world, Person person) {
 
 		ProductionType randomGoods = ProductionType.getRandomBaseProduct();
 
@@ -130,7 +127,7 @@ public class DecisionMaker {
 				+ " to buy " + randomGoods + " for " + planet.getProduction(randomGoods).getSellPrice());
 	}
 
-	private static void travelToSell(World world, Person person) {
+	private void travelToSell(World world, Person person) {
 		Ship ship = person.getShip();
 
 		ProductionType goods = ship.getLargestProductionStorage();

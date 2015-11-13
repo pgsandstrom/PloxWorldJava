@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.person;
 
+import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.TravelDecision;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.locations.Planet;
@@ -8,6 +9,8 @@ import se.persandstrom.ploxworld.ship.Ship;
 import com.google.gson.annotations.Expose;
 
 public class Person {
+
+	private final Ai ai;
 
 	@Expose private final String name;
 
@@ -20,7 +23,8 @@ public class Person {
 
 	private TravelDecision decision;
 
-	public Person(String name, Planet planet) {
+	public Person(Ai ai, String name, Planet planet) {
+		this.ai = ai;
 		this.name = name;
 		setPlanet(planet);
 	}
@@ -66,5 +70,9 @@ public class Person {
 
 	public String getName() {
 		return name;
+	}
+
+	public Ai getAi() {
+		return ai;
 	}
 }

@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.common;
 
+import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.production.Commodity;
@@ -25,10 +26,10 @@ public class TestUtil {
 	}
 
 	public static Person getPerson() {
-		return new Person("person name", getPlanet());
+		return new Person(new TraderAi(), "person name", getPlanet());
 	}
 
 	public static Person getPerson(Point point) {
-		return new Person("person name", getPlanet(point));
+		return new Person(new TraderAi(), "person name", getPlanet(point));
 	}
 }

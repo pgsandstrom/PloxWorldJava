@@ -6,20 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
 
 public class PersonCreater {
 
-	private static final int PLANET_MIN_DISTANCE = 50;
-	private static final int PLANET_BORDER_DISTANCE = 30;
-	private static final int PLANET_BORDER_DISTANCE_RIGHT = 60;
-
-	private static final int PLANET_MIN_POPULATION_CAP = 1;
-	private static final int PLANET_MAX_POPULATION_CAP = 25;
-
-	private final List<String> maleNames = new ArrayList<>(Arrays.asList("Jakob Lind", "Mikael Emilsson", "Per Sandström", "Jacob Rask", "Hoyt Tyrrell",
+	private final List<String> maleNames = new ArrayList<>(Arrays.asList("Jakob Lind", "Mikael Emilsson", "Per Sandstrï¿½m", "Jacob Rask", "Hoyt Tyrrell",
 			"Avery Koerner", "Maxwell Avison", "Britt Wakeman", "Porter Jackstadt", "Damien Severt", "Nolan Alers", "Harlan Ducote", "Thaddeus Sanghvi",
 			"Gavin Gulsvig", "Craige Lera", "Carly Jones", "Jery Rownez", "Richua Brobarn", "Phawne Breson", "Billie Mitchy", "Gary Flewill", "Roldy Rezal",
 			"Randy Theson", "Edwam Thallee", "Malcolm McCree", "Silas Lloyd", "Thaddeus Clark", "Gabriel Law", "Morris McNevin", "Nelson Clarke", "Harland Anderson",
@@ -52,7 +46,7 @@ public class PersonCreater {
 	private Person createPerson() {
 		String name = getRandomName();
 		Planet planet = Rand.getRandom(world.getPlanets());
-		return new Person(name, planet);
+		return new Person(new TraderAi(), name, planet);
 	}
 
 	private String getRandomName() {

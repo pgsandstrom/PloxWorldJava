@@ -1,13 +1,9 @@
 package se.persandstrom.ploxworld.main;
 
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import se.persandstrom.ploxworld.ai.DecisionMaker;
+import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
@@ -42,7 +38,7 @@ public class World {
 
 	public void progressTurn() {
 		for (Person person : persons) {
-			DecisionMaker.makeDecision(this, person);
+			person.getAi().makeDecision(this, person);
 		}
 		persons.forEach(Person::executeDecision);
 		planets.forEach(Planet::progressTurn);
