@@ -50,6 +50,7 @@ public class TravelDecision implements Decision {
 				yChange *= -1;
 			}
 			person.setPoint(new Point(from, (int) xChange, (int) yChange));
+			person.setPlanet(null);
 		}
 
 		// this crappy code the ugly special that I don't understand, and still don't work for vertical traveling

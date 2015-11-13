@@ -1,6 +1,9 @@
 package se.persandstrom.ploxworld.ai;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
@@ -61,16 +64,16 @@ public class DecisionMaker {
 			return;
 		}
 
-		if(buyAmount < 0) {
-			System.out.println("lol");
+		if (buyAmount < 0) {
+			throw new RuntimeException();
 		}
 
 		int payAmount = planet.buyFrom(production.getProductionType(), buyAmount);
 		ship.addStorage(production.getProductionType(), buyAmount);
 		person.addMoney(-payAmount);
 
-		if(ship.getFreeStorage() < 0) {
-			System.out.println("fack");
+		if (ship.getFreeStorage() < 0) {
+			throw new RuntimeException();
 		}
 
 		System.out.println(person.getName() + " bought " + buyAmount + " " + production + " from " + planet.getName()
@@ -97,16 +100,16 @@ public class DecisionMaker {
 			return;
 		}
 
-		if(sellAmount < 0) {
-			System.out.println("lol");
+		if (sellAmount < 0) {
+			throw new RuntimeException();
 		}
 
 		int payAmount = planet.sellTo(production.getProductionType(), sellAmount);
 		person.getShip().addStorage(production.getProductionType(), -sellAmount);
 		person.addMoney(payAmount);
 
-		if(ship.getFreeStorage() < 0) {
-			System.out.println("fack");
+		if (ship.getFreeStorage() < 0) {
+			throw new RuntimeException();
 		}
 
 		System.out.println(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
@@ -120,8 +123,6 @@ public class DecisionMaker {
 		Planet planet = world.getPlanetMin((o1, o2) ->
 				o1.getProduction(randomGoods).getSellPrice() - o2.getProduction(randomGoods).getSellPrice());
 
-		System.out.println(planet);
-
 		TravelDecision travelDecision = new TravelDecision(person, planet);
 		person.setDecision(travelDecision);
 
@@ -134,14 +135,20 @@ public class DecisionMaker {
 
 		ProductionType goods = ship.getLargestProductionStorage();
 
-		Planet planet = world.getPlanetMax((o1, o2) ->
-				o1.getProduction(goods).getBuyPrice() - o2.getProduction(goods).getBuyPrice());
+		Planet planet = world.getPlanets().stream()
+				.filter(p -> p.getMoney() > 500)
+				.max((o1, o2) -> o1.getProduction(goods).getBuyPrice() - o2.getProduction(goods).getBuyPrice())
+				.get();
 
 		TravelDecision travelDecision = new TravelDecision(person, planet);
 		person.setDecision(travelDecision);
 
+		if (person.getPlanet().equals(planet)) {
+			throw new RuntimeException();
+		}
+
 		System.out.println(person.getName() + " travels to " + planet.getName()
-				+ " to sell " + goods + " for " + planet.getProduction(goods).getSellPrice()+ " each");
+				+ " to sell " + goods + " for " + planet.getProduction(goods).getSellPrice() + " each");
 	}
 
 }
