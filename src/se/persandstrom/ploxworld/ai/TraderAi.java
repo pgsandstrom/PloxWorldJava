@@ -1,5 +1,7 @@
 package se.persandstrom.ploxworld.ai;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import se.persandstrom.ploxworld.locations.Planet;
@@ -159,7 +161,10 @@ public class TraderAi implements Ai {
 
 		ProductionType goods = ship.getLargestProductionStorage();
 
-		Planet planet = world.getPlanets().stream()
+		ArrayList<Planet> planets = new ArrayList<>(world.getPlanets());
+		Collections.shuffle(planets);
+
+		Planet planet = planets.stream()
 				.filter(p -> p.getMoney() > 500)
 				.max((o1, o2) -> o1.getProduction(goods).getBuyPrice() - o2.getProduction(goods).getBuyPrice())
 				.get();

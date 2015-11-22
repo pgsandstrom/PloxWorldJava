@@ -1,6 +1,11 @@
 package se.persandstrom.ploxworld.main;
 
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
@@ -58,11 +63,13 @@ public class World {
 	}
 
 	public Planet getCheapestSellingPlanet(ProductionType productionType) {
+		//TODO: Maybe make these return a list of all that are equally good?
 		return planets.stream().min((o1, o2) ->
 				o1.getProduction(productionType).getSellPrice() - o2.getProduction(productionType).getSellPrice()).get();
 	}
 
 	public Planet getMostPayingPlanet(ProductionType productionType) {
+		//TODO: Maybe make these return a list of all that are equally good?
 		return planets.stream().max((o1, o2) ->
 				o1.getProduction(productionType).getBuyPrice() - o2.getProduction(productionType).getBuyPrice()).get();
 	}
