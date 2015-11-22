@@ -2,7 +2,6 @@ package se.persandstrom.ploxworld.locations;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import se.persandstrom.ploxworld.common.Geo;
