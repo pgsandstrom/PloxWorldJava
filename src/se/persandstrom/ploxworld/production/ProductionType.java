@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.production;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,14 @@ public enum ProductionType {
 			randomGoods = ProductionType.getRandom();
 		} while (randomGoods == ProductionType.CONSTRUCTION || randomGoods == ProductionType.SCIENCE);
 		return randomGoods;
+	}
+
+	public static List<ProductionType> getBaseProductRandomOrder() {
+		List<ProductionType> result = new ArrayList<>();
+		result.add(ProductionType.COMMODITY);
+		result.add(Rand.bound(2), ProductionType.MATERIAL);
+		result.add(Rand.bound(3), ProductionType.CRYSTAL);
+		return result;
 	}
 
 	public static ProductionType getRandom() {

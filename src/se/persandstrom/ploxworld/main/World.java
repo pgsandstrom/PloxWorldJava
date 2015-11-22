@@ -1,15 +1,14 @@
 package se.persandstrom.ploxworld.main;
 
-import java.util.Comparator;
 import java.util.Set;
 
-import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.locations.PlanetCreater;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.person.PersonCreater;
+import se.persandstrom.ploxworld.production.ProductionType;
 
 import com.google.gson.annotations.Expose;
 
@@ -58,11 +57,13 @@ public class World {
 		return planets;
 	}
 
-	public Planet getPlanetMax(Comparator<Planet> comparator) {
-		return planets.stream().max(comparator).get();
+	public Planet getCheapestSellingPlanet(ProductionType productionType) {
+		return planets.stream().min((o1, o2) ->
+				o1.getProduction(productionType).getSellPrice() - o2.getProduction(productionType).getSellPrice()).get();
 	}
 
-	public Planet getPlanetMin(Comparator<Planet> comparator) {
-		return planets.stream().min(comparator).get();
+	public Planet getMostPayingPlanet(ProductionType productionType) {
+		return planets.stream().max((o1, o2) ->
+				o1.getProduction(productionType).getBuyPrice() - o2.getProduction(productionType).getBuyPrice()).get();
 	}
 }

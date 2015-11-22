@@ -13,9 +13,17 @@ public class Rand {
 	}
 
 	public static void reset() {
-		long seed = 1448199126242L;
+		long seed = System.currentTimeMillis();
 		System.out.println("r seed: " + seed);
 		r = new Random(seed);
+	}
+
+	public static void setSeed(long seed) {
+		r = new Random(seed);
+	}
+
+	public static int bound() {
+		return r.nextInt();
 	}
 
 	public static int bound(int max) {

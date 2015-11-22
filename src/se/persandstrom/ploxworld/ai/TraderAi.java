@@ -9,6 +9,8 @@ import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.ship.Ship;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 public class TraderAi implements Ai {
 
 	private static final double BASE_PRICE_QUOTA_TO_BUY_AT = 0.95;
@@ -27,16 +29,25 @@ public class TraderAi implements Ai {
 		tryToSell(person);
 		tryToBuy(person);
 
-		double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
-		if (percentageFree > 0.5 && person.getMoney() > 500) {
-			travelToBuy(world, person);
-		} else if (percentageFree == 1.0 && person.getMoney() < 200) {
-			System.out.println("no monies");
-		} else if (percentageFree == 1.0) {
-			travelToBuy(world, person);
-		} else {
-			travelToSell(world, person);
-		}
+		ConditionsChangedException e;
+		do {
+			e = null;
+
+			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
+			if (percentageFree > 0.5 && person.getMoney() > 500) {
+				travelToBuy(world, person);
+			} else if (percentageFree == 1.0 && person.getMoney() < 200) {
+				System.out.println("no monies");
+			} else if (percentageFree == 1.0) {
+				travelToBuy(world, person);
+			} else {
+				try {
+					travelToSell(world, person);
+				} catch (ConditionsChangedException e1) {
+					e = e1;
+				}
+			}
+		} while (e != null);
 
 		System.out.println();
 	}
@@ -85,12 +96,13 @@ public class TraderAi implements Ai {
 		for (ProductionType productionType : ProductionType.values()) {
 			Production production = planet.getProduction(productionType);
 			if (production.getBuyPrice() / production.getBasePrice() > BASE_PRICE_QUOTA_TO_SELL_AT) {
-				sellMax(person, planet, production);
+				sellMax(person, planet, productionType);
 			}
 		}
 	}
 
-	private void sellMax(Person person, Planet planet, Production production) {
+	private void sellMax(Person person, Planet planet, ProductionType productionType) {
+		Production production = planet.getProduction(productionType);
 		Ship ship = person.getShip();
 		int maxBuy = planet.getMoney() / production.getBuyPrice();
 		int maxSell = ship.getStorage(production.getProductionType());
@@ -118,19 +130,31 @@ public class TraderAi implements Ai {
 
 	private void travelToBuy(World world, Person person) {
 
-		ProductionType randomGoods = ProductionType.getRandomBaseProduct();
+		ProductionType viableGoods = null;
+		Planet cheapestSellingPlanet = null;
 
-		Planet planet = world.getPlanetMin((o1, o2) ->
-				o1.getProduction(randomGoods).getSellPrice() - o2.getProduction(randomGoods).getSellPrice());
+		for (ProductionType randomGoods : ProductionType.getBaseProductRandomOrder()) {
 
-		TravelDecision travelDecision = new TravelDecision(person, planet);
+			cheapestSellingPlanet = world.getCheapestSellingPlanet(randomGoods);
+			Planet mostPayingPlanet = world.getMostPayingPlanet(randomGoods);
+
+			int minBuyPrice = cheapestSellingPlanet.getProduction(randomGoods).getSellPrice();
+			int maxSellPrice = mostPayingPlanet.getProduction(randomGoods).getBuyPrice();
+
+			if(maxSellPrice - minBuyPrice > 0) {
+				viableGoods = randomGoods;
+				break;
+			}
+		}
+
+		TravelDecision travelDecision = new TravelDecision(person, cheapestSellingPlanet);
 		person.setDecision(travelDecision);
 
-		System.out.println(person.getName() + " travels to " + planet.getName()
-				+ " to buy " + randomGoods + " for " + planet.getProduction(randomGoods).getSellPrice());
+		System.out.println(person.getName() + " travels to " + cheapestSellingPlanet.getName()
+				+ " to buy " + viableGoods + " for " + cheapestSellingPlanet.getProduction(viableGoods).getSellPrice());
 	}
 
-	private void travelToSell(World world, Person person) {
+	private void travelToSell(World world, Person person) throws ConditionsChangedException {
 		Ship ship = person.getShip();
 
 		ProductionType goods = ship.getLargestProductionStorage();
@@ -144,11 +168,16 @@ public class TraderAi implements Ai {
 		person.setDecision(travelDecision);
 
 		if (person.getPlanet().equals(planet)) {
-			throw new RuntimeException("Tried to travel to current world");
+			System.out.println("selling on same planet...");
+			sellMax(person, planet, goods);    //Sell the crappy resource and try again
+			throw new ConditionsChangedException();
 		}
 
 		System.out.println(person.getName() + " travels to " + planet.getName()
 				+ " to sell " + goods + " for " + planet.getProduction(goods).getBuyPrice() + " each");
+	}
+
+	private class ConditionsChangedException extends Exception {
 	}
 
 }

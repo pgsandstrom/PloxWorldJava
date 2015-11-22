@@ -2,7 +2,7 @@ package se.persandstrom.ploxworld.production;
 
 import com.google.gson.annotations.Expose;
 
-public abstract class Production implements Comparable<Production> {
+public abstract class Production {
 
 	@Expose private int storage;
 	@Expose private int multiplier;
@@ -84,11 +84,6 @@ public abstract class Production implements Comparable<Production> {
 
 	public void setBuyPrice(int buyPrice) {
 		this.buyPrice = buyPrice;
-	}
-
-	@Override
-	public int compareTo(Production other) {
-		return this.multiplier - other.multiplier;
 	}
 
 	@Override

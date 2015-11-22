@@ -30,7 +30,7 @@ public class PlanetCreater {
 			"Orion"));
 
 	private final World world;
-	private Set<Planet> planets = new HashSet<Planet>();
+	private Set<Planet> planets = new HashSet<>();
 
 	public PlanetCreater(World world) {
 		this.world = world;

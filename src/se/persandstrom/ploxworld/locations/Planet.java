@@ -6,6 +6,7 @@ import java.util.List;
 
 import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
+import se.persandstrom.ploxworld.common.WeirdUtil;
 import se.persandstrom.ploxworld.production.Commodity;
 import se.persandstrom.ploxworld.production.Construction;
 import se.persandstrom.ploxworld.production.Crystal;
@@ -61,6 +62,8 @@ public class Planet {
 
 	public void progressTurn() {
 
+		money += population * 100;
+
 		population = population * POPULATION_GROWTH;
 		if (population > maxPopulation) {
 			population = maxPopulation;
@@ -92,16 +95,15 @@ public class Planet {
 	}
 
 	private void redistributePopulation() {
-		productions.forEach(production -> production.setWorkers(0));
-
-		Collections.sort(productions);    // Sort according to multiplier
+		List<Production> sortedProd = getProductionsSortedByMultiplier();
+		sortedProd.forEach(production -> production.setWorkers(0));
 
 		int freeWorkers = (int) population;
 
 		int indexOfProduction = 1;
 
 		// If we are not only producing commodity, produce enough to survive:
-		if (productions.get(productions.size() - indexOfProduction).getProductionType() != ProductionType.COMMODITY) {
+		if (sortedProd.get(sortedProd.size() - indexOfProduction).getProductionType() != ProductionType.COMMODITY) {
 			int remainingCommodity = commodity.getStorage() - getPopulation();
 			if (remainingCommodity < 0) {
 				commodity.addWorkers(-remainingCommodity);
@@ -110,7 +112,7 @@ public class Planet {
 		}
 
 		while (freeWorkers > 0) {
-			Production production = productions.get(productions.size() - indexOfProduction);
+			Production production = sortedProd.get(sortedProd.size() - indexOfProduction);
 			int productionMaxWorkers = getProductionMaxWorkers(production);
 			int productionWorkers = Math.min(freeWorkers, productionMaxWorkers);
 			production.addWorkers(productionWorkers);
@@ -131,12 +133,8 @@ public class Planet {
 
 	@SuppressWarnings("Duplicates")
 	private void calculateNeed() {
-		Collections.sort(productions);
-		Production bestProduction = productions.get(productions.size() - 1);
-
-		if(name.equals("Xero")) {
-			System.out.println("break");
-		}
+		List<Production> sortedProd = getProductionsSortedByMultiplier();
+		Production bestProduction = sortedProd.get(sortedProd.size() - 1);
 
 		// If we need commodity
 		if (bestProduction.getProductionType() != ProductionType.COMMODITY) {
@@ -194,6 +192,21 @@ public class Planet {
 		construction.setBuyPrice((int) (construction.getBasePrice() * 0.9));
 		double constructionSellQuota = getQuota(construction.getStorage(), 1.1, 1.3, 0, 1000);
 		construction.setSellPrice((int) (construction.getBasePrice() * constructionSellQuota));
+	}
+
+	private List<Production> getProductionsSortedByMultiplier() {
+		Collections.sort(productions, (o1, o2) -> {
+			int diff = o1.getMultiplier() - o2.getMultiplier();
+			if (diff == 0) {
+				// TODO: Rewrite this sometimes... for realz. I need a determinstic way to sort those productions
+				// that differens between planets.
+				return WeirdUtil.stringToRandomDeterministicInt(name + o1.getProductionType()) -
+						WeirdUtil.stringToRandomDeterministicInt(name + o1.getProductionType());
+			} else {
+				return diff;
+			}
+		});    // Sort according to multiplier
+		return productions;
 	}
 
 	double getQuota(double storage, double lowestQuota, double highestQuota, double lowerStorageLimit, double higherStorageLimit) {
