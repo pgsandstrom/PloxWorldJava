@@ -7,6 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.Files;
 
+import se.persandstrom.ploxworld.common.Rand;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.Headers;
@@ -74,6 +76,7 @@ public class Main {
 				//TODO: Make some mechanism so the server can hold many worlds for different games :-)
 				String response;
 				if ("/backend".equals(path)) {
+					Rand.reset();
 					world = new World();
 					world.progressTurn();
 				} else if ("/backend/progressTurn".equals(path)) {

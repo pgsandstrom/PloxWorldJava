@@ -3,14 +3,17 @@ package se.persandstrom.ploxworld.common;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class Rand {
 
-	private static final Random r;
+	private static Random r;
 
 	static {
-		long seed = System.currentTimeMillis();
+		reset();
+	}
+
+	public static void reset() {
+		long seed = 1448199126242L;
 		System.out.println("r seed: " + seed);
 		r = new Random(seed);
 	}

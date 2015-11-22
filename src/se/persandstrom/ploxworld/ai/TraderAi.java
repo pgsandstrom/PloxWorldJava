@@ -11,6 +11,9 @@ import se.persandstrom.ploxworld.ship.Ship;
 
 public class TraderAi implements Ai {
 
+	private static final double BASE_PRICE_QUOTA_TO_BUY_AT = 0.95;
+	private static final double BASE_PRICE_QUOTA_TO_SELL_AT = 1.2;
+
 	public void makeDecision(World world, Person person) {
 
 		if (person.getPlanet() == null) {
@@ -45,7 +48,7 @@ public class TraderAi implements Ai {
 
 		// 1.4 is very much, but right now pricing is weird...
 		productionsCheapestFirst.stream()
-				.filter(production -> production.getSellPrice() / production.getBasePrice() < 1.4)
+				.filter(production -> production.getSellPrice() / production.getBasePrice() < BASE_PRICE_QUOTA_TO_BUY_AT)
 				.forEach(production -> buyMax(person, planet, production));
 	}
 
@@ -74,14 +77,14 @@ public class TraderAi implements Ai {
 		}
 
 		System.out.println(person.getName() + " bought " + buyAmount + " " + production + " from " + planet.getName()
-				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
+				+ " for " + production.getSellPrice() + " each. In total:  " + payAmount);
 	}
 
 	private void tryToSell(Person person) {
 		Planet planet = person.getPlanet();
 		for (ProductionType productionType : ProductionType.values()) {
 			Production production = planet.getProduction(productionType);
-			if (production.getBuyPrice() / production.getBasePrice() > 1.5) {
+			if (production.getBuyPrice() / production.getBasePrice() > BASE_PRICE_QUOTA_TO_SELL_AT) {
 				sellMax(person, planet, production);
 			}
 		}
@@ -141,11 +144,11 @@ public class TraderAi implements Ai {
 		person.setDecision(travelDecision);
 
 		if (person.getPlanet().equals(planet)) {
-			throw new RuntimeException();
+			throw new RuntimeException("Tried to travel to current world");
 		}
 
 		System.out.println(person.getName() + " travels to " + planet.getName()
-				+ " to sell " + goods + " for " + planet.getProduction(goods).getSellPrice() + " each");
+				+ " to sell " + goods + " for " + planet.getProduction(goods).getBuyPrice() + " each");
 	}
 
 }

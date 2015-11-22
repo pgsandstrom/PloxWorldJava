@@ -134,74 +134,78 @@ public class Planet {
 		Collections.sort(productions);
 		Production bestProduction = productions.get(productions.size() - 1);
 
-		// Commodity
-		if (bestProduction.getProductionType() != ProductionType.COMMODITY) {
-			int need = 1 + (bestProduction.getMultiplier() - commodity.getMultiplier());
-			int moreStorageWanted = (int) (population * 100 - commodity.getStorage());
-			if (moreStorageWanted > 0) {
-				commodity.setBuyPrice((int) (commodity.getBasePrice() * (1.4 + need * 0.1)));
-				commodity.setSellPrice((int) (commodity.getBuyPrice() * 1.8));
-			} else {
-				commodity.setBuyPrice((int) (commodity.getBasePrice() * 0.5));
-				commodity.setSellPrice((int) (commodity.getBasePrice() * 1.7));
-			}
+		if(name.equals("Xero")) {
+			System.out.println("break");
 		}
 
-		if (bestProduction.getProductionType() == ProductionType.COMMODITY) {
-			commodity.setBuyPrice((int) (commodity.getBasePrice() * 0.3));
-			commodity.setSellPrice((int) (commodity.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+		// If we need commodity
+		if (bestProduction.getProductionType() != ProductionType.COMMODITY) {
+//			int need = 1 + (bestProduction.getMultiplier() - commodity.getMultiplier());	//TODO: Care about need again
+			double buyQuota = getQuota(commodity.getStorage(), 1.1, 2.0, population * 5, population * 50);
+			commodity.setBuyPrice((int) (commodity.getBasePrice() * buyQuota));
+			commodity.setSellPrice((int) (commodity.getBasePrice() * 2.1));
+		} else {    // If we produce commodity
+			commodity.setBuyPrice((int) (commodity.getBasePrice() * 0.5));
+			double sellQuota = getQuota(commodity.getStorage(), 0.5, 0.9, 0, 1000);
+			commodity.setSellPrice((int) (commodity.getBasePrice() * sellQuota));
 		}
 
 		// Crystal
 		if (bestProduction.getProductionType() == ProductionType.SCIENCE) {
-			int need = 1 + (bestProduction.getMultiplier() - crystal.getMultiplier());
-			int moreStorageWanted = (int) (population * 100 - crystal.getStorage());
-			if (moreStorageWanted > 0) {
-				crystal.setBuyPrice((int) (crystal.getBasePrice() * (1.4 + need * 0.1)));
-				crystal.setSellPrice((int) (crystal.getBuyPrice() * 1.8));
-			} else {
-				crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.5));
-				crystal.setSellPrice((int) (crystal.getBasePrice() * 1.7));
-			}
+//			int need = 1 + (bestProduction.getMultiplier() - crystal.getMultiplier());	//TODO: Care about need again
+			double buyQuota = getQuota(crystal.getStorage(), 1.1, 2.0, population * 5, population * 50);
+			crystal.setBuyPrice((int) (crystal.getBasePrice() * buyQuota));
+			crystal.setSellPrice((int) (crystal.getBasePrice() * 2.1));
 		} else {
 			crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.9));
 			crystal.setSellPrice((int) (crystal.getBasePrice() * 1.1));
 		}
 
 		if (bestProduction.getProductionType() == ProductionType.CRYSTAL) {
-			crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.5));
-			crystal.setSellPrice((int) (crystal.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+			crystal.setBuyPrice((int) (crystal.getBasePrice() * 0.3));
+			double sellQuota = getQuota(crystal.getStorage(), 0.5, 0.9, 0, 1000);
+			crystal.setSellPrice((int) (crystal.getBasePrice() * sellQuota));
 		}
 
 		// Science
-		science.setBuyPrice((int) (science.getBasePrice() * 0.5));
-		science.setSellPrice((int) (science.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+		science.setBuyPrice((int) (science.getBasePrice() * 0.9));
+		double scienceSellQuota = getQuota(science.getStorage(), 1.1, 1.3, 0, 1000);
+		science.setSellPrice((int) (science.getBasePrice() * scienceSellQuota));
 
 
 		// Material
 		if (bestProduction.getProductionType() == ProductionType.CONSTRUCTION) {
-			int need = 1 + (bestProduction.getMultiplier() - material.getMultiplier());
-			int moreStorageWanted = (int) (population * 100 - material.getStorage());
-			if (moreStorageWanted > 0) {
-				material.setBuyPrice((int) (material.getBasePrice() * (1.4 + need * 0.1)));
-				material.setSellPrice((int) (material.getBuyPrice() * 1.8));
-			} else {
-				material.setBuyPrice((int) (material.getBasePrice() * 0.5));
-				material.setSellPrice((int) (material.getBasePrice() * 1.7));
-			}
+//			int need = 1 + (bestProduction.getMultiplier() - material.getMultiplier());	//TODO: Care about need again
+			double buyQuota = getQuota(material.getStorage(), 1.1, 2.0, population * 5, population * 50);
+			material.setBuyPrice((int) (material.getBasePrice() * buyQuota));
+			material.setSellPrice((int) (material.getBasePrice() * 2.1));
 		} else {
 			material.setBuyPrice((int) (material.getBasePrice() * 0.9));
 			material.setSellPrice((int) (material.getBasePrice() * 1.1));
 		}
 
 		if (bestProduction.getProductionType() == ProductionType.MATERIAL) {
-			material.setBuyPrice((int) (material.getBasePrice() * 0.5));
-			material.setSellPrice((int) (material.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+			material.setBuyPrice((int) (material.getBasePrice() * 0.3));
+			double sellQuota = getQuota(material.getStorage(), 0.5, 0.9, 0, 1000);
+			material.setSellPrice((int) (material.getBasePrice() * sellQuota));
 		}
 
 		// Construction
-		construction.setBuyPrice((int) (construction.getBasePrice() * 0.5));
-		construction.setSellPrice((int) (construction.getBasePrice() * 1.4));    //TODO: Ska bero på storage
+		construction.setBuyPrice((int) (construction.getBasePrice() * 0.9));
+		double constructionSellQuota = getQuota(construction.getStorage(), 1.1, 1.3, 0, 1000);
+		construction.setSellPrice((int) (construction.getBasePrice() * constructionSellQuota));
+	}
+
+	double getQuota(double storage, double lowestQuota, double highestQuota, double lowerStorageLimit, double higherStorageLimit) {
+		if (storage < lowerStorageLimit) {
+			return highestQuota;
+		} else if (storage > higherStorageLimit) {
+			return lowestQuota;
+		} else {
+			double wayBetweenLimitsPercentage = (storage - lowerStorageLimit) / (higherStorageLimit - lowerStorageLimit);
+			double quotaRange = highestQuota - lowestQuota;
+			return highestQuota - quotaRange * (wayBetweenLimitsPercentage);
+		}
 	}
 
 	public double getDistance(Point point) {
