@@ -78,12 +78,15 @@ public class PlanetCreater {
 	}
 
 	private boolean validPlanetPosition(Point point) {
-		for (Planet planet : planets) {
-			if (planet.getDistance(point) < PLANET_MIN_DISTANCE) {
+		List<Location> locations = new ArrayList<>();
+		locations.addAll(planets);
+		locations.addAll(world.getAsteroids());
+		for (Location location : locations) {
+			if (location.getDistance(point) < PLANET_MIN_DISTANCE) {
 				return false;
 			}
-			// To make sure planets don't cover the planet names on the map:
-			if (Math.abs(planet.getPoint().y - point.y) < 35 && Math.abs(planet.getPoint().x - point.x) < 100) {
+			// To make sure locations don't cover the planet names on the map:
+			if (Math.abs(location.getPoint().y - point.y) < 35 && Math.abs(location.getPoint().x - point.x) < 100) {
 				return false;
 			}
 

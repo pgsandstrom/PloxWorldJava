@@ -17,12 +17,9 @@ import se.persandstrom.ploxworld.production.Science;
 
 import com.google.gson.annotations.Expose;
 
-public class Planet {
+public class Planet extends Location {
 
 	private static final double POPULATION_GROWTH = 1.005;
-
-	@Expose private final String name;
-	@Expose private final Point point;
 
 	@Expose private int maxPopulation;
 	@Expose private double population;
@@ -37,8 +34,7 @@ public class Planet {
 
 	public Planet(String name, Point point, int maxPopulation, double population, int money,
 			Commodity commodity, Material material, Construction construction, Crystal crystal, Science science) {
-		this.name = name;
-		this.point = point;
+		super(name,point);
 		this.maxPopulation = maxPopulation;
 		this.population = population;
 		this.money = money;
@@ -221,10 +217,6 @@ public class Planet {
 		}
 	}
 
-	public double getDistance(Point point) {
-		return Geo.getDistance(this.point, point);
-	}
-
 	public List<Production> getProductionsCheapestFirst() {
 		productions.sort((o1, o2) -> {
 			double sellQuota1 = o1.getSellPrice() / o1.getBasePrice();
@@ -256,10 +248,6 @@ public class Planet {
 		return payed;
 	}
 
-	public Point getPoint() {
-		return point;
-	}
-
 	public Production getProduction(ProductionType productionType) {
 		switch (productionType) {
 			case COMMODITY:
@@ -275,10 +263,6 @@ public class Planet {
 			default:
 				throw new AssertionError();
 		}
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public int getPopulation() {
