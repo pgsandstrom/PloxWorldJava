@@ -19,13 +19,14 @@ public class TravelDecision implements Decision {
 		Point from = person.getPoint();
 		Point to = toPlanet.getPoint();
 
-		double xDiff = to.x - from.x;
-		double yDiff = to.y - from.y;
+		//double xDiff = to.x - from.x;
+		//double yDiff = to.y - from.y;
 
 		double speed = 25;
 
 		double distance = toPlanet.getDistance(from);
-		if (distance < speed) {    // Arrived!
+		
+		/*if (distance < speed) {    // Arrived!
 			person.setPlanet(toPlanet);
 		} else if (yDiff == 0) {
 			if (xDiff < 0) {
@@ -51,33 +52,25 @@ public class TravelDecision implements Decision {
 			}
 			person.setPoint(new Point(from, (int) xChange, (int) yChange));
 			person.setPlanet(null);
+		}*/
+
+		// this crappy code is not crappy anymore! ;)
+
+		if (distance < speed) {    // Arrived!
+			person.setPlanet(toPlanet);
+		} else {
+			double deltaY = to.y-from.y;
+			double deltaX = to.x-from.x;
+			
+			double xChange = speed/distance * deltaX;
+			double yChange = speed/distance * deltaY;
+			
+			int xChangeRounded = (int) Math.round(xChange);
+			int yChangeRounded = (int) Math.round(yChange);
+
+			person.setPoint(new Point(from, xChangeRounded, yChangeRounded));
+			person.setPlanet(null);
 		}
-
-		// this crappy code the ugly special that I don't understand, and still don't work for vertical traveling
-
-//		Point from = person.getPoint();
-//		Point to = toPlanet.getPoint();
-//
-//		double speed = 25;
-//
-//		double distance = toPlanet.getDistance(from);
-//		if (distance < speed) {    // Arrived!
-//			person.setPlanet(toPlanet);
-//		} else {
-//			double angle = Math.atan((from.y - to.y) / (double) (from.x - to.x));
-//			double diffX = Math.cos(angle) * speed;
-//			double diffY = Math.sin(angle) * speed;
-//			if ((from.x - to.x) > 0 && (from.y - to.y) > 0) {
-//				diffX *= -1;
-//				diffY *= -1;
-//			}
-//			if ((from.x - to.x) > 0 && (from.y - to.y) < 0) {
-//				diffX *= -1;
-//				diffY *= -1;
-//			}
-//			person.setPoint(new Point(from, (int) diffX, (int) diffY));
-//			person.setPlanet(null);
-//		}
 	}
 
 	public double getDistance() {
