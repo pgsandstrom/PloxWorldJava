@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.MinerAi;
 import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Rand;
@@ -37,17 +38,21 @@ public class PersonCreater {
 		this.world = world;
 	}
 
-	public Set<Person> createPersons(int number) {
+	public Set<Person> createPersons(int number, Class<? extends Ai> clazz) {
 		while (number-- > 0) {
-			persons.add(createPerson());
+			persons.add(createPerson(clazz));
 		}
 		return persons;
 	}
 
-	private Person createPerson() {
-		String name = getRandomName();
-		Planet planet = Rand.getRandom(world.getPlanets());
-		return new Person(new MinerAi(), name, planet);
+	private Person createPerson(Class<? extends Ai> clazz) {
+		try {
+			String name = getRandomName();
+			Planet planet = Rand.getRandom(world.getPlanets());
+			return new Person(clazz.newInstance(), name, planet);
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private String getRandomName() {

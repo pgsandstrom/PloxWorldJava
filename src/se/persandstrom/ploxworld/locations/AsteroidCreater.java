@@ -42,7 +42,7 @@ public class AsteroidCreater {
 			position = world.getRandomPoint(ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE_RIGHT, ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE);
 		} while (!validAsteroidPosition(position));
 
-		double miningEfficiency = Rand.boundDouble(0.2, 3);
+		double miningEfficiency = Rand.boundDouble(0.3, 3);
 
 		return new Asteroid(name, position, miningEfficiency);
 	}

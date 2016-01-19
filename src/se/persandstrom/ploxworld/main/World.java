@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import se.persandstrom.ploxworld.ai.MinerAi;
+import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Asteroid;
@@ -38,7 +40,8 @@ public class World {
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
 		asteroids = asteroidCreater.createAsteroids(5);
 		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(25);
+		persons = characterCreater.createPersons(5, MinerAi.class);
+		persons.addAll(characterCreater.createPersons(5, TraderAi.class));
 
 		planets.forEach(Planet::prepareStuff);
 	}

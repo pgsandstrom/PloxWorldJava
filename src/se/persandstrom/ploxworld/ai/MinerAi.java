@@ -23,18 +23,14 @@ public class MinerAi implements Ai {
 
 
 		tryToSell(person);
-		//TODO: try to mine
+		tryToMine(person);
 
 		ConditionsChangedException e;
 		do {
 			e = null;
 
 			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
-			if (percentageFree > 0.5 && person.getMoney() > 500) {
-				travelToMine(world, person);
-			} else if (percentageFree == 1.0 && person.getMoney() < 200) {
-				System.out.println("no monies");
-			} else if (percentageFree == 1.0) {
+			if (percentageFree > 0.2) {
 				travelToMine(world, person);
 			} else {
 				try {
@@ -46,6 +42,14 @@ public class MinerAi implements Ai {
 		} while (e != null);
 
 		System.out.println();
+	}
+
+	private void tryToMine(Person person) {
+		Location location = person.getLocation();
+		if(location instanceof Asteroid) {
+			Asteroid asteroid = (Asteroid) location;
+			asteroid.mine(person);
+		}
 	}
 
 	private void tryToSell(Person person) {
