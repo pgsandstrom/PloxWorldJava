@@ -4,8 +4,10 @@
 	background: black;
 	position: relative;
 }
-
 .planet {
+	position: absolute;
+}
+.asteroid {
 	position: absolute;
 }
 .person {

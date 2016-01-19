@@ -34,6 +34,10 @@ public class Rand {
 		return r.nextInt(max - min) + min;
 	}
 
+	public static double boundDouble(double min, double max) {
+		return r.nextDouble() * (max - min) + min;
+	}
+
 	public static double percentage() {
 		return r.nextDouble();
 	}
@@ -52,7 +56,7 @@ public class Rand {
 
 	public static <T> T getRandom(Collection<T> collection) {
 		int index = (int) (Math.random() * collection.size());
-		for(T t: collection) {
+		for (T t : collection) {
 			if (--index < 0) {
 				return t;
 			}

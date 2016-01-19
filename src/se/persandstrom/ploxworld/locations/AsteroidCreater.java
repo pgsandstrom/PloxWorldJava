@@ -12,12 +12,12 @@ import se.persandstrom.ploxworld.main.World;
 
 public class AsteroidCreater {
 
-	private static final int PLANET_MIN_DISTANCE = 50;
-	private static final int PLANET_BORDER_DISTANCE = 30;
-	private static final int PLANET_BORDER_DISTANCE_RIGHT = 60;
+	private static final int ASTEROID_MIN_DISTANCE = 50;
+	private static final int ASTEROID_BORDER_DISTANCE = 30;
+	private static final int ASTEROID_BORDER_DISTANCE_RIGHT = 60;
 
 	//TODO: add more names
-	private final List<String> names = new ArrayList<>(Arrays.asList("X-92", "AB-14", "DD-1"));
+	private final List<String> names = new ArrayList<>(Arrays.asList("X-92", "AB-14", "DD-1", "XA-11", "AB-A", "KC-98", "MM-14", "LL-10"));
 
 	private final World world;
 	private Set<Asteroid> asteroids = new HashSet<>();
@@ -39,10 +39,10 @@ public class AsteroidCreater {
 
 		Point position;
 		do {
-			position = world.getRandomPoint(PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE_RIGHT, PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE);
+			position = world.getRandomPoint(ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE_RIGHT, ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE);
 		} while (!validAsteroidPosition(position));
 
-		double miningEfficiency = 2; //TODO
+		double miningEfficiency = Rand.boundDouble(0.2, 3);
 
 		return new Asteroid(name, position, miningEfficiency);
 	}
@@ -59,7 +59,7 @@ public class AsteroidCreater {
 		locations.addAll(asteroids);
 		locations.addAll(world.getPlanets());
 		for (Location location : locations) {
-			if (location.getDistance(point) < PLANET_MIN_DISTANCE) {
+			if (location.getDistance(point) < ASTEROID_MIN_DISTANCE) {
 				return false;
 			}
 			// To make sure locations don't cover the planet names on the map:

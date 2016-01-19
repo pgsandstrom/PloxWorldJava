@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import se.persandstrom.ploxworld.ai.MinerAi;
 import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
@@ -46,7 +47,7 @@ public class PersonCreater {
 	private Person createPerson() {
 		String name = getRandomName();
 		Planet planet = Rand.getRandom(world.getPlanets());
-		return new Person(new TraderAi(), name, planet);
+		return new Person(new MinerAi(), name, planet);
 	}
 
 	private String getRandomName() {

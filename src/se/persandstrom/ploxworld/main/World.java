@@ -1,11 +1,9 @@
 package se.persandstrom.ploxworld.main;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
@@ -38,7 +36,7 @@ public class World {
 		PlanetCreater planetCreater = new PlanetCreater(this);
 		planets = planetCreater.createPlanets(25);
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
-		asteroids = asteroidCreater.createAsteroids(3);
+		asteroids = asteroidCreater.createAsteroids(5);
 		PersonCreater characterCreater = new PersonCreater(this);
 		persons = characterCreater.createPersons(25);
 
@@ -64,14 +62,12 @@ public class World {
 	}
 
 	public Planet getCheapestSellingPlanet(ProductionType productionType) {
-		//TODO: Maybe make these return a list of all that are equally good?
-		return planets.stream().min((o1, o2) ->
+		return getPlanetsShuffled().stream().min((o1, o2) ->
 				o1.getProduction(productionType).getSellPrice() - o2.getProduction(productionType).getSellPrice()).get();
 	}
 
 	public Planet getMostPayingPlanet(ProductionType productionType) {
-		//TODO: Maybe make these return a list of all that are equally good?
-		return planets.stream().max((o1, o2) ->
+		return getPlanetsShuffled().stream().max((o1, o2) ->
 				o1.getProduction(productionType).getBuyPrice() - o2.getProduction(productionType).getBuyPrice()).get();
 	}
 
@@ -79,7 +75,19 @@ public class World {
 		return planets;
 	}
 
+	public List<Planet> getPlanetsShuffled() {
+		ArrayList<Planet> planetList = new ArrayList<>(this.planets);
+		Collections.shuffle(planetList);
+		return planetList;
+	}
+
 	public Set<Asteroid> getAsteroids() {
 		return asteroids;
+	}
+
+	public List<Asteroid> getAsteroidsShuffled() {
+		ArrayList<Asteroid> asteroidList = new ArrayList<>(this.asteroids);
+		Collections.shuffle(asteroidList);
+		return asteroidList;
 	}
 }

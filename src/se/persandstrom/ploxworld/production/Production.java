@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.production;
 
 import com.google.gson.annotations.Expose;
 
+//TODO: Förvirrande namn... kanske borde heta product?
 public abstract class Production {
 
 	@Expose private int storage;

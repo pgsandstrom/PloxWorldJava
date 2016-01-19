@@ -18,9 +18,9 @@ import se.persandstrom.ploxworld.production.Science;
 
 public class PlanetCreater {
 
-	private static final int PLANET_MIN_DISTANCE = 50;
-	private static final int PLANET_BORDER_DISTANCE = 30;
-	private static final int PLANET_BORDER_DISTANCE_RIGHT = 60;
+	public static final int PLANET_MIN_DISTANCE = 50;
+	public static final int PLANET_BORDER_DISTANCE = 30;
+	public static final int PLANET_BORDER_DISTANCE_RIGHT = 60;
 
 	private static final int PLANET_MIN_POPULATION_CAP = 1;
 	private static final int PLANET_MAX_POPULATION_CAP = 25;
@@ -80,7 +80,9 @@ public class PlanetCreater {
 	private boolean validPlanetPosition(Point point) {
 		List<Location> locations = new ArrayList<>();
 		locations.addAll(planets);
-		locations.addAll(world.getAsteroids());
+		if(world.getAsteroids() != null) {
+			locations.addAll(world.getAsteroids());
+		}
 		for (Location location : locations) {
 			if (location.getDistance(point) < PLANET_MIN_DISTANCE) {
 				return false;

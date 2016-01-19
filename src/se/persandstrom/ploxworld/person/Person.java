@@ -3,7 +3,7 @@ package se.persandstrom.ploxworld.person;
 import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.TravelDecision;
 import se.persandstrom.ploxworld.common.Point;
-import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.ship.Ship;
 
 import com.google.gson.annotations.Expose;
@@ -15,7 +15,7 @@ public class Person {
 	@Expose private final String name;
 
 	@Expose private Point point;
-	@Expose private Planet planet;
+	@Expose private Location location;
 
 	@Expose private int money = 1000;
 
@@ -23,10 +23,10 @@ public class Person {
 
 	private TravelDecision decision;
 
-	public Person(Ai ai, String name, Planet planet) {
+	public Person(Ai ai, String name, Location location) {
 		this.ai = ai;
 		this.name = name;
-		setPlanet(planet);
+		setLocation(location);
 	}
 
 	public void executeDecision() {
@@ -49,14 +49,14 @@ public class Person {
 		this.point = point;
 	}
 
-	public Planet getPlanet() {
-		return planet;
+	public Location getLocation() {
+		return location;
 	}
 
-	public void setPlanet(Planet planet) {
-		this.planet = planet;
-		if (planet != null) {
-			this.point = planet.getPoint();
+	public void setLocation(Location location) {
+		this.location = location;
+		if (location != null) {
+			this.point = location.getPoint();
 		}
 	}
 

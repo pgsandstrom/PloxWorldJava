@@ -14,3 +14,4 @@ var MessageSystem = {
 };
 
 MessageSystem.selectPlanet = "SelectPlanet";
+MessageSystem.selectAsteroid = "SelectAsteroid";

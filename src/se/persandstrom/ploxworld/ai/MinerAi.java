@@ -1,7 +1,7 @@
 package se.persandstrom.ploxworld.ai;
 
-import java.util.List;
-
+import se.persandstrom.ploxworld.common.Rand;
+import se.persandstrom.ploxworld.locations.Asteroid;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
@@ -10,10 +10,7 @@ import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.ship.Ship;
 
-public class TraderAi implements Ai {
-
-	public static final double BASE_PRICE_QUOTA_TO_BUY_AT = 0.95;
-	public static final double BASE_PRICE_QUOTA_TO_SELL_AT = 1.2;
+public class MinerAi implements Ai {
 
 	public void makeDecision(World world, Person person) {
 
@@ -26,7 +23,7 @@ public class TraderAi implements Ai {
 
 
 		tryToSell(person);
-		tryToBuy(person);
+		//TODO: try to mine
 
 		ConditionsChangedException e;
 		do {
@@ -34,11 +31,11 @@ public class TraderAi implements Ai {
 
 			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
 			if (percentageFree > 0.5 && person.getMoney() > 500) {
-				travelToBuy(world, person);
+				travelToMine(world, person);
 			} else if (percentageFree == 1.0 && person.getMoney() < 200) {
 				System.out.println("no monies");
 			} else if (percentageFree == 1.0) {
-				travelToBuy(world, person);
+				travelToMine(world, person);
 			} else {
 				try {
 					travelToSell(world, person);
@@ -51,48 +48,6 @@ public class TraderAi implements Ai {
 		System.out.println();
 	}
 
-	private void tryToBuy(Person person) {
-		Location location = person.getLocation();
-		if (location instanceof Planet) {
-			//TODO: Flytta logik från planet till location så vi slipper fula instanceof
-			Planet planet = (Planet) location;
-
-			List<Production> productionsCheapestFirst = planet.getProductionsCheapestFirst();
-
-			productionsCheapestFirst.stream()
-					.filter(production -> production.getSellPrice() / production.getBasePrice() < BASE_PRICE_QUOTA_TO_BUY_AT)
-					.forEach(production -> buyMax(person, planet, production));
-		}
-	}
-
-	private void buyMax(Person person, Planet planet, Production production) {
-		Ship ship = person.getShip();
-		int freeStorage = ship.getFreeStorage();
-		int afford = person.getMoney() / production.getSellPrice();
-		int maxBuy = Math.min(freeStorage, afford);
-		int maxSell = production.getStorage();
-		int buyAmount = Math.min(maxBuy, maxSell);
-
-		if (buyAmount == 0) {
-			return;
-		}
-
-		if (buyAmount < 0) {
-			throw new RuntimeException();
-		}
-
-		int payAmount = planet.buyFrom(production.getProductionType(), buyAmount);
-		ship.addStorage(production.getProductionType(), buyAmount);
-		person.addMoney(-payAmount);
-
-		if (ship.getFreeStorage() < 0) {
-			throw new RuntimeException();
-		}
-
-		System.out.println(person.getName() + " bought " + buyAmount + " " + production + " from " + planet.getName()
-				+ " for " + production.getSellPrice() + " each. In total:  " + payAmount);
-	}
-
 	private void tryToSell(Person person) {
 		Location location = person.getLocation();
 		if (location instanceof Planet) {
@@ -100,7 +55,7 @@ public class TraderAi implements Ai {
 			Planet planet = (Planet) location;
 			for (ProductionType productionType : ProductionType.values()) {
 				Production production = planet.getProduction(productionType);
-				if (production.getBuyPrice() / production.getBasePrice() > BASE_PRICE_QUOTA_TO_SELL_AT) {
+				if (production.getBuyPrice() / production.getBasePrice() > TraderAi.BASE_PRICE_QUOTA_TO_SELL_AT) {
 					sellMax(person, planet, productionType);
 				}
 			}
@@ -134,30 +89,24 @@ public class TraderAi implements Ai {
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
-	private void travelToBuy(World world, Person person) {
-
-		ProductionType viableGoods = null;
-		Planet cheapestSellingPlanet = null;
-
-		for (ProductionType randomGoods : ProductionType.getBaseProductRandomOrder()) {
-
-			cheapestSellingPlanet = world.getCheapestSellingPlanet(randomGoods);
-			Planet mostPayingPlanet = world.getMostPayingPlanet(randomGoods);
-
-			int minBuyPrice = cheapestSellingPlanet.getProduction(randomGoods).getSellPrice();
-			int maxSellPrice = mostPayingPlanet.getProduction(randomGoods).getBuyPrice();
-
-			if (maxSellPrice - minBuyPrice > 0) {
-				viableGoods = randomGoods;
-				break;
-			}
+	private void travelToMine(World world, Person person) {
+		Asteroid asteroid;
+		if (Rand.bool()) {    // most efficient
+			asteroid = world.getAsteroidsShuffled().stream()
+					.max((o1, o2) -> Double.compare(o1.getMiningEfficiency(), o2.getMiningEfficiency()))
+					.get();
+			System.out.println(person.getName() + " travels to most efficient asteroid " + asteroid.getName()
+					+ " to mine at an efficiancy of " + asteroid.getMiningEfficiency());
+		} else {    // closest
+			asteroid = world.getAsteroidsShuffled().stream()
+					.min((o1, o2) -> Double.compare(o1.getDistance(person.getPoint()), o2.getDistance(person.getPoint())))
+					.get();
+			System.out.println(person.getName() + " travels to closest asteroid " + asteroid.getName()
+					+ " to mine at an efficiancy of " + asteroid.getMiningEfficiency());
 		}
 
-		TravelDecision travelDecision = new TravelDecision(person, cheapestSellingPlanet);
+		TravelDecision travelDecision = new TravelDecision(person, asteroid);
 		person.setDecision(travelDecision);
-
-		System.out.println(person.getName() + " travels to " + cheapestSellingPlanet.getName()
-				+ " to buy " + viableGoods + " for " + cheapestSellingPlanet.getProduction(viableGoods).getSellPrice());
 	}
 
 	private void travelToSell(World world, Person person) throws ConditionsChangedException {

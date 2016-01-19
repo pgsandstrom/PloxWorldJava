@@ -12,8 +12,14 @@ ploxworld.Board = React.createClass({
 			<div className="board" style={style}>
 				{this.props.data.planets.map(function (planet) {
 					return (
-						<Planet key={planet.name} data={planet}>
-						</Planet>
+							<Planet key={planet.name} data={planet}>
+							</Planet>
+					);
+				})}
+				{this.props.data.asteroids.map(function (asteroid) {
+					return (
+							<Asteroid key={asteroid.name} data={asteroid}>
+							</Asteroid>
 					);
 				})}
 				{this.props.data.persons.map(function (person) {
@@ -27,6 +33,7 @@ ploxworld.Board = React.createClass({
 		);
 	}
 });
+
 var Planet = React.createClass({
 	showPlanet: function () {
 		MessageSystem.dispatch(MessageSystem.selectPlanet, this.props.data.name);
@@ -38,12 +45,33 @@ var Planet = React.createClass({
 		};
 
 		return (
-			<div className="planet" style={style} onClick={this.showPlanet}>
-				<img src="img/planet.png"/>
+				<div className="planet" style={style} onClick={this.showPlanet}>
+					<img src="img/planet.png"/>
 				<span>
 					{this.props.data.name}
 				</span>
-			</div>
+				</div>
+		);
+	}
+});
+
+var Asteroid = React.createClass({
+	showAsteroid: function () {
+		MessageSystem.dispatch(MessageSystem.selectAsteroid, this.props.data.name);
+	},
+	render: function () {
+		var style = {
+			'left': (this.props.data.point.x - 15) + 'px',
+			'top': (this.props.data.point.y - 15) + 'px'
+		};
+
+		return (
+				<div className="asteroid" style={style} onClick={this.showAsteroid}>
+					<img src="img/asteroid.png"/>
+				<span>
+					{this.props.data.name}
+				</span>
+				</div>
 		);
 	}
 });

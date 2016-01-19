@@ -4,10 +4,9 @@ import org.junit.Test;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.TestUtil;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.person.Person;
-
-import static org.junit.Assert.*;
 
 public class TravelDecisionTest {
 
@@ -143,7 +142,7 @@ public class TravelDecisionTest {
 
 	private void testTravel(Person person, Planet toPlanet) {
 
-		Planet fromPlanet = person.getPlanet();
+		Location fromLocation = person.getLocation();
 		TravelDecision travelDecision = new TravelDecision(person, toPlanet);
 
 		double startDistance = travelDecision.getDistance();
@@ -151,7 +150,7 @@ public class TravelDecisionTest {
 		double endDistance = travelDecision.getDistance();
 
 		if (endDistance > startDistance) {
-			System.out.println("fail from: " + fromPlanet.getPoint());
+			System.out.println("fail from: " + fromLocation.getPoint());
 			System.out.println("fail to:   " + toPlanet.getPoint());
 			throw new RuntimeException();
 		} else if (endDistance < startDistance) {
