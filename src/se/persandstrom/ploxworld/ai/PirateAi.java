@@ -10,7 +10,7 @@ import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.ship.Ship;
 
-public class MinerAi implements Ai {
+public class PirateAi implements Ai {
 
 	public void makeDecision(World world, Person person) {
 
@@ -21,31 +21,31 @@ public class MinerAi implements Ai {
 		Ship ship = person.getShip();
 		person.setDecision(null);
 
-
 		tryToSell(person);
-		tryToMine(person);
 
 		ConditionsChangedException e;
 		do {
 			e = null;
 
 			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
-			if (person.isOn(Asteroid.class) == false && percentageFree > 0.3) {
+			if (person.isOn(Asteroid.class) == false && percentageFree > 0.8) {
 				travelToAsteroid(world, person);
-			} else if (percentageFree < 0.2) {
+			} else if (percentageFree < 0.8) {
 				try {
 					travelToSell(world, person);
 				} catch (ConditionsChangedException e1) {
 					e = e1;
 				}
+			} else {
+				tryToAmbush(person);
 			}
 		} while (e != null);
 
 		System.out.println();
 	}
 
-	private void tryToMine(Person person) {
-		person.setDecision(new MineDecision(person));
+	private void tryToAmbush(Person person) {
+		person.setDecision(new AmbushDecision(person));
 	}
 
 	private void tryToSell(Person person) {
@@ -137,5 +137,4 @@ public class MinerAi implements Ai {
 
 	private class ConditionsChangedException extends Exception {
 	}
-
 }

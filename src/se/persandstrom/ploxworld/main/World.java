@@ -47,10 +47,12 @@ public class World {
 	}
 
 	public void progressTurn() {
-		for (Person person : persons) {
-			person.getAi().makeDecision(this, person);
-		}
-		persons.forEach(Person::executeDecision);
+		persons.stream().forEach(
+				person -> {
+					person.getAi().makeDecision(World.this, person);
+					person.executeDecision();
+				}
+		);
 		planets.forEach(Planet::progressTurn);
 		turn++;
 		worldData = new WorldData(this);

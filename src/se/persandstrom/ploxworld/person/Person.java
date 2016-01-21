@@ -1,7 +1,7 @@
 package se.persandstrom.ploxworld.person;
 
 import se.persandstrom.ploxworld.ai.Ai;
-import se.persandstrom.ploxworld.ai.TravelDecision;
+import se.persandstrom.ploxworld.ai.Decision;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.ship.Ship;
@@ -21,7 +21,7 @@ public class Person {
 
 	private Ship ship = new Ship();
 
-	private TravelDecision decision;
+	private Decision decision;
 
 	public Person(Ai ai, String name, Location location) {
 		this.ai = ai;
@@ -30,14 +30,16 @@ public class Person {
 	}
 
 	public void executeDecision() {
-		decision.execute();
+		if (decision != null) {
+			decision.execute();
+		}
 	}
 
 	public Ship getShip() {
 		return ship;
 	}
 
-	public void setDecision(TravelDecision decision) {
+	public void setDecision(Decision decision) {
 		this.decision = decision;
 	}
 
@@ -51,6 +53,10 @@ public class Person {
 
 	public Location getLocation() {
 		return location;
+	}
+
+	public boolean isOn(Class<? extends Location> clazz) {
+		return clazz.isInstance(location);
 	}
 
 	public void setLocation(Location location) {
