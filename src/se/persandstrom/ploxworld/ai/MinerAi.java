@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.ai;
 
+import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Asteroid;
 import se.persandstrom.ploxworld.locations.Location;
@@ -41,7 +42,7 @@ public class MinerAi implements Ai {
 			}
 		} while (e != null);
 
-		System.out.println();
+		Log.mine("");
 	}
 
 	private void tryToMine(Person person) {
@@ -85,7 +86,7 @@ public class MinerAi implements Ai {
 			throw new RuntimeException();
 		}
 
-		System.out.println(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
+		Log.mine(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
@@ -95,13 +96,13 @@ public class MinerAi implements Ai {
 			asteroid = world.getAsteroidsShuffled().stream()
 					.max((o1, o2) -> Double.compare(o1.getMiningEfficiency(), o2.getMiningEfficiency()))
 					.get();
-			System.out.println(person.getName() + " travels to most efficient asteroid " + asteroid.getName()
+			Log.mine(person.getName() + " travels to most efficient asteroid " + asteroid.getName()
 					+ " to mine at an efficiancy of " + asteroid.getMiningEfficiency());
 		} else {    // closest
 			asteroid = world.getAsteroidsShuffled().stream()
 					.min((o1, o2) -> Double.compare(o1.getDistance(person.getPoint()), o2.getDistance(person.getPoint())))
 					.get();
-			System.out.println(person.getName() + " travels to closest asteroid " + asteroid.getName()
+			Log.mine(person.getName() + " travels to closest asteroid " + asteroid.getName()
 					+ " to mine at an efficiancy of " + asteroid.getMiningEfficiency());
 		}
 
@@ -125,13 +126,13 @@ public class MinerAi implements Ai {
 		if (person.getLocation() instanceof Planet) {
 			Planet currentPlanet = (Planet) person.getLocation();
 			if (currentPlanet.equals(planet)) {
-				System.out.println("selling on same planet...");
+				Log.mine("selling on same planet...");
 				sellMax(person, planet, goods);    //Sell the crappy resource and try again
 				throw new ConditionsChangedException();
 			}
 		}
 
-		System.out.println(person.getName() + " travels to " + planet.getName()
+		Log.mine(person.getName() + " travels to " + planet.getName()
 				+ " to sell " + goods + " for " + planet.getProduction(goods).getBuyPrice() + " each");
 	}
 

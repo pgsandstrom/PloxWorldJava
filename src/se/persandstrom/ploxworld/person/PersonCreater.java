@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import se.persandstrom.ploxworld.ai.Ai;
-import se.persandstrom.ploxworld.ai.MinerAi;
-import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;

@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.ai;
 
 import java.util.List;
 
+import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
@@ -36,7 +37,7 @@ public class TraderAi implements Ai {
 			if (percentageFree > 0.5 && person.getMoney() > 500) {
 				travelToBuy(world, person);
 			} else if (percentageFree == 1.0 && person.getMoney() < 200) {
-				System.out.println("no monies");
+				Log.warning("no monies");
 			} else if (percentageFree == 1.0) {
 				travelToBuy(world, person);
 			} else {
@@ -48,7 +49,7 @@ public class TraderAi implements Ai {
 			}
 		} while (e != null);
 
-		System.out.println();
+		Log.trade("");
 	}
 
 	private void tryToBuy(Person person) {
@@ -89,7 +90,7 @@ public class TraderAi implements Ai {
 			throw new RuntimeException();
 		}
 
-		System.out.println(person.getName() + " bought " + buyAmount + " " + production + " from " + planet.getName()
+		Log.trade(person.getName() + " bought " + buyAmount + " " + production + " from " + planet.getName()
 				+ " for " + production.getSellPrice() + " each. In total:  " + payAmount);
 	}
 
@@ -130,7 +131,7 @@ public class TraderAi implements Ai {
 			throw new RuntimeException();
 		}
 
-		System.out.println(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
+		Log.trade(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
@@ -156,7 +157,7 @@ public class TraderAi implements Ai {
 		TravelDecision travelDecision = new TravelDecision(person, cheapestSellingPlanet);
 		person.setDecision(travelDecision);
 
-		System.out.println(person.getName() + " travels to " + cheapestSellingPlanet.getName()
+		Log.trade(person.getName() + " travels to " + cheapestSellingPlanet.getName()
 				+ " to buy " + viableGoods + " for " + cheapestSellingPlanet.getProduction(viableGoods).getSellPrice());
 	}
 
@@ -182,8 +183,10 @@ public class TraderAi implements Ai {
 			}
 		}
 
-		System.out.println(person.getName() + " travels to " + planet.getName()
+
+		Log.trade(person.getName() + " travels to " + planet.getName()
 				+ " to sell " + goods + " for " + planet.getProduction(goods).getBuyPrice() + " each");
+
 	}
 
 	private class ConditionsChangedException extends Exception {

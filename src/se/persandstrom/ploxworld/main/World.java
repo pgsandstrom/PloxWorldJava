@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import se.persandstrom.ploxworld.ai.MinerAi;
+import se.persandstrom.ploxworld.ai.PirateAi;
 import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
@@ -42,6 +43,7 @@ public class World {
 		PersonCreater characterCreater = new PersonCreater(this);
 		persons = characterCreater.createPersons(5, MinerAi.class);
 		persons.addAll(characterCreater.createPersons(5, TraderAi.class));
+		persons.addAll(characterCreater.createPersons(5, PirateAi.class));
 
 		planets.forEach(Planet::prepareStuff);
 	}
@@ -94,5 +96,15 @@ public class World {
 		ArrayList<Asteroid> asteroidList = new ArrayList<>(this.asteroids);
 		Collections.shuffle(asteroidList);
 		return asteroidList;
+	}
+
+	public Set<Person> getPersons() {
+		return persons;
+	}
+
+	public List<Person> getPersonsShuffled() {
+		ArrayList<Person> personList = new ArrayList<>(this.persons);
+		Collections.shuffle(personList);
+		return personList;
 	}
 }
