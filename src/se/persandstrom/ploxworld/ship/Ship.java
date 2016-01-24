@@ -8,7 +8,8 @@ import se.persandstrom.ploxworld.production.ProductionType;
 
 public class Ship {
 
-	public static final int MAX_STORAGE = 50;
+	ShipBase shipBase = ShipBase.SIMPLE;
+	Weapon weapon = Weapon.SIMPLE;
 
 	private Map<ProductionType, Integer> storage = new HashMap<>();
 
@@ -23,7 +24,7 @@ public class Ship {
 	}
 
 	public int getMaxStorage() {
-		return MAX_STORAGE;
+		return shipBase.storage;
 	}
 
 	public int getStorage(ProductionType productionType) {
@@ -31,7 +32,7 @@ public class Ship {
 	}
 
 	public int getFreeStorage() {
-		return MAX_STORAGE - storage.entrySet().stream()
+		return getMaxStorage() - storage.entrySet().stream()
 				.mapToInt(Map.Entry::getValue).sum();
 	}
 
