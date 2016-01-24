@@ -36,21 +36,17 @@ public class PersonCreater {
 		this.world = world;
 	}
 
-	public Set<Person> createPersons(int number, Class<? extends Ai> clazz) {
+	public Set<Person> createPersons(int number, PersonalityType personalityType) {
 		while (number-- > 0) {
-			persons.add(createPerson(clazz));
+			persons.add(createPerson(personalityType));
 		}
 		return persons;
 	}
 
-	private Person createPerson(Class<? extends Ai> clazz) {
-		try {
-			String name = getRandomName();
-			Planet planet = Rand.getRandom(world.getPlanets());
-			return new Person(clazz.newInstance(), Personality.getPersonality(clazz), name, planet);
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+	public Person createPerson(PersonalityType personalityType) {
+		String name = getRandomName();
+		Planet planet = Rand.getRandom(world.getPlanets());
+		return new Person(personalityType.getAi(), personalityType.getPersonality(), name, planet);
 	}
 
 	private String getRandomName() {

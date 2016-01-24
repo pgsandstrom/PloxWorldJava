@@ -1,9 +1,5 @@
 package se.persandstrom.ploxworld.person;
 
-import se.persandstrom.ploxworld.ai.Ai;
-import se.persandstrom.ploxworld.ai.MinerAi;
-import se.persandstrom.ploxworld.ai.PirateAi;
-import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Rand;
 
 public class Personality {

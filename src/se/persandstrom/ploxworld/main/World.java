@@ -16,6 +16,7 @@ import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.locations.PlanetCreater;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.person.PersonCreater;
+import se.persandstrom.ploxworld.person.PersonalityType;
 import se.persandstrom.ploxworld.production.ProductionType;
 
 import com.google.gson.annotations.Expose;
@@ -41,9 +42,9 @@ public class World {
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
 		asteroids = asteroidCreater.createAsteroids(5);
 		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(5, MinerAi.class);
-		persons.addAll(characterCreater.createPersons(5, TraderAi.class));
-		persons.addAll(characterCreater.createPersons(5, PirateAi.class));
+		persons = characterCreater.createPersons(5, PersonalityType.MINER);
+		persons.addAll(characterCreater.createPersons(5, PersonalityType.TRADE));
+		persons.addAll(characterCreater.createPersons(5, PersonalityType.PIRATE));
 
 		planets.forEach(Planet::prepareStuff);
 	}
