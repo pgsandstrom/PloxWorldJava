@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.locations;
 
+import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.person.Person;
@@ -24,6 +25,6 @@ public class Asteroid extends Location {
 		double miningRoll = Rand.boundDouble(0, miningEfficiency);
 		int mined = (int) miningRoll;
 		person.getShip().addStorage(ProductionType.MATERIAL, mined);
-		System.out.println(person.getName() + " mined for " + mined);
+		Log.mine(person.getName() + " mined for " + mined);
 	}
 }

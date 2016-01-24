@@ -47,7 +47,7 @@ public class PersonCreater {
 		try {
 			String name = getRandomName();
 			Planet planet = Rand.getRandom(world.getPlanets());
-			return new Person(clazz.newInstance(), name, planet);
+			return new Person(clazz.newInstance(), Personality.getPersonality(clazz), name, planet);
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}

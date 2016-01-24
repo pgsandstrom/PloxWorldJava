@@ -3,6 +3,7 @@ package se.persandstrom.ploxworld.common;
 import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.person.Person;
+import se.persandstrom.ploxworld.person.Personality;
 import se.persandstrom.ploxworld.production.Commodity;
 import se.persandstrom.ploxworld.production.Construction;
 import se.persandstrom.ploxworld.production.Crystal;
@@ -26,10 +27,10 @@ public class TestUtil {
 	}
 
 	public static Person getPerson() {
-		return new Person(new TraderAi(), "person name", getPlanet());
+		return new Person(new TraderAi(), Personality.getPersonality(TraderAi.class), "person name", getPlanet());
 	}
 
 	public static Person getPerson(Point point) {
-		return new Person(new TraderAi(), "person name", getPlanet(point));
+		return new Person(new TraderAi(), Personality.getPersonality(TraderAi.class), "person name", getPlanet(point));
 	}
 }

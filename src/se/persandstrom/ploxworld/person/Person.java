@@ -11,6 +11,7 @@ import com.google.gson.annotations.Expose;
 public class Person {
 
 	private final Ai ai;
+	private final Personality personality;
 
 	@Expose private final String name;
 
@@ -23,8 +24,9 @@ public class Person {
 
 	private Decision decision;
 
-	public Person(Ai ai, String name, Location location) {
+	public Person(Ai ai, Personality personality, String name, Location location) {
 		this.ai = ai;
+		this.personality = personality;
 		this.name = name;
 		setLocation(location);
 	}
@@ -33,6 +35,10 @@ public class Person {
 		if (decision != null) {
 			decision.execute();
 		}
+	}
+
+	public Personality getPersonality() {
+		return personality;
 	}
 
 	public Ship getShip() {
