@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.WeirdUtil;
 import se.persandstrom.ploxworld.production.Commodity;
@@ -127,7 +126,6 @@ public class Planet extends Location {
 		}
 	}
 
-	@SuppressWarnings("Duplicates")
 	private void calculateNeed() {
 		List<Production> sortedProd = getProductionsSortedByMultiplier();
 		Production bestProduction = sortedProd.get(sortedProd.size() - 1);
