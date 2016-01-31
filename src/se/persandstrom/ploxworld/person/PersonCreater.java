@@ -28,13 +28,13 @@ public class PersonCreater {
 			"Anabi Gorskovsky", "Dara Khepora", "Bruna Beline", "Idani Garina", "Nessa Gerschiko", "Vilma Renky", "Yeksaga Boveli", "Alyale Rinova"));
 
 	private final World world;
-	private final List<Person> persons = new ArrayList<>();
 
 	public PersonCreater(World world) {
 		this.world = world;
 	}
 
 	public List<Person> createPersons(int number, PersonalityType personalityType) {
+		List<Person> persons = new ArrayList<>();
 		while (number-- > 0) {
 			persons.add(createPerson(personalityType));
 		}

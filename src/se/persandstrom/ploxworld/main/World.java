@@ -55,6 +55,7 @@ public class World {
 					}
 				}
 		);
+		//TODO: Return name to name-pool when person dies?
 		persons = persons.stream().filter(Person::isAlive).collect(Collectors.toList());
 
 		planets.forEach(Planet::progressTurn);

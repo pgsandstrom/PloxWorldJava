@@ -29,27 +29,28 @@ public class PlanetCreater {
 			"Orion"));
 
 	private final World world;
-	private final List<Planet> planets = new ArrayList<>();
+
 
 	public PlanetCreater(World world) {
 		this.world = world;
 	}
 
 	public List<Planet> createPlanets(int number) {
+		List<Planet> planets = new ArrayList<>();
 		while (number-- > 0) {
-			planets.add(createPlanet());
+			planets.add(createPlanet(planets));
 		}
 		Collections.sort(planets);
 		return planets;
 	}
 
-	private Planet createPlanet() {
+	private Planet createPlanet(List<Planet> existingPlanets) {
 		String name = getRandomName();
 
 		Point position;
 		do {
 			position = world.getRandomPoint(PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE_RIGHT, PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE);
-		} while (!validPlanetPosition(position));
+		} while (!validPlanetPosition(position, existingPlanets));
 
 		int populationMax = Rand.bound(PLANET_MIN_POPULATION_CAP, PLANET_MAX_POPULATION_CAP);
 		double population = Rand.percentage() * (populationMax - 1) + 1;
@@ -77,10 +78,10 @@ public class PlanetCreater {
 		return name;
 	}
 
-	private boolean validPlanetPosition(Point point) {
+	private boolean validPlanetPosition(Point point, List<Planet> existingPlanets) {
 		List<Location> locations = new ArrayList<>();
-		locations.addAll(planets);
-		if(world.getAsteroids() != null) {
+		locations.addAll(existingPlanets);
+		if (world.getAsteroids() != null) {
 			locations.addAll(world.getAsteroids());
 		}
 		for (Location location : locations) {
@@ -99,7 +100,7 @@ public class PlanetCreater {
 	public void initProduction(Production production, double population) {
 		int multiplier;
 		if (production.isRawMaterial()) {
-			multiplier = Rand.bound(1, 6);	//should be less when we get material from other places
+			multiplier = Rand.bound(1, 6);    //should be less when we get material from other places
 		} else {
 			multiplier = Rand.bound(1, 6);
 		}

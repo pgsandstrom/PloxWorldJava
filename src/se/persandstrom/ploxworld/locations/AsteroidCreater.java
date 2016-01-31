@@ -19,28 +19,27 @@ public class AsteroidCreater {
 	private final List<String> names = new ArrayList<>(Arrays.asList("X-92", "AB-14", "DD-1", "XA-11", "AB-A", "KC-98", "MM-14", "LL-10"));
 
 	private final World world;
-	private final List<Asteroid> asteroids = new ArrayList<>();
 
 	public AsteroidCreater(World world) {
 		this.world = world;
 	}
 
 	public List<Asteroid> createAsteroids(int number) {
-		//TODO check so they don't collide with planets
+		List<Asteroid> asteroids = new ArrayList<>();
 		while (number-- > 0) {
-			asteroids.add(createAsteroid());
+			asteroids.add(createAsteroid(asteroids));
 		}
 		Collections.sort(asteroids);
 		return asteroids;
 	}
 
-	private Asteroid createAsteroid() {
+	private Asteroid createAsteroid(List<Asteroid> existingAsteroids) {
 		String name = getRandomName();
 
 		Point position;
 		do {
 			position = world.getRandomPoint(ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE_RIGHT, ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE);
-		} while (!validAsteroidPosition(position));
+		} while (!validAsteroidPosition(position, existingAsteroids));
 
 		double miningEfficiency = Rand.boundDouble(0.3, 3);
 
@@ -54,9 +53,9 @@ public class AsteroidCreater {
 		return name;
 	}
 
-	private boolean validAsteroidPosition(Point point) {
+	private boolean validAsteroidPosition(Point point, List<Asteroid> existingAsteroids) {
 		List<Location> locations = new ArrayList<>();
-		locations.addAll(asteroids);
+		locations.addAll(existingAsteroids);
 		locations.addAll(world.getPlanets());
 		for (Location location : locations) {
 			if (location.getDistance(point) < ASTEROID_MIN_DISTANCE) {
