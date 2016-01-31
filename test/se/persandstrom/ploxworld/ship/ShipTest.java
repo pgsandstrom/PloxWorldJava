@@ -11,16 +11,16 @@ public class ShipTest {
 	@Test
 	public void storage() {
 		Ship ship = new Ship();
-		assertEquals(Ship.MAX_STORAGE, ship.getFreeStorage());
+		assertEquals(ship.getMaxStorage(), ship.getFreeStorage());
 
 		ship.addStorage(ProductionType.COMMODITY, 10);
-		assertEquals(Ship.MAX_STORAGE - 10, ship.getFreeStorage());
+		assertEquals(ship.getMaxStorage() - 10, ship.getFreeStorage());
 
 		Integer commodity = ship.getStorage(ProductionType.COMMODITY);
 		assertEquals(10, commodity.intValue());
 
 		ship.addStorage(ProductionType.CRYSTAL, 15);
-		assertEquals(Ship.MAX_STORAGE - 25, ship.getFreeStorage());
+		assertEquals(ship.getMaxStorage() - 25, ship.getFreeStorage());
 	}
 
 }

@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.person;
 
+import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.MinerAi;
 import se.persandstrom.ploxworld.ai.PirateAi;
 import se.persandstrom.ploxworld.ai.TraderAi;
@@ -22,14 +23,14 @@ public enum PersonalityType {
 		}
 	}
 
-	public TraderAi getAi() {
+	public Ai getAi() {
 		switch (this) {
 			case TRADE:
 				return new TraderAi();
 			case MINER:
-				new MinerAi();
+				return new MinerAi();
 			case PIRATE:
-				new PirateAi();
+				return new PirateAi();
 			default:
 				throw new IllegalStateException();
 		}

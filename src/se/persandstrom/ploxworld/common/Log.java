@@ -5,7 +5,8 @@ public class Log {
 	private static final boolean TRADE = false;
 	private static final boolean MINE = false;
 	private static final boolean PIRATE = false;
-	private static final boolean DIALOG = true;
+	private static final boolean DIALOG = false;
+	private static final boolean FIGHT = true;
 
 	public static void trade(String string) {
 		if (TRADE) {
@@ -27,6 +28,12 @@ public class Log {
 
 	public static void dialog(String string) {
 		if (DIALOG) {
+			System.out.println(string);
+		}
+	}
+
+	public static void fight(String string) {
+		if (FIGHT) {
 			System.out.println(string);
 		}
 	}

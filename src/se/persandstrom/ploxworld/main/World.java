@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import se.persandstrom.ploxworld.ai.MinerAi;
-import se.persandstrom.ploxworld.ai.PirateAi;
-import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Asteroid;
@@ -31,7 +29,7 @@ public class World {
 
 	@Expose private final Set<Planet> planets;
 	@Expose private final Set<Asteroid> asteroids;
-	@Expose private final Set<Person> persons;
+	@Expose private Set<Person> persons;
 
 	@Expose WorldData worldData;
 	@Expose int turn = 0;
@@ -52,10 +50,14 @@ public class World {
 	public void progressTurn() {
 		persons.stream().forEach(
 				person -> {
-					person.getAi().makeDecision(World.this, person);
-					person.executeDecision();
+					if (person.isAlive()) {
+						person.getAi().makeDecision(World.this, person);
+						person.executeDecision();
+					}
 				}
 		);
+		persons = persons.stream().filter(Person::isAlive).collect(Collectors.toSet());
+
 		planets.forEach(Planet::progressTurn);
 		turn++;
 		worldData = new WorldData(this);

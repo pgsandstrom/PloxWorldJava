@@ -8,9 +8,12 @@ public class Dialog {
 	private final Person aggressor;
 	private final Person victim;
 
+	private final double powerRatio;
+
 	public Dialog(Person aggressor, Person victim) {
 		this.aggressor = aggressor;
 		this.victim = victim;
+		powerRatio = aggressor.getShip().getPower() / victim.getShip().getPower();
 	}
 
 	public void start() {
@@ -53,7 +56,7 @@ public class Dialog {
 
 
 	public Threat getThreat() {
-		int aggressionRoll = aggressor.getPersonality().getAggressionRoll();
+		double aggressionRoll = aggressor.getPersonality().getAggressionRoll(powerRatio);
 		if (aggressionRoll > 90) {
 			return Threat.BOARD;
 		} else if (aggressionRoll > 80) {
@@ -66,7 +69,7 @@ public class Dialog {
 	}
 
 	private ReactThreat reactThreat(Threat threat) {
-		int aggressionRoll = victim.getPersonality().getAggressionRoll();
+		double aggressionRoll = victim.getPersonality().getAggressionRoll(powerRatio);
 		int choiceLimit;
 		switch (threat) {
 			case BOARD:

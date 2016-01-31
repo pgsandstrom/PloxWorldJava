@@ -8,7 +8,7 @@ public class AcceptThreat {
 	private final Person aggressor;
 	private final Person victim;
 
-	public AcceptThreat( Person aggressor, Person victim) {
+	public AcceptThreat(Person aggressor, Person victim) {
 		this.victim = victim;
 		this.aggressor = aggressor;
 	}
@@ -35,14 +35,6 @@ public class AcceptThreat {
 		} else {
 			throw new IllegalStateException();
 		}
-
-		for (ProductionType productionType : ProductionType.values()) {
-			int storage = victim.getShip().getStorage(productionType);
-			int payment = (int) (storage * quote);
-			victim.getShip().addStorage(productionType, -payment);
-			aggressor.getShip().addStorage(productionType, payment);
-
-			System.out.println(victim + " paying " + payment + " of " + storage + " " + productionType + " to " + aggressor);
-		}
+		new TransferResources(aggressor, victim).execute(quote);
 	}
 }

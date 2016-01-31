@@ -13,6 +13,8 @@ public class Person {
 	private final Ai ai;
 	private final Personality personality;
 
+	private boolean alive = true;
+
 	@Expose private final String name;
 
 	@Expose private Point point;
@@ -86,6 +88,14 @@ public class Person {
 
 	public Ai getAi() {
 		return ai;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 
 	@Override

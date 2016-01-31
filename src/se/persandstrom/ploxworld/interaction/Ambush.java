@@ -7,9 +7,12 @@ public class Ambush {
 	private final Person aggressor;
 	private final Person victim;
 
+	private final double powerRatio;
+
 	public Ambush(Person aggressor, Person victim) {
 		this.aggressor = aggressor;
 		this.victim = victim;
+		this.powerRatio = aggressor.getShip().getPower() / victim.getShip().getPower();
 	}
 
 	public void start() {
@@ -29,8 +32,9 @@ public class Ambush {
 	}
 
 	public ConfrontDialogRun confrontTalkRun() {
-		int aggressionRoll = aggressor.getPersonality().getAggressionRoll();
-		if (aggressionRoll > 80) {
+		double aggressionRoll = aggressor.getPersonality().getAggressionRoll(powerRatio);
+
+		if (aggressionRoll > 100) {
 			return ConfrontDialogRun.ATTACK;
 		} else if (aggressionRoll > 50) {
 			return ConfrontDialogRun.DIALOG;

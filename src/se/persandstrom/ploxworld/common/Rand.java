@@ -22,6 +22,10 @@ public class Rand {
 		r = new Random(seed);
 	}
 
+	public static boolean bool() {
+		return r.nextBoolean();
+	}
+
 	public static int bound() {
 		return r.nextInt();
 	}
@@ -46,8 +50,8 @@ public class Rand {
 		return (r.nextDouble() * (max - min)) + min;
 	}
 
-	public static boolean bool() {
-		return r.nextBoolean();
+	public static boolean roll(double chance) {
+		return chance > r.nextDouble();
 	}
 
 	public static <T> T getRandom(List<T> list) {

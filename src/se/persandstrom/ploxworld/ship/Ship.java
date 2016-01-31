@@ -8,8 +8,11 @@ import se.persandstrom.ploxworld.production.ProductionType;
 
 public class Ship {
 
-	ShipBase shipBase = ShipBase.SIMPLE;
-	Weapon weapon = Weapon.SIMPLE;
+	private ShipBase shipBase = ShipBase.SIMPLE;
+	private Weapon weapon = Weapon.SIMPLE;
+
+	private int health = shipBase.health;
+	private int maxHealth = shipBase.health;
 
 	private Map<ProductionType, Integer> storage = new HashMap<>();
 
@@ -42,4 +45,23 @@ public class Ship {
 		return max.get().getKey();
 	}
 
+	public Weapon getWeapon() {
+		return weapon;
+	}
+
+	public ShipBase getShipBase() {
+		return shipBase;
+	}
+
+	public int getPower() {
+		return (int) (shipBase.health * weapon.getAverageDamage());
+	}
+
+	public void damage(int damage) {
+		health -= damage;
+	}
+
+	public boolean isDead() {
+		return health <= 0;
+	}
 }
