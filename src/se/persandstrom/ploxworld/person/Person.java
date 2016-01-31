@@ -8,7 +8,7 @@ import se.persandstrom.ploxworld.ship.Ship;
 
 import com.google.gson.annotations.Expose;
 
-public class Person {
+public class Person implements Comparable<Person> {
 
 	private final Ai ai;
 	private final Personality personality;
@@ -115,5 +115,10 @@ public class Person {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public int compareTo(Person other) {
+		return name.compareTo(other.name);
 	}
 }

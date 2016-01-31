@@ -3,7 +3,6 @@ package se.persandstrom.ploxworld.main;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import se.persandstrom.ploxworld.common.Point;
@@ -27,9 +26,9 @@ public class World {
 	@Expose private final int height = SIZE_Y;
 	@Expose private final int width = SIZE_X;
 
-	@Expose private final Set<Planet> planets;
-	@Expose private final Set<Asteroid> asteroids;
-	@Expose private Set<Person> persons;
+	@Expose private final List<Planet> planets;
+	@Expose private final List<Asteroid> asteroids;
+	@Expose private List<Person> persons;
 
 	@Expose WorldData worldData;
 	@Expose int turn = 0;
@@ -56,7 +55,7 @@ public class World {
 					}
 				}
 		);
-		persons = persons.stream().filter(Person::isAlive).collect(Collectors.toSet());
+		persons = persons.stream().filter(Person::isAlive).collect(Collectors.toList());
 
 		planets.forEach(Planet::progressTurn);
 		turn++;
@@ -81,7 +80,7 @@ public class World {
 				o1.getProduction(productionType).getBuyPrice() - o2.getProduction(productionType).getBuyPrice()).get();
 	}
 
-	public Set<Planet> getPlanets() {
+	public List<Planet> getPlanets() {
 		return planets;
 	}
 
@@ -91,7 +90,7 @@ public class World {
 		return planetList;
 	}
 
-	public Set<Asteroid> getAsteroids() {
+	public List<Asteroid> getAsteroids() {
 		return asteroids;
 	}
 
@@ -101,7 +100,7 @@ public class World {
 		return asteroidList;
 	}
 
-	public Set<Person> getPersons() {
+	public List<Person> getPersons() {
 		return persons;
 	}
 

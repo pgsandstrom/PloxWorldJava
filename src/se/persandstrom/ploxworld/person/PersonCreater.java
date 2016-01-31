@@ -2,11 +2,9 @@ package se.persandstrom.ploxworld.person;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.main.World;
@@ -30,16 +28,17 @@ public class PersonCreater {
 			"Anabi Gorskovsky", "Dara Khepora", "Bruna Beline", "Idani Garina", "Nessa Gerschiko", "Vilma Renky", "Yeksaga Boveli", "Alyale Rinova"));
 
 	private final World world;
-	private Set<Person> persons = new HashSet<Person>();
+	private final List<Person> persons = new ArrayList<>();
 
 	public PersonCreater(World world) {
 		this.world = world;
 	}
 
-	public Set<Person> createPersons(int number, PersonalityType personalityType) {
+	public List<Person> createPersons(int number, PersonalityType personalityType) {
 		while (number-- > 0) {
 			persons.add(createPerson(personalityType));
 		}
+		Collections.sort(persons);
 		return persons;
 	}
 

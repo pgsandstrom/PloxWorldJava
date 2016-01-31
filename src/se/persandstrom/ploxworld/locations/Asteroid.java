@@ -8,7 +8,7 @@ import se.persandstrom.ploxworld.production.ProductionType;
 
 import com.google.gson.annotations.Expose;
 
-public class Asteroid extends Location {
+public class Asteroid extends Location implements Comparable<Asteroid> {
 
 	@Expose private final double miningEfficiency;
 
@@ -26,5 +26,10 @@ public class Asteroid extends Location {
 		int mined = (int) miningRoll;
 		person.getShip().addStorage(ProductionType.MATERIAL, mined);
 		Log.mine(person.getName() + " mined for " + mined);
+	}
+
+	@Override
+	public int compareTo(Asteroid other) {
+		return name.compareTo(other.name);
 	}
 }

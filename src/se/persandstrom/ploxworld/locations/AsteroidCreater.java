@@ -2,9 +2,8 @@ package se.persandstrom.ploxworld.locations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
@@ -20,17 +19,18 @@ public class AsteroidCreater {
 	private final List<String> names = new ArrayList<>(Arrays.asList("X-92", "AB-14", "DD-1", "XA-11", "AB-A", "KC-98", "MM-14", "LL-10"));
 
 	private final World world;
-	private Set<Asteroid> asteroids = new HashSet<>();
+	private final List<Asteroid> asteroids = new ArrayList<>();
 
 	public AsteroidCreater(World world) {
 		this.world = world;
 	}
 
-	public Set<Asteroid> createAsteroids(int number) {
+	public List<Asteroid> createAsteroids(int number) {
 		//TODO check so they don't collide with planets
 		while (number-- > 0) {
 			asteroids.add(createAsteroid());
 		}
+		Collections.sort(asteroids);
 		return asteroids;
 	}
 

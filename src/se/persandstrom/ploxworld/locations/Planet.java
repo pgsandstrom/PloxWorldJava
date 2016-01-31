@@ -16,7 +16,7 @@ import se.persandstrom.ploxworld.production.Science;
 
 import com.google.gson.annotations.Expose;
 
-public class Planet extends Location {
+public class Planet extends Location implements Comparable<Planet> {
 
 	private static final double POPULATION_GROWTH = 1.005;
 
@@ -33,7 +33,7 @@ public class Planet extends Location {
 
 	public Planet(String name, Point point, int maxPopulation, double population, int money,
 			Commodity commodity, Material material, Construction construction, Crystal crystal, Science science) {
-		super(name,point);
+		super(name, point);
 		this.maxPopulation = maxPopulation;
 		this.population = population;
 		this.money = money;
@@ -286,5 +286,10 @@ public class Planet extends Location {
 	@Override
 	public int hashCode() {
 		return name.hashCode();
+	}
+
+	@Override
+	public int compareTo(Planet other) {
+		return name.compareTo(other.name);
 	}
 }

@@ -2,9 +2,8 @@ package se.persandstrom.ploxworld.locations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
@@ -30,16 +29,17 @@ public class PlanetCreater {
 			"Orion"));
 
 	private final World world;
-	private Set<Planet> planets = new HashSet<>();
+	private final List<Planet> planets = new ArrayList<>();
 
 	public PlanetCreater(World world) {
 		this.world = world;
 	}
 
-	public Set<Planet> createPlanets(int number) {
+	public List<Planet> createPlanets(int number) {
 		while (number-- > 0) {
 			planets.add(createPlanet());
 		}
+		Collections.sort(planets);
 		return planets;
 	}
 
