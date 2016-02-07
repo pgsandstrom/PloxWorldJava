@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.interaction;
 
+import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.production.ProductionType;
 
@@ -20,7 +21,7 @@ public class TransferResources {
 			victim.getShip().addStorage(productionType, -payment);
 			aggressor.getShip().addStorage(productionType, payment);
 
-			System.out.println(victim + " transferring " + payment + " of " + storage + " " + productionType + " to " + aggressor);
+			Log.dialog(victim + " transferring " + payment + " of " + storage + " " + productionType + " to " + aggressor);
 		}
 	}
 }

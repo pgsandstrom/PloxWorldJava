@@ -1,7 +1,7 @@
 package se.persandstrom.ploxworld.interaction;
 
+import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.person.Person;
-import se.persandstrom.ploxworld.production.ProductionType;
 
 public class AcceptThreat {
 
@@ -23,7 +23,7 @@ public class AcceptThreat {
 	}
 
 	private void board() {
-		System.out.println(aggressor + " is BOARDING " + victim + "!!!");
+		Log.pirate(aggressor + " is BOARDING " + victim + "!!!");
 	}
 
 	private void pay(Dialog.Threat threat) {

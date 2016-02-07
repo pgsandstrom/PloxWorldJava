@@ -31,9 +31,9 @@ public class MinerAi implements Ai {
 			e = null;
 
 			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
-			if (person.isOn(Asteroid.class) == false && percentageFree > 0.3) {
+			if (person.isOn(Asteroid.class) == false && percentageFree >= 0.3) {
 				travelToAsteroid(world, person);
-			} else if (percentageFree < 0.2) {
+			} else if (percentageFree < 0.3) {
 				try {
 					travelToSell(world, person);
 				} catch (ConditionsChangedException e1) {
@@ -43,6 +43,11 @@ public class MinerAi implements Ai {
 		} while (e != null);
 
 		Log.mine("");
+
+		if (person.getLocation() instanceof Asteroid == false && person.getDecision() instanceof MineDecision) {
+			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
+			System.out.println("wtf");
+		}
 	}
 
 	private void tryToMine(Person person) {

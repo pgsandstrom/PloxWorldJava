@@ -47,4 +47,9 @@ public enum Weapon {
 				.findFirst();
 
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

@@ -51,6 +51,10 @@ public class Person implements Comparable<Person> {
 		this.decision = decision;
 	}
 
+	public Decision getDecision() {
+		return decision;
+	}
+
 	public Point getPoint() {
 		return point;
 	}

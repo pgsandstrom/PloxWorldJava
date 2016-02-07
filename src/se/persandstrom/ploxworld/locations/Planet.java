@@ -282,6 +282,34 @@ public class Planet extends Location implements Comparable<Planet> {
 		return money;
 	}
 
+	public Set<Weapon> getWeapons() {
+		return weapons;
+	}
+
+	public void addWeapon(Weapon weapon) {
+		weapons.add(weapon);
+	}
+
+	public Construction getConstruction() {
+		return construction;
+	}
+
+	public Science getScience() {
+		return science;
+	}
+
+	public Crystal getCrystal() {
+		return crystal;
+	}
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public Commodity getCommodity() {
+		return commodity;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -297,6 +325,11 @@ public class Planet extends Location implements Comparable<Planet> {
 	@Override
 	public int hashCode() {
 		return name.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	@Override

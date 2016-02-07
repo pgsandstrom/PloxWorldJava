@@ -19,7 +19,7 @@ public class Fight {
 	}
 
 	public void start() {
-		System.out.println("fight between " + first + " and " + second);
+		Log.pirate("fight between " + first + " and " + second);
 		//TODO currently both are aggressive
 
 		while (true) {

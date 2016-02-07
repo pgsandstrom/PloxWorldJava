@@ -177,7 +177,7 @@ public class TraderAi implements Ai {
 		if (person.getLocation() instanceof Planet) {
 			Planet currentPlanet = (Planet) person.getLocation();
 			if (currentPlanet.equals(planet)) {
-				System.out.println("selling on same planet...");
+				Log.trade("selling on same planet...");
 				sellMax(person, planet, goods);    //Sell the crappy resource and try again
 				throw new ConditionsChangedException();
 			}
