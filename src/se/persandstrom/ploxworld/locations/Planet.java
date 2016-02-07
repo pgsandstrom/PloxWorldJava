@@ -2,7 +2,9 @@ package se.persandstrom.ploxworld.locations;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.WeirdUtil;
@@ -13,6 +15,7 @@ import se.persandstrom.ploxworld.production.Material;
 import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.production.Science;
+import se.persandstrom.ploxworld.ship.Weapon;
 
 import com.google.gson.annotations.Expose;
 
@@ -30,6 +33,12 @@ public class Planet extends Location implements Comparable<Planet> {
 	@Expose private Crystal crystal;
 	@Expose private Science science;
 	private final List<Production> productions = new ArrayList<>();
+
+	Set<Weapon> weapons = new HashSet<>();
+
+	{
+		weapons.add(Weapon.SIMPLE);
+	}
 
 	public Planet(String name, Point point, int maxPopulation, double population, int money,
 			Commodity commodity, Material material, Construction construction, Crystal crystal, Science science) {
@@ -87,6 +96,8 @@ public class Planet extends Location implements Comparable<Planet> {
 		if (this.crystal.getStorage() < 0) {
 			throw new IllegalStateException("Crystal is " + this.crystal.getStorage() + " at " + this.name + ".");
 		}
+
+		PlanetAi.purchase(this);
 	}
 
 	private void redistributePopulation() {
