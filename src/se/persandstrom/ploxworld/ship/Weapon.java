@@ -40,12 +40,22 @@ public enum Weapon {
 		return Rand.bound(minDamage, maxDamage);
 	}
 
+	public int getSellCost() {
+		return purchaseCost;
+	}
+
 	public static Optional<Weapon> getMissingWeaponEasistResearched(Set<Weapon> existingWeapons) {
 		return Arrays.asList(Weapon.values()).stream()
 				.filter(weapon -> existingWeapons.contains(weapon) == false)
 				.sorted((o1, o2) -> o1.researchCost - o2.researchCost)
 				.findFirst();
+	}
 
+	public static Optional<Weapon> getNextWeapon(Weapon currentWeapon) {
+		return Arrays.asList(Weapon.values()).stream()
+				.filter(weapon -> weapon.purchaseCost > currentWeapon.purchaseCost)
+				.sorted((o1, o2) -> o1.purchaseCost - o2.purchaseCost)
+				.findFirst();
 	}
 
 	@Override

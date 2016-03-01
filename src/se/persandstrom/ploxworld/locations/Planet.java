@@ -34,7 +34,7 @@ public class Planet extends Location implements Comparable<Planet> {
 	@Expose private Science science;
 	private final List<Production> productions = new ArrayList<>();
 
-	Set<Weapon> weapons = new HashSet<>();
+	private Set<Weapon> weapons = new HashSet<>();
 
 	{
 		weapons.add(Weapon.SIMPLE);
@@ -280,6 +280,10 @@ public class Planet extends Location implements Comparable<Planet> {
 
 	public int getMoney() {
 		return money;
+	}
+
+	public void addMoney(int money) {
+		this.money += money;
 	}
 
 	public Set<Weapon> getWeapons() {

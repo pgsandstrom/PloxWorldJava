@@ -30,4 +30,9 @@ public class AmbushDecision implements Decision {
 			new Ambush(person, ambushedPerson.get()).start();
 		}
 	}
+
+	@Override
+	public Goal getGoal() {
+		return null;
+	}
 }

@@ -8,10 +8,16 @@ public class TravelDecision implements Decision {
 
 	private final Person person;
 	private final Location toLocation;
+	private final Goal goal;
 
 	public TravelDecision(Person person, Location to) {
+		this(person, to, null);
+	}
+
+	public TravelDecision(Person person, Location to, Goal goal) {
 		this.person = person;
 		this.toLocation = to;
+		this.goal = goal;
 	}
 
 	@Override
@@ -42,5 +48,10 @@ public class TravelDecision implements Decision {
 
 	public double getDistance() {
 		return toLocation.getDistance(person.getPoint());
+	}
+
+	@Override
+	public Goal getGoal() {
+		return goal;
 	}
 }

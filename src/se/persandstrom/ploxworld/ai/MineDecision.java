@@ -22,4 +22,9 @@ public class MineDecision implements Decision {
 			throw new IllegalStateException();
 		}
 	}
+
+	@Override
+	public Goal getGoal() {
+		return null;
+	}
 }

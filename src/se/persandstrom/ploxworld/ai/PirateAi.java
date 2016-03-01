@@ -24,6 +24,10 @@ public class PirateAi implements Ai {
 
 		tryToSell(person);
 
+		if (new CheckUpgrade().willTravelToUpgrade(world, person)) {
+			return;
+		}
+
 		ConditionsChangedException e;
 		do {
 			e = null;

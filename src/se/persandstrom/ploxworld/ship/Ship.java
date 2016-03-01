@@ -49,6 +49,10 @@ public class Ship {
 		return weapon;
 	}
 
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
+	}
+
 	public ShipBase getShipBase() {
 		return shipBase;
 	}

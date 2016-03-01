@@ -22,4 +22,14 @@ public class WeaponTest {
 		missingWeaponEasistResearched = Weapon.getMissingWeaponEasistResearched(weapons);
 		Assert.assertEquals(Weapon.BARR, missingWeaponEasistResearched.get());
 	}
+
+	@Test
+	public void testGetNextWeapon() throws Exception {
+		Optional<Weapon> nextWeapon = Weapon.getNextWeapon(Weapon.ASSAULT_MC1);
+		Assert.assertEquals(Weapon.ASSAULT_MC2, nextWeapon.get());
+
+		nextWeapon = Weapon.getNextWeapon(Weapon.ASSAULT_MC3);
+		Assert.assertFalse(nextWeapon.isPresent());
+
+	}
 }

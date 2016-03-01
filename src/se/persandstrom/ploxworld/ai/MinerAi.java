@@ -26,6 +26,10 @@ public class MinerAi implements Ai {
 		tryToSell(person);
 		tryToMine(person);
 
+		if (new CheckUpgrade().willTravelToUpgrade(world, person)) {
+			return;
+		}
+
 		ConditionsChangedException e;
 		do {
 			e = null;

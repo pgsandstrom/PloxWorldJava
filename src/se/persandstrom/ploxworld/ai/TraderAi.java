@@ -22,12 +22,20 @@ public class TraderAi implements Ai {
 			return;
 		}
 
+		if (person.getDecision() != null && person.getDecision().getGoal() != null) {
+			person.getDecision().getGoal().execute(person);
+		}
+
 		Ship ship = person.getShip();
 		person.setDecision(null);
 
 
 		tryToSell(person);
 		tryToBuy(person);
+
+		if (new CheckUpgrade().willTravelToUpgrade(world, person)) {
+			return;
+		}
 
 		ConditionsChangedException e;
 		do {
