@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import se.persandstrom.ploxworld.common.Point;
@@ -339,5 +340,10 @@ public class Planet extends Location implements Comparable<Planet> {
 	@Override
 	public int compareTo(Planet other) {
 		return name.compareTo(other.name);
+	}
+
+	@Override
+	public Optional<Mineable> getMineable() {
+		return Optional.empty();
 	}
 }

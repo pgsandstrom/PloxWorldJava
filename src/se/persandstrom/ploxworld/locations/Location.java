@@ -1,5 +1,7 @@
 package se.persandstrom.ploxworld.locations;
 
+import java.util.Optional;
+
 import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
 
@@ -26,4 +28,6 @@ public abstract class Location {
 	public Point getPoint() {
 		return point;
 	}
+
+	public abstract Optional<Mineable> getMineable();
 }

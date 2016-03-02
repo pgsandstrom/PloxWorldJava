@@ -98,16 +98,16 @@ public class PirateAi implements Ai {
 		Asteroid asteroid;
 		if (Rand.bool()) {    // most efficient
 			asteroid = world.getAsteroidsShuffled().stream()
-					.max((o1, o2) -> Double.compare(o1.getMiningEfficiency(), o2.getMiningEfficiency()))
+					.max((o1, o2) -> Double.compare(o1.getMineable().get().getMiningEfficiency(), o2.getMineable().get().getMiningEfficiency()))
 					.get();
 			Log.pirate(person.getName() + " travels to most efficient asteroid " + asteroid.getName()
-					+ " to mine at an efficiancy of " + asteroid.getMiningEfficiency());
+					+ " to mine at an efficiancy of " + asteroid.getMineable().get().getMiningEfficiency());
 		} else {    // closest
 			asteroid = world.getAsteroidsShuffled().stream()
 					.min((o1, o2) -> Double.compare(o1.getDistance(person.getPoint()), o2.getDistance(person.getPoint())))
 					.get();
 			Log.pirate(person.getName() + " travels to closest asteroid " + asteroid.getName()
-					+ " to mine at an efficiancy of " + asteroid.getMiningEfficiency());
+					+ " to mine at an efficiancy of " + asteroid.getMineable().get().getMiningEfficiency());
 		}
 
 		TravelDecision travelDecision = new TravelDecision(person, asteroid);

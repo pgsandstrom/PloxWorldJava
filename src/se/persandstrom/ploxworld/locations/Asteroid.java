@@ -1,5 +1,7 @@
 package se.persandstrom.ploxworld.locations;
 
+import java.util.Optional;
+
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
@@ -10,26 +12,20 @@ import com.google.gson.annotations.Expose;
 
 public class Asteroid extends Location implements Comparable<Asteroid> {
 
-	@Expose private final double miningEfficiency;
+	@Expose private final Mineable mineable;
 
 	public Asteroid(String name, Point point, double miningEfficiency) {
 		super(name, point);
-		this.miningEfficiency = miningEfficiency;
-	}
-
-	public double getMiningEfficiency() {
-		return miningEfficiency;
-	}
-
-	public void mine(Person person) {
-		double miningRoll = Rand.boundDouble(0, miningEfficiency);
-		int mined = (int) miningRoll;
-		person.getShip().addStorage(ProductionType.MATERIAL, mined);
-		Log.mine(person.getName() + " mined for " + mined);
+		this.mineable = new Mineable(miningEfficiency);
 	}
 
 	@Override
 	public int compareTo(Asteroid other) {
 		return name.compareTo(other.name);
+	}
+
+	@Override
+	public Optional<Mineable> getMineable() {
+		return Optional.of(mineable);
 	}
 }

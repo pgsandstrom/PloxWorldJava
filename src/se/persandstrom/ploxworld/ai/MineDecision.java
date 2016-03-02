@@ -15,9 +15,8 @@ public class MineDecision implements Decision {
 	@Override
 	public void execute() {
 		Location location = person.getLocation();
-		if (location instanceof Asteroid) {
-			Asteroid asteroid = (Asteroid) location;
-			asteroid.mine(person);
+		if (location.getMineable().isPresent()) {
+			location.getMineable().get().mine(person);
 		} else {
 			throw new IllegalStateException();
 		}
