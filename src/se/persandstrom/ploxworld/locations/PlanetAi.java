@@ -11,8 +11,8 @@ public class PlanetAi {
 		Optional<Weapon> missingWeapon = Weapon.getMissingWeaponEasistResearched(planet.getWeapons());
 		if (missingWeapon.isPresent()) {
 			Weapon weapon = missingWeapon.get();
-			if (weapon.researchCost < planet.getScience().getStorage()) {
-				planet.getScience().addStorage(-weapon.researchCost);
+			if (weapon.researchCost < planet.getTradeable().get().getScience().getStorage()) {
+				planet.getTradeable().get().getScience().addStorage(-weapon.researchCost);
 				planet.addWeapon(weapon);
 				Log.planet(planet + " bought weapon " + weapon);
 			}

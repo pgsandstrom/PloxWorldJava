@@ -7,6 +7,7 @@ import java.util.List;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
+import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.production.Commodity;
 import se.persandstrom.ploxworld.production.Construction;
@@ -68,7 +69,7 @@ public class PlanetCreater {
 		Science science = new Science();
 		initProduction(science, population);
 
-		return new Planet(name, position, populationMax, population, money, commodity, material, construction, crystal, science);
+		return new Planet(name, position, populationMax, population, new Tradeable(money, commodity, material, construction, crystal, science));
 	}
 
 	private String getRandomName() {

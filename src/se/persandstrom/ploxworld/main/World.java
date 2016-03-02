@@ -73,15 +73,15 @@ public class World {
 
 	public Planet getCheapestSellingPlanet(ProductionType productionType) {
 		return getPlanetsShuffled().stream().min((o1, o2) ->
-				o1.getProduction(productionType).getSellPrice() - o2.getProduction(productionType).getSellPrice()).get();
+				o1.getTradeable().get().getProduction(productionType).getSellPrice() - o2.getTradeable().get().getProduction(productionType).getSellPrice()).get();
 	}
 
 	public Planet getMostPayingPlanet(ProductionType productionType) {
 		return getPlanetsShuffled().stream().max((o1, o2) ->
-				o1.getProduction(productionType).getBuyPrice() - o2.getProduction(productionType).getBuyPrice()).get();
+				o1.getTradeable().get().getProduction(productionType).getBuyPrice() - o2.getTradeable().get().getProduction(productionType).getBuyPrice()).get();
 	}
 
-	public List<Planet> getPlanets() {
+	public List<Planet> getPlanets() {	//TODO most getPlanets and getAsteroids should just be getLocations
 		return planets;
 	}
 

@@ -23,7 +23,7 @@ public class WorldData {
 			TotalProduction totalProduction = new TotalProduction(productionType);
 			List<Planet> planets = world.getPlanets();
 			planets.forEach(planet -> {
-				Production production = planet.getProduction(productionType);
+				Production production = planet.getTradeable().get().getProduction(productionType);
 				totalProduction.addStorage(production.getStorage());
 				totalProduction.addProduction(production.getProduced());
 			});

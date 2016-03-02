@@ -1,6 +1,5 @@
 package se.persandstrom.ploxworld.locations;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +8,8 @@ import java.util.Set;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.WeirdUtil;
+import se.persandstrom.ploxworld.locations.property.Mineable;
+import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.production.Commodity;
 import se.persandstrom.ploxworld.production.Construction;
 import se.persandstrom.ploxworld.production.Crystal;
@@ -27,13 +28,7 @@ public class Planet extends Location implements Comparable<Planet> {
 	@Expose private int maxPopulation;
 	@Expose private double population;
 
-	@Expose private int money;
-	@Expose private Commodity commodity;
-	@Expose private Material material;
-	@Expose private Construction construction;
-	@Expose private Crystal crystal;
-	@Expose private Science science;
-	private final List<Production> productions = new ArrayList<>();
+	@Expose private Tradeable tradeable;
 
 	private Set<Weapon> weapons = new HashSet<>();
 
@@ -41,23 +36,12 @@ public class Planet extends Location implements Comparable<Planet> {
 		weapons.add(Weapon.SIMPLE);
 	}
 
-	public Planet(String name, Point point, int maxPopulation, double population, int money,
-			Commodity commodity, Material material, Construction construction, Crystal crystal, Science science) {
+	public Planet(String name, Point point, int maxPopulation, double population, Tradeable tradeable) {
 		super(name, point);
 		this.maxPopulation = maxPopulation;
 		this.population = population;
-		this.money = money;
-		this.commodity = commodity;
-		this.material = material;
-		this.construction = construction;
-		this.crystal = crystal;
-		this.science = science;
-
-		this.productions.add(commodity);
-		this.productions.add(material);
-		this.productions.add(construction);
-		this.productions.add(crystal);
-		this.productions.add(science);
+		this.tradeable = tradeable;
+		this.tradeable.setLocation(this);
 	}
 
 	public void prepareStuff() {
@@ -67,7 +51,6 @@ public class Planet extends Location implements Comparable<Planet> {
 
 	public void progressTurn() {
 
-		money += population * 100;
 
 		population = population * POPULATION_GROWTH;
 		if (population > maxPopulation) {
@@ -76,32 +59,19 @@ public class Planet extends Location implements Comparable<Planet> {
 
 		redistributePopulation();
 
-		this.commodity.progressTurn();
-		this.commodity.addStorage(-getPopulation());
+		tradeable.progressTurn(this);
 
-		this.material.progressTurn();
-		int materialUsed = this.construction.progressTurn();
-		this.material.addStorage(-materialUsed);
-		this.crystal.progressTurn();
-		int crystalUsed = this.science.progressTurn();
-		this.crystal.addStorage(-crystalUsed);
 
 		calculateNeed();
 
-		if (this.commodity.getStorage() < 0) {
-			throw new IllegalStateException("Commodity is " + this.commodity.getStorage() + " at " + this.name + ".");
-		}
-		if (this.material.getStorage() < 0) {
-			throw new IllegalStateException("Material is " + this.material.getStorage() + " at " + this.name + ".");
-		}
-		if (this.crystal.getStorage() < 0) {
-			throw new IllegalStateException("Crystal is " + this.crystal.getStorage() + " at " + this.name + ".");
-		}
 
 		PlanetAi.purchase(this);
 	}
 
 	private void redistributePopulation() {
+
+		Commodity commodity = tradeable.getCommodity();
+
 		List<Production> sortedProd = getProductionsSortedByMultiplier();
 		sortedProd.forEach(production -> production.setWorkers(0));
 
@@ -130,15 +100,22 @@ public class Planet extends Location implements Comparable<Planet> {
 
 	private int getProductionMaxWorkers(Production production) {
 		if (production instanceof Construction) {
-			return material.getStorage() / production.getMultiplier();
+			return tradeable.getMaterial().getStorage() / production.getMultiplier();
 		} else if (production instanceof Science) {
-			return crystal.getStorage() / production.getMultiplier();
+			return tradeable.getCrystal().getStorage() / production.getMultiplier();
 		} else {
 			return Integer.MAX_VALUE;
 		}
 	}
 
 	private void calculateNeed() {
+		Commodity commodity = tradeable.getCommodity();
+		Material material = tradeable.getMaterial();
+		Construction construction = tradeable.getConstruction();
+		Crystal crystal = tradeable.getCrystal();
+		Science science = tradeable.getScience();
+
+
 		List<Production> sortedProd = getProductionsSortedByMultiplier();
 		Production bestProduction = sortedProd.get(sortedProd.size() - 1);
 
@@ -201,17 +178,16 @@ public class Planet extends Location implements Comparable<Planet> {
 	}
 
 	private List<Production> getProductionsSortedByMultiplier() {
+		List<Production> productions = tradeable.getProductions();
 		Collections.sort(productions, (o1, o2) -> {
 			int diff = o1.getMultiplier() - o2.getMultiplier();
 			if (diff == 0) {
-				// TODO: Rewrite this sometimes... for realz. I need a determinstic way to sort those productions
-				// that differens between planets.
 				return WeirdUtil.stringToRandomDeterministicInt(name + o1.getProductionType()) -
 						WeirdUtil.stringToRandomDeterministicInt(name + o1.getProductionType());
 			} else {
 				return diff;
 			}
-		});    // Sort according to multiplier
+		});
 		return productions;
 	}
 
@@ -227,66 +203,6 @@ public class Planet extends Location implements Comparable<Planet> {
 		}
 	}
 
-	public List<Production> getProductionsCheapestFirst() {
-		productions.sort((o1, o2) -> {
-			double sellQuota1 = o1.getSellPrice() / o1.getBasePrice();
-			double sellQuota2 = o2.getSellPrice() / o2.getBasePrice();
-			return sellQuota1 - sellQuota2 > 0 ? 1 : -1;
-		});
-		return productions;
-	}
-
-	/**
-	 * @return amount planet payed
-	 */
-	public int sellTo(ProductionType productionType, int amount) {
-		Production production = getProduction(productionType);
-		production.addStorage(amount);
-		int money = production.getBuyPrice() * amount;
-		this.money -= money;
-		return money;
-	}
-
-	/**
-	 * @return amount person payed
-	 */
-	public int buyFrom(ProductionType productionType, int amount) {
-		Production production = getProduction(productionType);
-		production.addStorage(-amount);
-		int payed = production.getSellPrice() * amount;
-		money += payed;
-		return payed;
-	}
-
-	public Production getProduction(ProductionType productionType) {
-		switch (productionType) {
-			case COMMODITY:
-				return commodity;
-			case MATERIAL:
-				return material;
-			case CONSTRUCTION:
-				return construction;
-			case CRYSTAL:
-				return crystal;
-			case SCIENCE:
-				return science;
-			default:
-				throw new AssertionError();
-		}
-	}
-
-	public int getPopulation() {
-		return (int) population;
-	}
-
-	public int getMoney() {
-		return money;
-	}
-
-	public void addMoney(int money) {
-		this.money += money;
-	}
-
 	public Set<Weapon> getWeapons() {
 		return weapons;
 	}
@@ -295,24 +211,9 @@ public class Planet extends Location implements Comparable<Planet> {
 		weapons.add(weapon);
 	}
 
-	public Construction getConstruction() {
-		return construction;
-	}
-
-	public Science getScience() {
-		return science;
-	}
-
-	public Crystal getCrystal() {
-		return crystal;
-	}
-
-	public Material getMaterial() {
-		return material;
-	}
-
-	public Commodity getCommodity() {
-		return commodity;
+	@Override
+	public int getPopulation() {
+		return (int) population;
 	}
 
 	@Override
@@ -345,5 +246,10 @@ public class Planet extends Location implements Comparable<Planet> {
 	@Override
 	public Optional<Mineable> getMineable() {
 		return Optional.empty();
+	}
+
+	@Override
+	public Optional<Tradeable> getTradeable() {
+		return Optional.of(tradeable);
 	}
 }

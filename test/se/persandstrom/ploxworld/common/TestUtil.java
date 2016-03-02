@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.common;
 
 import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.person.PersonalityType;
 import se.persandstrom.ploxworld.production.Commodity;
@@ -21,9 +22,9 @@ public class TestUtil {
 
 	public static Planet getPlanet(Point point) {
 
-		return new Planet("planet name", point, 50, 25, 10000,
+		return new Planet("planet name", point, 50, 25, new Tradeable(10000,
 				new Commodity(1, 1, 0), new Material(1, 10, 0), new Construction(2, 2, 0),
-				new Crystal(3, 3, 0), new Science(3, 3, 0));
+				new Crystal(3, 3, 0), new Science(3, 3, 0)));
 	}
 
 	public static Person getPerson() {

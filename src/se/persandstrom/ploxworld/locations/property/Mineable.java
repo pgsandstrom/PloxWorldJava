@@ -1,4 +1,4 @@
-package se.persandstrom.ploxworld.locations;
+package se.persandstrom.ploxworld.locations.property;
 
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;

@@ -1,10 +1,13 @@
 package se.persandstrom.ploxworld.ai;
 
+import java.util.Optional;
+
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Asteroid;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.production.Production;
@@ -60,22 +63,22 @@ public class MinerAi implements Ai {
 
 	private void tryToSell(Person person) {
 		Location location = person.getLocation();
-		if (location instanceof Planet) {
-			//TODO: Flytta logik från planet till location så vi slipper fula instanceof
+		if (location.getTradeable().isPresent()) {
+			Tradeable tradeable = location.getTradeable().get();
 			Planet planet = (Planet) location;
 			for (ProductionType productionType : ProductionType.values()) {
-				Production production = planet.getProduction(productionType);
+				Production production = tradeable.getProduction(productionType);
 				if (production.getBuyPrice() / production.getBasePrice() > TraderAi.BASE_PRICE_QUOTA_TO_SELL_AT) {
-					sellMax(person, planet, productionType);
+					sellMax(person, tradeable, productionType);
 				}
 			}
 		}
 	}
 
-	private void sellMax(Person person, Planet planet, ProductionType productionType) {
-		Production production = planet.getProduction(productionType);
+	private void sellMax(Person person, Tradeable tradeable, ProductionType productionType) {
+		Production production = tradeable.getProduction(productionType);
 		Ship ship = person.getShip();
-		int maxBuy = planet.getMoney() / production.getBuyPrice();
+		int maxBuy = tradeable.getMoney() / production.getBuyPrice();
 		int maxSell = ship.getStorage(production.getProductionType());
 		int sellAmount = Math.min(maxBuy, maxSell);
 
@@ -87,7 +90,7 @@ public class MinerAi implements Ai {
 			throw new RuntimeException();
 		}
 
-		int payAmount = planet.sellTo(production.getProductionType(), sellAmount);
+		int payAmount = tradeable.sellTo(production.getProductionType(), sellAmount);
 		person.getShip().addStorage(production.getProductionType(), -sellAmount);
 		person.addMoney(payAmount);
 
@@ -95,7 +98,7 @@ public class MinerAi implements Ai {
 			throw new RuntimeException();
 		}
 
-		Log.mine(person.getName() + " sold " + sellAmount + " " + production + " to " + planet.getName()
+		Log.mine(person.getName() + " sold " + sellAmount + " " + production + " to " + tradeable
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
@@ -119,30 +122,34 @@ public class MinerAi implements Ai {
 		person.setDecision(travelDecision);
 	}
 
+	//TODO fix the copypasta of this code
 	private void travelToSell(World world, Person person) throws ConditionsChangedException {
 		Ship ship = person.getShip();
 
 		ProductionType goods = ship.getLargestProductionStorage();
 
-		Planet planet = world.getPlanetsShuffled().stream()
+		Tradeable tradeable = world.getPlanetsShuffled().stream().map(Planet::getTradeable)
+				.filter(Optional::isPresent)
+				.map(Optional::get)
 				.filter(p -> p.getMoney() > 500)
 				.max((o1, o2) -> o1.getProduction(goods).getBuyPrice() - o2.getProduction(goods).getBuyPrice())
 				.get();
+		Location location = tradeable.getLocation();
 
-		TravelDecision travelDecision = new TravelDecision(person, planet);
+		TravelDecision travelDecision = new TravelDecision(person, location);
 		person.setDecision(travelDecision);
 
 		if (person.getLocation() instanceof Planet) {
 			Planet currentPlanet = (Planet) person.getLocation();
-			if (currentPlanet.equals(planet)) {
-				Log.mine("selling on same planet...");
-				sellMax(person, planet, goods);    //Sell the crappy resource and try again
+			if (currentPlanet.equals(location)) {
+				Log.trade("selling on same planet...");
+				sellMax(person, tradeable, goods);    //Sell the crappy resource and try again
 				throw new ConditionsChangedException();
 			}
 		}
 
-		Log.mine(person.getName() + " travels to " + planet.getName()
-				+ " to sell " + goods + " for " + planet.getProduction(goods).getBuyPrice() + " each");
+		Log.mine(person + " travels to " + location
+				+ " to sell " + goods + " for " + tradeable.getProduction(goods).getBuyPrice() + " each");
 	}
 
 	private class ConditionsChangedException extends Exception {

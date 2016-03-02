@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
+import se.persandstrom.ploxworld.locations.property.Mineable;
+import se.persandstrom.ploxworld.locations.property.Tradeable;
 
 import com.google.gson.annotations.Expose;
 
@@ -30,4 +32,13 @@ public abstract class Location {
 	}
 
 	public abstract Optional<Mineable> getMineable();
+
+	public abstract Optional<Tradeable> getTradeable();
+
+	public abstract int getPopulation();
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

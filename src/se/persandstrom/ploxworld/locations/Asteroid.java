@@ -2,11 +2,9 @@ package se.persandstrom.ploxworld.locations;
 
 import java.util.Optional;
 
-import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Point;
-import se.persandstrom.ploxworld.common.Rand;
-import se.persandstrom.ploxworld.person.Person;
-import se.persandstrom.ploxworld.production.ProductionType;
+import se.persandstrom.ploxworld.locations.property.Mineable;
+import se.persandstrom.ploxworld.locations.property.Tradeable;
 
 import com.google.gson.annotations.Expose;
 
@@ -27,5 +25,15 @@ public class Asteroid extends Location implements Comparable<Asteroid> {
 	@Override
 	public Optional<Mineable> getMineable() {
 		return Optional.of(mineable);
+	}
+
+	@Override
+	public Optional<Tradeable> getTradeable() {
+		return Optional.empty();
+	}
+
+	@Override
+	public int getPopulation() {
+		return 0;
 	}
 }
