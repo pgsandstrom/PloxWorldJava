@@ -7,9 +7,8 @@ import java.util.stream.Collectors;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
-import se.persandstrom.ploxworld.locations.Asteroid;
 import se.persandstrom.ploxworld.locations.AsteroidCreater;
-import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.PlanetCreater;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.person.PersonCreater;
@@ -26,24 +25,24 @@ public class World {
 	@Expose private final int height = SIZE_Y;
 	@Expose private final int width = SIZE_X;
 
-	@Expose private final List<Planet> planets;
-	@Expose private final List<Asteroid> asteroids;
+	@Expose private final List<Location> locations;
 	@Expose private List<Person> persons;
 
 	@Expose WorldData worldData;
 	@Expose int turn = 0;
 
 	public World() {
+		locations = new ArrayList<>();
 		PlanetCreater planetCreater = new PlanetCreater(this);
-		planets = planetCreater.createPlanets(25);
+		locations.addAll(planetCreater.createPlanets(25));
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
-		asteroids = asteroidCreater.createAsteroids(5);
+		locations.addAll(asteroidCreater.createAsteroids(5));
 		PersonCreater characterCreater = new PersonCreater(this);
 		persons = characterCreater.createPersons(5, PersonalityType.MINER);
 		persons.addAll(characterCreater.createPersons(5, PersonalityType.TRADE));
 		persons.addAll(characterCreater.createPersons(5, PersonalityType.PIRATE));
 
-		planets.forEach(Planet::prepareStuff);
+		locations.forEach(Location::prepareStuff);
 	}
 
 	public void progressTurn() {
@@ -58,7 +57,7 @@ public class World {
 		//TODO: Return name to name-pool when person dies?
 		persons = persons.stream().filter(Person::isAlive).collect(Collectors.toList());
 
-		planets.forEach(Planet::progressTurn);
+		locations.forEach(Location::progressTurn);
 		turn++;
 		worldData = new WorldData(this);
 	}
@@ -71,34 +70,48 @@ public class World {
 		return new Point(Rand.bound(SIZE_X - borderLeft - borderRight) + borderLeft, Rand.bound(SIZE_Y - borderTop - borderBottom) + borderBottom);
 	}
 
-	public Planet getCheapestSellingPlanet(ProductionType productionType) {
-		return getPlanetsShuffled().stream().min((o1, o2) ->
-				o1.getTradeable().get().getProduction(productionType).getSellPrice() - o2.getTradeable().get().getProduction(productionType).getSellPrice()).get();
+	public Location getCheapestSellingLocation(ProductionType productionType) {
+		return getTradeableShuffled().stream()
+				.min((o1, o2) -> o1.getTradeable().get().getProduction(productionType).getSellPrice() - o2.getTradeable().get().getProduction(productionType).getSellPrice()).get();
 	}
 
-	public Planet getMostPayingPlanet(ProductionType productionType) {
-		return getPlanetsShuffled().stream().max((o1, o2) ->
-				o1.getTradeable().get().getProduction(productionType).getBuyPrice() - o2.getTradeable().get().getProduction(productionType).getBuyPrice()).get();
+	public Location getMostPayingLocation(ProductionType productionType) {
+		return getTradeableShuffled().stream()
+				.max((o1, o2) -> o1.getTradeable().get().getProduction(productionType).getBuyPrice() - o2.getTradeable().get().getProduction(productionType).getBuyPrice()).get();
 	}
 
-	public List<Planet> getPlanets() {	//TODO most getPlanets and getAsteroids should just be getLocations
-		return planets;
+	public List<Location> getLocations() {
+		return locations;
 	}
 
-	public List<Planet> getPlanetsShuffled() {
-		ArrayList<Planet> planetList = new ArrayList<>(this.planets);
-		Collections.shuffle(planetList);
-		return planetList;
+	public List<Location> getLocationsShuffled() {
+		ArrayList<Location> locations = new ArrayList<>(this.locations);
+		Collections.shuffle(locations);
+		return locations;
 	}
 
-	public List<Asteroid> getAsteroids() {
-		return asteroids;
+	public List<Location> getTradeableShuffled() {
+		List<Location> tradeable = this.locations.stream()
+				.filter(loc -> loc.getTradeable().isPresent()).collect(Collectors.toList());
+		Collections.shuffle(tradeable);
+		return tradeable;
 	}
 
-	public List<Asteroid> getAsteroidsShuffled() {
-		ArrayList<Asteroid> asteroidList = new ArrayList<>(this.asteroids);
-		Collections.shuffle(asteroidList);
-		return asteroidList;
+	public List<Location> getCivilizationsShuffled() {
+		List<Location> tradeable = this.locations.stream()
+				.filter(loc -> loc.getCivilization().isPresent()).collect(Collectors.toList());
+		Collections.shuffle(tradeable);
+		return tradeable;
+	}
+
+	public List<Location> getMineableShuffled() {
+		List<Location> tradeable = this.locations.stream()
+				.filter(loc -> loc.getMineable().isPresent()).collect(Collectors.toList());
+		Collections.shuffle(tradeable);
+		if(tradeable.size() == 0) {
+			throw new IllegalStateException();
+		}
+		return tradeable;
 	}
 
 	public List<Person> getPersons() {

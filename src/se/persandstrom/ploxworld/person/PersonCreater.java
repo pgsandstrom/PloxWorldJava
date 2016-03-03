@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import se.persandstrom.ploxworld.common.Rand;
-import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.main.World;
 
 public class PersonCreater {
@@ -44,8 +44,8 @@ public class PersonCreater {
 
 	public Person createPerson(PersonalityType personalityType) {
 		String name = getRandomName();
-		Planet planet = Rand.getRandom(world.getPlanets());
-		return new Person(personalityType.getAi(), personalityType.getPersonality(), name, planet);
+		Location location = Rand.getRandom(world.getLocations());
+		return new Person(personalityType.getAi(), personalityType.getPersonality(), name, location);
 	}
 
 	private String getRandomName() {

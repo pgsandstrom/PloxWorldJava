@@ -4,7 +4,6 @@ import java.util.List;
 
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.locations.Location;
-import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
@@ -76,15 +75,15 @@ public class TraderAi implements Ai {
 	private void travelToBuy(World world, Person person) {
 
 		ProductionType viableGoods = null;
-		Planet cheapestSellingPlanet = null;
+		Location cheapestSellingLocation = null;
 
 		for (ProductionType randomGoods : ProductionType.getBaseProductRandomOrder()) {
 
-			cheapestSellingPlanet = world.getCheapestSellingPlanet(randomGoods);
-			Planet mostPayingPlanet = world.getMostPayingPlanet(randomGoods);
+			cheapestSellingLocation = world.getCheapestSellingLocation(randomGoods);
+			Location mostPayingLocation = world.getMostPayingLocation(randomGoods);
 
-			int minBuyPrice = cheapestSellingPlanet.getTradeable().get().getProduction(randomGoods).getSellPrice();
-			int maxSellPrice = mostPayingPlanet.getTradeable().get().getProduction(randomGoods).getBuyPrice();
+			int minBuyPrice = cheapestSellingLocation.getTradeable().get().getProduction(randomGoods).getSellPrice();
+			int maxSellPrice = mostPayingLocation.getTradeable().get().getProduction(randomGoods).getBuyPrice();
 
 			if (maxSellPrice - minBuyPrice > 0) {
 				viableGoods = randomGoods;
@@ -92,10 +91,10 @@ public class TraderAi implements Ai {
 			}
 		}
 
-		TravelDecision travelDecision = new TravelDecision(person, cheapestSellingPlanet);
+		TravelDecision travelDecision = new TravelDecision(person, cheapestSellingLocation);
 		person.setDecision(travelDecision);
 
-		Log.trade(person + " travels to " + cheapestSellingPlanet
-				+ " to buy " + viableGoods + " for " + cheapestSellingPlanet.getTradeable().get().getProduction(viableGoods).getSellPrice());
+		Log.trade(person + " travels to " + cheapestSellingLocation
+				+ " to buy " + viableGoods + " for " + cheapestSellingLocation.getTradeable().get().getProduction(viableGoods).getSellPrice());
 	}
 }

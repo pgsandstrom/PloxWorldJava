@@ -5,7 +5,6 @@ import org.junit.Test;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.TestUtil;
 import se.persandstrom.ploxworld.locations.Location;
-import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.person.Person;
 
 public class TravelDecisionTest {
@@ -123,12 +122,12 @@ public class TravelDecisionTest {
 			Point from = new Point(working[i]);
 			Point to = new Point(working[i + 1]);
 			Person person = TestUtil.getPerson(from);
-			Planet planet = TestUtil.getPlanet(to);
-			testTravel(person, planet);
+			Location location = TestUtil.getPlanet(to);
+			testTravel(person, location);
 		}
 
 		for (int i = 0; i < 1000000; i++) {
-			Planet toPlanet = TestUtil.getPlanet();
+			Location toPlanet = TestUtil.getPlanet();
 			Person person = TestUtil.getPerson();
 
 			try {
@@ -140,10 +139,10 @@ public class TravelDecisionTest {
 		}
 	}
 
-	private void testTravel(Person person, Planet toPlanet) {
+	private void testTravel(Person person, Location toLocation) {
 
 		Location fromLocation = person.getLocation();
-		TravelDecision travelDecision = new TravelDecision(person, toPlanet);
+		TravelDecision travelDecision = new TravelDecision(person, toLocation);
 
 		double startDistance = travelDecision.getDistance();
 		travelDecision.execute();
@@ -151,7 +150,7 @@ public class TravelDecisionTest {
 
 		if (endDistance > startDistance) {
 			System.out.println("fail from: " + fromLocation.getPoint());
-			System.out.println("fail to:   " + toPlanet.getPoint());
+			System.out.println("fail to:   " + toLocation.getPoint());
 			throw new RuntimeException();
 		} else if (endDistance < startDistance) {
 //				System.out.println("success from: " + fromPlanet.getPoint());

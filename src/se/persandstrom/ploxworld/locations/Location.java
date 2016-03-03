@@ -10,14 +10,56 @@ import se.persandstrom.ploxworld.locations.property.Tradeable;
 
 import com.google.gson.annotations.Expose;
 
-public abstract class Location {
+public class Location implements Comparable<Location> {
 
 	@Expose final String name;
 	@Expose final Point point;
 
-	public Location(String name, Point point) {
+	@Expose private final Tradeable tradeable;
+	@Expose private final Civilization civilization;
+	@Expose private final Mineable mineable;
+
+	public Location(String name, Point point, Mineable mineable) {
+		this(name, point, null, null, mineable);
+	}
+
+	public Location(String name, Point point, Tradeable tradeable) {
+		this(name, point, tradeable, null, null);
+	}
+
+	public Location(String name, Point point, Tradeable tradeable, Civilization civilization) {
+		this(name, point, tradeable, civilization, null);
+	}
+
+	public Location(String name, Point point, Tradeable tradeable, Civilization civilization, Mineable mineable) {
 		this.name = name;
 		this.point = point;
+
+		this.tradeable = tradeable;
+		if (tradeable != null) {
+			this.tradeable.constructorContinued(this);
+		}
+		this.civilization = civilization;
+		if (this.civilization != null) {
+			this.civilization.constructorContinued(this, tradeable);
+		}
+		this.mineable = mineable;
+	}
+
+	public void prepareStuff() {
+		if (civilization != null) {
+			civilization.redistributePopulation();
+			civilization.calculateNeed();
+		}
+	}
+
+	public void progressTurn() {
+		if (civilization != null) {
+			civilization.progressTurn();
+		}
+		if (tradeable != null) {
+			tradeable.progressTurn(this);
+		}
 	}
 
 	public double getDistance(Point point) {
@@ -32,14 +74,42 @@ public abstract class Location {
 		return point;
 	}
 
-	public abstract Optional<Civilization> getCivilization();
+	public Optional<Civilization> getCivilization() {
+		return Optional.ofNullable(civilization);
+	}
 
-	public abstract Optional<Mineable> getMineable();
+	public Optional<Mineable> getMineable() {
+		return Optional.ofNullable(mineable);
+	}
 
-	public abstract Optional<Tradeable> getTradeable();
+	public Optional<Tradeable> getTradeable() {
+		return Optional.ofNullable(tradeable);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Location location = (Location) o;
+
+		if (!name.equals(location.name)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public int compareTo(Location other) {
+		return name.compareTo(other.name);
 	}
 }

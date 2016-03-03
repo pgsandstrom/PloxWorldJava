@@ -37,22 +37,22 @@ public class PlanetCreater {
 		this.world = world;
 	}
 
-	public List<Planet> createPlanets(int number) {
-		List<Planet> planets = new ArrayList<>();
+	public List<Location> createPlanets(int number) {
+		List<Location> planets = new ArrayList<>();
 		while (number-- > 0) {
-			planets.add(createPlanet(planets));
+			planets.add(createLocation(planets));
 		}
 		Collections.sort(planets);
 		return planets;
 	}
 
-	private Planet createPlanet(List<Planet> existingPlanets) {
+	private Location createLocation(List<Location> existingLocations) {
 		String name = getRandomName();
 
 		Point position;
 		do {
 			position = world.getRandomPoint(PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE_RIGHT, PLANET_BORDER_DISTANCE, PLANET_BORDER_DISTANCE);
-		} while (!validPlanetPosition(position, existingPlanets));
+		} while (!validLocationPosition(position, existingLocations));
 
 		int populationMax = Rand.bound(PLANET_MIN_POPULATION_CAP, PLANET_MAX_POPULATION_CAP);
 		double population = Rand.percentage() * (populationMax - 1) + 1;
@@ -70,8 +70,8 @@ public class PlanetCreater {
 		Science science = new Science();
 		initProduction(science, population);
 
-		return new Planet(name, position, new Civilization(populationMax, population),
-				new Tradeable(money, commodity, material, construction, crystal, science));
+		return new Location(name, position,
+				new Tradeable(money, commodity, material, construction, crystal, science), new Civilization(populationMax, population));
 	}
 
 	private String getRandomName() {
@@ -81,11 +81,11 @@ public class PlanetCreater {
 		return name;
 	}
 
-	private boolean validPlanetPosition(Point point, List<Planet> existingPlanets) {
+	private boolean validLocationPosition(Point point, List<Location> existingLocations) {
 		List<Location> locations = new ArrayList<>();
-		locations.addAll(existingPlanets);
-		if (world.getAsteroids() != null) {
-			locations.addAll(world.getAsteroids());
+		locations.addAll(existingLocations);
+		if (world.getLocations() != null) {
+			locations.addAll(world.getLocations());
 		}
 		for (Location location : locations) {
 			if (location.getDistance(point) < PLANET_MIN_DISTANCE) {
@@ -95,7 +95,6 @@ public class PlanetCreater {
 			if (Math.abs(location.getPoint().y - point.y) < 35 && Math.abs(location.getPoint().x - point.x) < 100) {
 				return false;
 			}
-
 		}
 		return true;
 	}

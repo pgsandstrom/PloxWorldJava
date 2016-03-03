@@ -10,7 +10,7 @@ public class PlanetTest {
 
 	@Test
 	public void getQuota() {
-		Planet planet = TestUtil.getPlanet();
+		Location planet = TestUtil.getPlanet();
 		double quota;
 
 		//between limits:

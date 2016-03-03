@@ -3,7 +3,7 @@ package se.persandstrom.ploxworld.ai;
 import java.util.Optional;
 
 import se.persandstrom.ploxworld.common.Log;
-import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
@@ -27,9 +27,10 @@ public class CheckUpgrade {
 
 			//TODO: How much a person wants left after purchase should depend on AI-type and personality
 			if (cost < person.getMoney() / 2) {
-				Optional<Planet> weaponPlanetOpt = world.getPlanetsShuffled().stream().filter(planet -> planet.getCivilization().get().getWeapons().contains(nextWeapon)).findFirst();
-				if (weaponPlanetOpt.isPresent()) {
-					travelToUpgrade(person, weaponPlanetOpt.get(), nextWeapon);
+				Optional<Location> weaponLocationOpt = world.getCivilizationsShuffled().stream()
+						.filter(planet -> planet.getCivilization().get().getWeapons().contains(nextWeapon)).findFirst();
+				if (weaponLocationOpt.isPresent()) {
+					travelToUpgrade(person, weaponLocationOpt.get(), nextWeapon);
 					return true;
 				}
 			} else {
@@ -38,7 +39,7 @@ public class CheckUpgrade {
 		} while (true);
 	}
 
-	private void travelToUpgrade(Person person, Planet planet, Weapon nextWeapon) {
+	private void travelToUpgrade(Person person, Location planet, Weapon nextWeapon) {
 		person.setDecision(new TravelDecision(person, planet, new UpgradeGoal(nextWeapon)));
 		Log.person(person + " is traveling to " + planet + " to buy " + nextWeapon);
 	}

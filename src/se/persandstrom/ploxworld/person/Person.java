@@ -67,10 +67,6 @@ public class Person implements Comparable<Person> {
 		return location;
 	}
 
-	public boolean isOn(Class<? extends Location> clazz) {
-		return clazz.isInstance(location);
-	}
-
 	public void setLocation(Location location) {
 		this.location = location;
 		if (location != null) {

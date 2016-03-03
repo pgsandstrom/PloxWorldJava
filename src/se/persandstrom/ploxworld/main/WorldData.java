@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import se.persandstrom.ploxworld.locations.Planet;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.production.TotalProduction;
@@ -21,11 +21,13 @@ public class WorldData {
 
 		for (ProductionType productionType : ProductionType.values()) {
 			TotalProduction totalProduction = new TotalProduction(productionType);
-			List<Planet> planets = world.getPlanets();
-			planets.forEach(planet -> {
-				Production production = planet.getTradeable().get().getProduction(productionType);
-				totalProduction.addStorage(production.getStorage());
-				totalProduction.addProduction(production.getProduced());
+			List<Location> locations = world.getLocations();
+			locations.forEach(planet -> {
+				if (planet.getTradeable().isPresent()) {
+					Production production = planet.getTradeable().get().getProduction(productionType);
+					totalProduction.addStorage(production.getStorage());
+					totalProduction.addProduction(production.getProduced());
+				}
 			});
 
 			this.totalProduction.put(totalProduction.getProductionType(), totalProduction);

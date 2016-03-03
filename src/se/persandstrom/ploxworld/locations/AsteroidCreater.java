@@ -7,6 +7,7 @@ import java.util.List;
 
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
+import se.persandstrom.ploxworld.locations.property.Mineable;
 import se.persandstrom.ploxworld.main.World;
 
 public class AsteroidCreater {
@@ -24,26 +25,27 @@ public class AsteroidCreater {
 		this.world = world;
 	}
 
-	public List<Asteroid> createAsteroids(int number) {
-		List<Asteroid> asteroids = new ArrayList<>();
+	public List<Location> createAsteroids(int number) {
+		List<Location> asteroids = new ArrayList<>();
 		while (number-- > 0) {
-			asteroids.add(createAsteroid(asteroids));
+			asteroids.add(createLocation(asteroids));
 		}
 		Collections.sort(asteroids);
 		return asteroids;
 	}
 
-	private Asteroid createAsteroid(List<Asteroid> existingAsteroids) {
+	private Location createLocation(List<Location> existingLocations) {
 		String name = getRandomName();
 
 		Point position;
 		do {
 			position = world.getRandomPoint(ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE_RIGHT, ASTEROID_BORDER_DISTANCE, ASTEROID_BORDER_DISTANCE);
-		} while (!validAsteroidPosition(position, existingAsteroids));
+		} while (!validLocationPosition(position, existingLocations));
 
 		double miningEfficiency = Rand.boundDouble(0.3, 3);
 
-		return new Asteroid(name, position, miningEfficiency);
+
+		return new Location(name, position, new Mineable(miningEfficiency));
 	}
 
 	private String getRandomName() {
@@ -53,10 +55,12 @@ public class AsteroidCreater {
 		return name;
 	}
 
-	private boolean validAsteroidPosition(Point point, List<Asteroid> existingAsteroids) {
+	private boolean validLocationPosition(Point point, List<Location> existingLocations) {
 		List<Location> locations = new ArrayList<>();
-		locations.addAll(existingAsteroids);
-		locations.addAll(world.getPlanets());
+		locations.addAll(existingLocations);
+		if (world.getLocations() != null) {
+			locations.addAll(world.getLocations());
+		}
 		for (Location location : locations) {
 			if (location.getDistance(point) < ASTEROID_MIN_DISTANCE) {
 				return false;

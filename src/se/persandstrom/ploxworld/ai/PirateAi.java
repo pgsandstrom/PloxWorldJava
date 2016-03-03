@@ -2,7 +2,7 @@ package se.persandstrom.ploxworld.ai;
 
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
-import se.persandstrom.ploxworld.locations.Asteroid;
+import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
@@ -29,14 +29,14 @@ public class PirateAi implements Ai {
 			e = null;
 
 			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
-			if (person.isOn(Asteroid.class) == false && percentageFree > 0.8) {
-				travelToAsteroid(world, person);
-			} else if (percentageFree < 0.8) {
+			if (percentageFree < 0.8) {
 				try {
 					AiOperations.travelToSell(world, person);
 				} catch (ConditionsChangedException e1) {
 					e = e1;
 				}
+			} else if (person.getLocation().getMineable().isPresent() == false) {
+				travelToMineableLocation(world, person);
 			} else {
 				tryToAmbush(world, person);
 			}
@@ -50,24 +50,23 @@ public class PirateAi implements Ai {
 	}
 
 
-
-	private void travelToAsteroid(World world, Person person) {
-		Asteroid asteroid;
+	private void travelToMineableLocation(World world, Person person) {
+		Location location;
 		if (Rand.bool()) {    // most efficient
-			asteroid = world.getAsteroidsShuffled().stream()
+			location = world.getMineableShuffled().stream()
 					.max((o1, o2) -> Double.compare(o1.getMineable().get().getMiningEfficiency(), o2.getMineable().get().getMiningEfficiency()))
 					.get();
-			Log.pirate(person.getName() + " travels to most efficient asteroid " + asteroid.getName()
-					+ " to mine at an efficiancy of " + asteroid.getMineable().get().getMiningEfficiency());
+			Log.pirate(person.getName() + " travels to most efficient asteroid " + location.getName()
+					+ " to mine at an efficiancy of " + location.getMineable().get().getMiningEfficiency());
 		} else {    // closest
-			asteroid = world.getAsteroidsShuffled().stream()
+			location = world.getMineableShuffled().stream()
 					.min((o1, o2) -> Double.compare(o1.getDistance(person.getPoint()), o2.getDistance(person.getPoint())))
 					.get();
-			Log.pirate(person.getName() + " travels to closest asteroid " + asteroid.getName()
-					+ " to mine at an efficiancy of " + asteroid.getMineable().get().getMiningEfficiency());
+			Log.pirate(person.getName() + " travels to closest asteroid " + location.getName()
+					+ " to mine at an efficiancy of " + location.getMineable().get().getMiningEfficiency());
 		}
 
-		TravelDecision travelDecision = new TravelDecision(person, asteroid);
+		TravelDecision travelDecision = new TravelDecision(person, location);
 		person.setDecision(travelDecision);
 	}
 }

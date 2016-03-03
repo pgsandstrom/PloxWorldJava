@@ -3,7 +3,6 @@ package se.persandstrom.ploxworld.ai;
 import se.persandstrom.ploxworld.action.TransferWeapon;
 import se.persandstrom.ploxworld.common.TransferType;
 import se.persandstrom.ploxworld.locations.Location;
-import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;

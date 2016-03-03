@@ -1,10 +1,7 @@
 package se.persandstrom.ploxworld.ai;
 
-import java.util.Optional;
-
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.locations.Location;
-import se.persandstrom.ploxworld.locations.Planet;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
@@ -40,7 +37,7 @@ public class AiOperations {
 		}
 
 		if (buyAmount < 0) {
-			throw new RuntimeException();	//TODO this is thrown sometimes ;_;
+			throw new RuntimeException();    //TODO this is thrown sometimes ;_;
 		}
 
 		int payAmount = tradeable.buyFrom(production.getProductionType(), buyAmount);
@@ -60,9 +57,7 @@ public class AiOperations {
 
 		ProductionType goods = ship.getLargestProductionStorage();
 
-		Tradeable tradeable = world.getPlanetsShuffled().stream().map(Planet::getTradeable)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+		Tradeable tradeable = world.getTradeableShuffled().stream().map(loc -> loc.getTradeable().get())
 				.filter(p -> p.getMoney() > 500)
 				.max((o1, o2) -> o1.getProduction(goods).getBuyPrice() - o2.getProduction(goods).getBuyPrice())
 				.get();
@@ -71,13 +66,10 @@ public class AiOperations {
 		TravelDecision travelDecision = new TravelDecision(person, location);
 		person.setDecision(travelDecision);
 
-		if (person.getLocation() instanceof Planet) {
-			Planet currentPlanet = (Planet) person.getLocation();
-			if (currentPlanet.equals(location)) {
-				Log.person("selling on same planet...");
-				AiOperations.sellMax(person, tradeable, goods);    //Sell the crappy resource and try again
-				throw new ConditionsChangedException();
-			}
+		if (person.getLocation().equals(location)) {
+			Log.person("selling on same planet...");
+			AiOperations.sellMax(person, tradeable, goods);    //Sell the crappy resource and try again
+			throw new ConditionsChangedException();
 		}
 
 		Log.person(person + " travels to " + location
