@@ -3,6 +3,7 @@ package se.persandstrom.ploxworld.locations;
 import java.util.Optional;
 
 import se.persandstrom.ploxworld.common.Point;
+import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.locations.property.Mineable;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
 
@@ -23,6 +24,11 @@ public class Asteroid extends Location implements Comparable<Asteroid> {
 	}
 
 	@Override
+	public Optional<Civilization> getCivilization() {
+		return null;
+	}
+
+	@Override
 	public Optional<Mineable> getMineable() {
 		return Optional.of(mineable);
 	}
@@ -30,10 +36,5 @@ public class Asteroid extends Location implements Comparable<Asteroid> {
 	@Override
 	public Optional<Tradeable> getTradeable() {
 		return Optional.empty();
-	}
-
-	@Override
-	public int getPopulation() {
-		return 0;
 	}
 }

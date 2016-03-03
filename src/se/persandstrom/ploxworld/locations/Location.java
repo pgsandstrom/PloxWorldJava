@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import se.persandstrom.ploxworld.common.Geo;
 import se.persandstrom.ploxworld.common.Point;
+import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.locations.property.Mineable;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
 
@@ -31,11 +32,11 @@ public abstract class Location {
 		return point;
 	}
 
+	public abstract Optional<Civilization> getCivilization();
+
 	public abstract Optional<Mineable> getMineable();
 
 	public abstract Optional<Tradeable> getTradeable();
-
-	public abstract int getPopulation();
 
 	@Override
 	public String toString() {

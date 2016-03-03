@@ -27,7 +27,7 @@ public class CheckUpgrade {
 
 			//TODO: How much a person wants left after purchase should depend on AI-type and personality
 			if (cost < person.getMoney() / 2) {
-				Optional<Planet> weaponPlanetOpt = world.getPlanetsShuffled().stream().filter(planet -> planet.getWeapons().contains(nextWeapon)).findFirst();
+				Optional<Planet> weaponPlanetOpt = world.getPlanetsShuffled().stream().filter(planet -> planet.getCivilization().get().getWeapons().contains(nextWeapon)).findFirst();
 				if (weaponPlanetOpt.isPresent()) {
 					travelToUpgrade(person, weaponPlanetOpt.get(), nextWeapon);
 					return true;

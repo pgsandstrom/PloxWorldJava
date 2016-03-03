@@ -1,7 +1,7 @@
 package se.persandstrom.ploxworld.action;
 
 import se.persandstrom.ploxworld.common.TransferType;
-import se.persandstrom.ploxworld.locations.Location;
+import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;
 
@@ -10,13 +10,13 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class TransferWeapon {
 
 	private final Person person;
-	private final Location location;
+	private final Civilization civilization;
 	private final Weapon weapon;
 	private final TransferType type;
 
-	public TransferWeapon(Person person, Location location, Weapon weapon, TransferType type) {
+	public TransferWeapon(Person person, Civilization civilization, Weapon weapon, TransferType type) {
 		this.person = person;
-		this.location = location;
+		this.civilization = civilization;
 		this.weapon = weapon;
 		this.type = type;
 	}
@@ -27,7 +27,7 @@ public class TransferWeapon {
 				//auto sell weapon:
 				person.addMoney(person.getShip().getWeapon().getSellCost());
 				person.addMoney(-weapon.purchaseCost);
-				location.getTradeable().get().addMoney(weapon.purchaseCost);
+				civilization.getTradeable().addMoney(weapon.purchaseCost);
 				person.getShip().setWeapon(weapon);
 				break;
 			case SELL:

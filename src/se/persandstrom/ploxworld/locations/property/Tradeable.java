@@ -43,15 +43,12 @@ public class Tradeable {
 		this.productions.add(science);
 	}
 
-	public void setLocation(Location location) {
+	public void constructorContinued(Location location) {
 		this.location = location;
 	}
 
 	public void progressTurn(Location location) {
-		money += (location.getPopulation() * 100);
-
 		this.commodity.progressTurn();
-		this.commodity.addStorage(-location.getPopulation());
 
 		this.material.progressTurn();
 		int materialUsed = this.construction.progressTurn();
