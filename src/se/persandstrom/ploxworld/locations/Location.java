@@ -18,20 +18,23 @@ public class Location implements Comparable<Location> {
 	@Expose private final Tradeable tradeable;
 	@Expose private final Civilization civilization;
 	@Expose private final Mineable mineable;
+	@Expose private final LocationStyle locationStyle;
 
 	public Location(String name, Point point, Mineable mineable) {
-		this(name, point, null, null, mineable);
+		this(name, point, null, null, mineable, LocationStyle.ASTEROID);
 	}
 
 	public Location(String name, Point point, Tradeable tradeable) {
-		this(name, point, tradeable, null, null);
+		this(name, point, tradeable, null, null, LocationStyle.PLANET);
 	}
 
 	public Location(String name, Point point, Tradeable tradeable, Civilization civilization) {
-		this(name, point, tradeable, civilization, null);
+		this(name, point, tradeable, civilization, null, LocationStyle.PLANET);
 	}
 
-	public Location(String name, Point point, Tradeable tradeable, Civilization civilization, Mineable mineable) {
+	public Location(String name, Point point,
+			Tradeable tradeable, Civilization civilization, Mineable mineable,
+			LocationStyle locationStyle) {
 		this.name = name;
 		this.point = point;
 
@@ -44,6 +47,8 @@ public class Location implements Comparable<Location> {
 			this.civilization.constructorContinued(this, tradeable);
 		}
 		this.mineable = mineable;
+
+		this.locationStyle = locationStyle;
 	}
 
 	public void prepareStuff() {

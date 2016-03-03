@@ -44,12 +44,9 @@ var Main = React.createClass({
 	render: function () {
 
 		if (!this.state) {
-			console.log("laoding");
 			return (<div className="main">
 				laodin
 			</div>);
-		} else {
-			console.log("not loadin: " + JSON.stringify(this.state.data));
 		}
 
 		return (

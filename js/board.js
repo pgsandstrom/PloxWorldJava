@@ -12,8 +12,8 @@ ploxworld.Board = React.createClass({
 			<div className="board" style={style}>
 				{this.props.data.locations.map(function (location) {
 					return (
-							<Location key={location.name} data={location}>
-							</Location>
+						<Location key={location.name} data={location}>
+						</Location>
 					);
 				})}
 				{this.props.data.persons.map(function (person) {
@@ -38,13 +38,22 @@ var Location = React.createClass({
 			'top': (this.props.data.point.y - 15) + 'px'
 		};
 
+		var image;
+		if (this.props.data.locationStyle == "PLANET") {
+			image = 'img/planet.png'
+		} else if (this.props.data.locationStyle == "ASTEROID") {
+			image = 'img/asteroid.png'
+		} else {
+			image = 'img/BUGG.png'
+		}
+
 		return (
-				<div className="planet" style={style} onClick={this.showLocation}>
-					<img src="img/planet.png"/>
+			<div className="location" style={style} onClick={this.showLocation}>
+				<img src={image}/>
 				<span>
 					{this.props.data.name}
 				</span>
-				</div>
+			</div>
 		);
 	}
 });
