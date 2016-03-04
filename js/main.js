@@ -91,6 +91,6 @@ var Main = React.createClass({
 });
 
 ReactDOM.render(
-	<Main startUrl="/backend" progressTurnUrl="/backend/progressTurn"/>,
+	<Main startUrl="/backend" progressTurnUrl="/backend/progressTurn?turns=1"/>,
 	document.getElementById('content')
 );

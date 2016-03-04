@@ -14,7 +14,7 @@ ploxworld.GameInfo = React.createClass({
 				{this.props.data.persons.map(function (person) {
 					return (
 						<div key={person.name}>
-							{person.name} : {person.money}
+							{person.ai} : {person.name} : {person.money}
 						</div>
 
 					);

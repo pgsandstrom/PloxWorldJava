@@ -89,7 +89,19 @@ public class Main {
 					world = new World();
 					world.progressTurn();
 				} else if ("/backend/progressTurn".equals(path)) {
-					world.progressTurn();
+					int turnToProgress = 1;
+					String query = uri.getQuery();
+					String[] arguments = query.split("&");
+					for (String argument : arguments) {
+						String[] split = argument.split("=");
+						if (split.length != 2) {
+							throw new IllegalArgumentException();
+						}
+						if ("turns".equals(split[0])) {
+							turnToProgress = Integer.valueOf(split[1]);
+						}
+					}
+					world.progressTurn(turnToProgress);
 				}
 
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();

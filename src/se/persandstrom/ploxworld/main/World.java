@@ -46,19 +46,27 @@ public class World {
 	}
 
 	public void progressTurn() {
-		persons.stream().forEach(
-				person -> {
-					if (person.isAlive()) {
-						person.getAi().makeDecision(World.this, person);
-						person.executeDecision();
-					}
-				}
-		);
-		//TODO: Return name to name-pool when person dies?
-		persons = persons.stream().filter(Person::isAlive).collect(Collectors.toList());
+		progressTurn(1);
+	}
 
-		locations.forEach(Location::progressTurn);
-		turn++;
+	public void progressTurn(int turnToProgress) {
+		while (turnToProgress > 0) {
+
+			persons.stream().forEach(
+					person -> {
+						if (person.isAlive()) {
+							person.getAi().makeDecision(World.this, person);
+							person.executeDecision();
+						}
+					}
+			);
+			//TODO: Return name to name-pool when person dies?
+			persons = persons.stream().filter(Person::isAlive).collect(Collectors.toList());
+
+			locations.forEach(Location::progressTurn);
+			turn++;
+			turnToProgress--;
+		}
 		worldData = new WorldData(this);
 	}
 
@@ -108,7 +116,7 @@ public class World {
 		List<Location> tradeable = this.locations.stream()
 				.filter(loc -> loc.getMineable().isPresent()).collect(Collectors.toList());
 		Collections.shuffle(tradeable);
-		if(tradeable.size() == 0) {
+		if (tradeable.size() == 0) {
 			throw new IllegalStateException();
 		}
 		return tradeable;
