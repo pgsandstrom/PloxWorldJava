@@ -14,6 +14,7 @@ ploxworld.PersonDialog = React.createClass({
 		});
 	},
 	componentDidMount: function () {
+		console.log("componentDidMount");
 		var selectedPersonName = this.props.selectedPersonName;
 		if (selectedPersonName !== undefined) {
 			this.selectPerson(selectedPersonName);
@@ -48,7 +49,7 @@ ploxworld.PersonDialog = React.createClass({
 
 var PersonDetails = React.createClass({
 	render: function () {
-		console.log("personDetails render: " + JSON.stringify(this.props));
+		//console.log("personDetails render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<h1>{this.props.person.name}</h1>

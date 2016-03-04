@@ -14,3 +14,4 @@ var MessageSystem = {
 };
 
 MessageSystem.selectLocation = "SelectLocation";
+MessageSystem.selectPerson = "SelectPerson";

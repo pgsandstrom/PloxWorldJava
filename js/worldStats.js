@@ -3,7 +3,7 @@ var ploxworld = window.ploxworld = window.ploxworld || {};
 ploxworld.WorldStats = React.createClass({
 	render: function () {
 		return (
-			<div>
+			<div className="worldStats">
 				<h1>World Stats</h1>
 
 				<div>

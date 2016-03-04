@@ -9,7 +9,6 @@
 }
 .person {
 	position: absolute;
-	pointer-events: none;
 	-webkit-transition: all 0.1s linear;
 	-moz-transition: all 0.1s linear;
 	-o-transition: all 0.1s linear;

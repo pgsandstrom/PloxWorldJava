@@ -1,0 +1,11 @@
+.board {
+	display: inline-block;
+}
+
+.worldStats {
+	display: block;
+}
+
+.gameInfo {
+	display: inline-block;
+}

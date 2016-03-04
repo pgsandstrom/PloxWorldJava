@@ -2,7 +2,7 @@ var ploxworld = window.ploxworld = window.ploxworld || {};
 
 ploxworld.TradeableInfo = React.createClass({
 	render: function () {
-		console.log("TradeableInfo render: " + JSON.stringify(this.props));
+		//console.log("TradeableInfo render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<div>

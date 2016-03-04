@@ -60,7 +60,8 @@ var Location = React.createClass({
 
 var Person = React.createClass({
 	showPerson: function () {
-		//MessageSystem.dispatch(MessageSystem.selectPlanet, this.props.data.name);
+		console.log("show person: " + this.props.data.name);
+		MessageSystem.dispatch(MessageSystem.selectPerson, this.props.data.name);
 	},
 	render: function () {
 		var style = {
