@@ -22,7 +22,7 @@ public class Person implements Comparable<Person> {
 
 	@Expose private int money = 1000;
 
-	private Ship ship = new Ship();
+	@Expose private Ship ship = new Ship();
 
 	private Decision decision;
 

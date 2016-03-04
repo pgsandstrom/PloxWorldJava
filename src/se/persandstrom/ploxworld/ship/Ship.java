@@ -6,15 +6,17 @@ import java.util.Optional;
 
 import se.persandstrom.ploxworld.production.ProductionType;
 
+import com.google.gson.annotations.Expose;
+
 public class Ship {
 
-	private ShipBase shipBase = ShipBase.SIMPLE;
-	private Weapon weapon = Weapon.SIMPLE;
+	@Expose private ShipBase shipBase = ShipBase.SIMPLE;
+	@Expose private Weapon weapon = Weapon.SIMPLE;
 
-	private int health = shipBase.health;
-	private int maxHealth = shipBase.health;
+	@Expose private int health = shipBase.health;
+	@Expose private int maxHealth = shipBase.health;
 
-	private Map<ProductionType, Integer> storage = new HashMap<>();
+	@Expose private Map<ProductionType, Integer> storage = new HashMap<>();
 
 	public Ship() {
 		for (ProductionType productionType : ProductionType.values()) {

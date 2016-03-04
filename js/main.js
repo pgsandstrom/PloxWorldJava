@@ -41,6 +41,15 @@ var Main = React.createClass({
 	closeLocationList: function () {
 		this.setState({showLocationList: false});
 	},
+	showPersonList: function () {
+		this.setState({showPersonList: true, selectedPersonName: undefined});
+	},
+	showPerson: function (selectedPersonName) {
+		this.setState({showPersonList: true, selectedPersonName: selectedPersonName});
+	},
+	closePersonList: function () {
+		this.setState({showPersonList: false});
+	},
 	render: function () {
 
 		if (!this.state) {
@@ -53,14 +62,19 @@ var Main = React.createClass({
 			<div className="main">
 				<button onClick={this.progressTurn}>Progress Turn</button>
 				<button onClick={this.showLocationList}>Location list</button>
+				<button onClick={this.showPersonList}>Person list</button>
 
-				<ploxworld.Board data={this.state.data}></ploxworld.Board>
+				<ploxworld.Board data={this.state.data}/>
 
-				<ploxworld.WorldStats className="WorldStats" data={this.state.data.worldData}></ploxworld.WorldStats>
+				<ploxworld.WorldStats className="WorldStats" data={this.state.data.worldData}/>
 
 				{ this.state.showLocationList ? <ploxworld.LocationDialog locations={this.state.data.locations}
-																	  selectedLocationName={this.state.selectedLocationName}
-																	  requestClose={this.closeLocationList}/> : null }
+																		  selectedLocationName={this.state.selectedLocationName}
+																		  requestClose={this.closeLocationList}/> : null }
+
+				{ this.state.showPersonList ? <ploxworld.PersonDialog persons={this.state.data.persons}
+																		  selectedPersonName={this.state.selectedPersonName}
+																		  requestClose={this.closePersonList}/> : null }
 			</div>
 
 		);
