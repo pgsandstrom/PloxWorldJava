@@ -38,9 +38,9 @@ public class World {
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
 		locations.addAll(asteroidCreater.createAsteroids(5));
 		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(5, PersonalityType.MINER);
-		persons.addAll(characterCreater.createPersons(5, PersonalityType.TRADE));
-		persons.addAll(characterCreater.createPersons(5, PersonalityType.PIRATE));
+		persons = characterCreater.createPersons(1, PersonalityType.MINER);
+		persons.addAll(characterCreater.createPersons(0, PersonalityType.TRADE));
+		persons.addAll(characterCreater.createPersons(0, PersonalityType.PIRATE));
 
 		locations.forEach(Location::prepareStuff);
 	}

@@ -15,6 +15,10 @@ public class PirateAi implements Ai {
 			return;
 		}
 
+		if (person.getDecision() != null && person.getDecision().getGoal() != null) {
+			person.getDecision().getGoal().execute(person);
+		}
+
 		Ship ship = person.getShip();
 		person.setDecision(null);
 

@@ -224,4 +224,9 @@ public class Civilization {
 	public void addWeapon(Weapon weapon) {
 		weapons.add(weapon);
 	}
+
+	@Override
+	public String toString() {
+		return location.getName();
+	}
 }
