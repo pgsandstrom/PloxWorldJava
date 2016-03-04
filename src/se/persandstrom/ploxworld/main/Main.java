@@ -3,14 +3,23 @@ package se.persandstrom.ploxworld.main;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.Files;
 
+import se.persandstrom.ploxworld.ai.Ai;
+import se.persandstrom.ploxworld.ai.MinerAi;
+import se.persandstrom.ploxworld.ai.PirateAi;
+import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Rand;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -83,7 +92,7 @@ public class Main {
 					world.progressTurn();
 				}
 
-				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
 				response = gson.toJson(world);
 
 
@@ -100,4 +109,18 @@ public class Main {
 		}
 	}
 
+	public static class AiSerializer implements JsonSerializer<Ai> {
+		@Override
+		public JsonElement serialize(Ai ai, Type type, JsonSerializationContext jsonSerializationContext) {
+			if (ai instanceof TraderAi) {
+				return new JsonPrimitive("Trader");
+			} else if (ai instanceof MinerAi) {
+				return new JsonPrimitive("Miner");
+			} else if (ai instanceof PirateAi) {
+				return new JsonPrimitive("Pirate");
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+	}
 }

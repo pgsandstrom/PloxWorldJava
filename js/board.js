@@ -64,6 +64,7 @@ var Person = React.createClass({
 		MessageSystem.dispatch(MessageSystem.selectPerson, this.props.data.name);
 	},
 	render: function () {
+		console.log("Person render: " + JSON.stringify(this.props));
 		var style = {
 			'left': (this.props.data.point.x - 5) + 'px',
 			'top': (this.props.data.point.y - 6) + 'px'

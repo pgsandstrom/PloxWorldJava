@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 
 public class Person implements Comparable<Person> {
 
-	private final Ai ai;
+	@Expose private final Ai ai;
 	private final Personality personality;
 
 	private boolean alive = true;
