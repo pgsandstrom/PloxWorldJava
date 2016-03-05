@@ -31,7 +31,7 @@ public class Civilization {
 
 	private final List<Production> productions = new ArrayList<>();
 
-	private Set<Weapon> weapons = new HashSet<>();
+	@Expose private Set<Weapon> weapons = new HashSet<>();
 
 	{
 		weapons.add(Weapon.SIMPLE);
