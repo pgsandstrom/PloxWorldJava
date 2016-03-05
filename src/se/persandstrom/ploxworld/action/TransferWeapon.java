@@ -7,7 +7,7 @@ import se.persandstrom.ploxworld.ship.Weapon;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class TransferWeapon {
+public class TransferWeapon implements Action {
 
 	private final Person person;
 	private final Civilization civilization;
@@ -21,6 +21,7 @@ public class TransferWeapon {
 		this.type = type;
 	}
 
+	@Override
 	public void execute() {
 		switch (type) {
 			case BUY:

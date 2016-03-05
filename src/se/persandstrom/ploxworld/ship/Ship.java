@@ -47,6 +47,19 @@ public class Ship {
 		return max.get().getKey();
 	}
 
+	public void damage(int damage) {
+		health -= damage;
+	}
+
+	public boolean isDead() {
+		return health <= 0;
+	}
+
+	public double getPower() {
+		return (shipBase.health * weapon.getAverageDamage());
+	}
+
+
 	public Weapon getWeapon() {
 		return weapon;
 	}
@@ -59,15 +72,22 @@ public class Ship {
 		return shipBase;
 	}
 
-	public double getPower() {
-		return  (shipBase.health * weapon.getAverageDamage());
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 
-	public void damage(int damage) {
-		health -= damage;
+	public int getHealth() {
+		return health;
 	}
 
-	public boolean isDead() {
-		return health <= 0;
+	public void addHealth(int incHealth) {
+		this.health += incHealth;
+		if (health > maxHealth) {
+			throw new IllegalStateException();
+		}
+	}
+
+	public boolean isDamaged() {
+		return maxHealth > health;
 	}
 }

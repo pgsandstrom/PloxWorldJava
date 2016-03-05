@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.ai;
 
+import se.persandstrom.ploxworld.action.Repair;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Location;
@@ -22,6 +23,9 @@ public class MinerAi implements Ai {
 		Ship ship = person.getShip();
 		person.setDecision(null);
 
+		if(ship.isDamaged() && person.getLocation().getCivilization().isPresent()) {
+			new Repair(person, person.getLocation().getCivilization().get()).execute();
+		}
 
 		AiOperations.tryToSell(person);
 

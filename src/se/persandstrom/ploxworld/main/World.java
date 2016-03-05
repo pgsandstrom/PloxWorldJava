@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.AsteroidCreater;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.PlanetCreater;
+import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.person.PersonCreater;
 import se.persandstrom.ploxworld.person.PersonalityType;
@@ -116,6 +118,13 @@ public class World {
 	public Location getMostPayingLocation(ProductionType productionType) {
 		return getTradeableShuffled().stream()
 				.max((o1, o2) -> o1.getTradeable().get().getProduction(productionType).getBuyPrice() - o2.getTradeable().get().getProduction(productionType).getBuyPrice()).get();
+	}
+
+	public Location getClosestCivilization(Point point) {
+		return locations.stream()
+				.filter(location -> location.getCivilization().isPresent())
+				.min((o1, o2) -> Double.compare(o1.getDistance(point), o2.getDistance(point)))
+				.get();
 	}
 
 	public List<Location> getLocations() {

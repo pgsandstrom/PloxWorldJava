@@ -102,4 +102,9 @@ public class AiOperations {
 		Log.person(person + " sold " + sellAmount + " " + production + " to " + tradeable
 				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
+
+	public static void travelToRepair(World world, Person person) {
+		Location closestCivilization = world.getClosestCivilization(person.getPoint());
+		person.setDecision(new TravelDecision(person, closestCivilization, new RepairGoal()));
+	}
 }

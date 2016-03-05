@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.ai;
 
 import java.util.List;
 
+import se.persandstrom.ploxworld.action.Repair;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
@@ -29,6 +30,9 @@ public class TraderAi implements Ai {
 		Ship ship = person.getShip();
 		person.setDecision(null);
 
+		if(ship.isDamaged() && person.getLocation().getCivilization().isPresent()) {
+			new Repair(person, person.getLocation().getCivilization().get()).execute();
+		}
 
 		AiOperations.tryToSell(person);
 		tryToBuyCheap(person);
