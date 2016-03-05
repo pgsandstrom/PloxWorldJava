@@ -1,5 +1,7 @@
 package se.persandstrom.ploxworld.main;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,13 @@ public class World {
 	private static final int SIZE_X = 800;
 	private static final int SIZE_Y = 500;
 
+	private static final int PLANET_NUMBER = 25;
+	private static final int ASTEROID_NUMBER = 5;
+
+	private static final int MINER_NUMBER = 5;
+	private static final int TRADER_NUMBER = 5;
+	private static final int PIRATE_NUMBER = 5;
+
 	@Expose private final int height = SIZE_Y;
 	@Expose private final int width = SIZE_X;
 
@@ -31,16 +40,16 @@ public class World {
 	@Expose WorldData worldData;
 	@Expose int turn = 0;
 
-	public World() {
+	public World() throws IOException, URISyntaxException {
 		locations = new ArrayList<>();
 		PlanetCreater planetCreater = new PlanetCreater(this);
-		locations.addAll(planetCreater.createPlanets(25));
+		locations.addAll(planetCreater.createPlanets(PLANET_NUMBER));
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
-		locations.addAll(asteroidCreater.createAsteroids(5));
+		locations.addAll(asteroidCreater.createAsteroids(ASTEROID_NUMBER));
 		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(1, PersonalityType.MINER);
-		persons.addAll(characterCreater.createPersons(0, PersonalityType.TRADE));
-		persons.addAll(characterCreater.createPersons(0, PersonalityType.PIRATE));
+		persons = characterCreater.createPersons(MINER_NUMBER, PersonalityType.MINER);
+		persons.addAll(characterCreater.createPersons(TRADER_NUMBER, PersonalityType.TRADE));
+		persons.addAll(characterCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
 
 		locations.forEach(Location::prepareStuff);
 	}
@@ -68,6 +77,10 @@ public class World {
 			turnToProgress--;
 		}
 		worldData = new WorldData(this);
+	}
+
+	private void spawnNewPersons() {
+
 	}
 
 	public Point getRandomPoint(int border) {
