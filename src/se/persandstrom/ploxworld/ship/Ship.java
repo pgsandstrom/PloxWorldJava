@@ -59,8 +59,8 @@ public class Ship {
 		return shipBase;
 	}
 
-	public int getPower() {
-		return (int) (shipBase.health * weapon.getAverageDamage());
+	public double getPower() {
+		return  (shipBase.health * weapon.getAverageDamage());
 	}
 
 	public void damage(int damage) {

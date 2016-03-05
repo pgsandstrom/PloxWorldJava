@@ -22,8 +22,17 @@ var Main = React.createClass({
 		});
 	},
 	progressTurn: function () {
+		this.progress(this.props.progressTurnUrl);
+	},
+	progress10Turns: function () {
+		this.progress(this.props.progress10TurnsUrl);
+	},
+	progress100Turns: function () {
+		this.progress(this.props.progress100TurnsUrl);
+	},
+	progress: function (url) {
 		$.ajax({
-			url: this.props.progressTurnUrl,
+			url: url,
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
@@ -65,6 +74,8 @@ var Main = React.createClass({
 			<div>
 				<div>
 					<button onClick={this.progressTurn}>Progress Turn</button>
+					<button onClick={this.progress10Turns}>Progress 10 Turns</button>
+					<button onClick={this.progress100Turns}>Progress 100 Turns</button>
 					<button onClick={this.showLocationList}>Location list</button>
 					<button onClick={this.showPersonList}>Person list</button>
 				</div>
@@ -91,6 +102,9 @@ var Main = React.createClass({
 });
 
 ReactDOM.render(
-	<Main startUrl="/backend" progressTurnUrl="/backend/progressTurn?turns=1"/>,
+	<Main startUrl="/backend"
+		  progressTurnUrl="/backend/progressTurn?turns=1"
+		  progress10TurnsUrl="/backend/progressTurn?turns=10"
+		  progress100TurnsUrl="/backend/progressTurn?turns=100"/>,
 	document.getElementById('content')
 );

@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import se.persandstrom.ploxworld.ai.MinerAi;
+import se.persandstrom.ploxworld.ai.PirateAi;
+import se.persandstrom.ploxworld.ai.TraderAi;
 import se.persandstrom.ploxworld.common.Point;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.AsteroidCreater;
@@ -31,6 +34,8 @@ public class World {
 	private static final int TRADER_NUMBER = 5;
 	private static final int PIRATE_NUMBER = 5;
 
+	private final PersonCreater personCreater;
+
 	@Expose private final int height = SIZE_Y;
 	@Expose private final int width = SIZE_X;
 
@@ -46,10 +51,10 @@ public class World {
 		locations.addAll(planetCreater.createPlanets(PLANET_NUMBER));
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
 		locations.addAll(asteroidCreater.createAsteroids(ASTEROID_NUMBER));
-		PersonCreater characterCreater = new PersonCreater(this);
-		persons = characterCreater.createPersons(MINER_NUMBER, PersonalityType.MINER);
-		persons.addAll(characterCreater.createPersons(TRADER_NUMBER, PersonalityType.TRADE));
-		persons.addAll(characterCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
+		personCreater = new PersonCreater(this);
+		persons = personCreater.createPersons(MINER_NUMBER, PersonalityType.MINER);
+		persons.addAll(personCreater.createPersons(TRADER_NUMBER, PersonalityType.TRADE));
+		persons.addAll(personCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
 
 		locations.forEach(Location::prepareStuff);
 	}
@@ -61,6 +66,8 @@ public class World {
 	public void progressTurn(int turnToProgress) {
 		while (turnToProgress > 0) {
 
+			spawnNewPersons();
+
 			persons.stream().forEach(
 					person -> {
 						if (person.isAlive()) {
@@ -69,7 +76,6 @@ public class World {
 						}
 					}
 			);
-			//TODO: Return name to name-pool when person dies?
 			persons = persons.stream().filter(Person::isAlive).collect(Collectors.toList());
 
 			locations.forEach(Location::progressTurn);
@@ -80,7 +86,18 @@ public class World {
 	}
 
 	private void spawnNewPersons() {
-
+		long traderCount = persons.stream().filter(person -> person.getAi() instanceof TraderAi).count();
+		if (traderCount < TRADER_NUMBER) {
+			persons.add(personCreater.createPerson(PersonalityType.TRADE));
+		}
+		long minerCount = persons.stream().filter(person -> person.getAi() instanceof MinerAi).count();
+		if (minerCount < TRADER_NUMBER) {
+			persons.add(personCreater.createPerson(PersonalityType.MINER));
+		}
+		long pirateCount = persons.stream().filter(person -> person.getAi() instanceof PirateAi).count();
+		if (pirateCount < TRADER_NUMBER) {
+			persons.add(personCreater.createPerson(PersonalityType.PIRATE));
+		}
 	}
 
 	public Point getRandomPoint(int border) {
