@@ -1,15 +1,18 @@
 package se.persandstrom.ploxworld.interaction;
 
+import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 
 public class Ambush {
 
+	private final World world;
 	private final Person aggressor;
 	private final Person victim;
 
 	private final double powerRatio;
 
-	public Ambush(Person aggressor, Person victim) {
+	public Ambush(World world, Person aggressor, Person victim) {
+		this.world = world;
 		this.aggressor = aggressor;
 		this.victim = victim;
 		this.powerRatio = aggressor.getShip().getPower() / victim.getShip().getPower();
@@ -20,10 +23,10 @@ public class Ambush {
 
 		switch (confrontDialogRun) {
 			case ATTACK:
-				new Fight(aggressor, victim).start();
+				new Fight(world, aggressor, victim).start();
 				return;
 			case DIALOG:
-				new Dialog(aggressor, victim).start();
+				new Dialog(world, aggressor, victim).start();
 				return;
 			case LEAVE:
 				//TODO: Other get chance to attack?

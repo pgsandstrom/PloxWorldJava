@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import se.persandstrom.ploxworld.action.Action;
 import se.persandstrom.ploxworld.ai.MinerAi;
 import se.persandstrom.ploxworld.ai.PirateAi;
 import se.persandstrom.ploxworld.ai.TraderAi;
@@ -98,6 +99,10 @@ public class World {
 		if (pirateCount < TRADER_NUMBER) {
 			persons.add(personCreater.createPerson(PersonalityType.PIRATE));
 		}
+	}
+
+	public void executeAction(Action action) {
+		action.execute();
 	}
 
 	public Point getRandomPoint(int border) {

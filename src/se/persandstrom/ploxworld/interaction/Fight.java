@@ -3,18 +3,21 @@ package se.persandstrom.ploxworld.interaction;
 import se.persandstrom.ploxworld.action.TransferGoods;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
+import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
 import se.persandstrom.ploxworld.ship.Weapon;
 
 public class Fight {
 
+	private final World world;
 	private final Combatant first;
 	private final Combatant second;
 
 	private int distance = 6;
 
-	public Fight(Person first, Person second) {
+	public Fight(World world, Person first, Person second) {
+		this.world = world;
 		this.first = new Combatant(first, first.getShip());
 		this.second = new Combatant(second, second.getShip());
 	}
@@ -33,7 +36,7 @@ public class Fight {
 
 			if (first.person.isAlive() == false) {
 				Log.fight(first.person.getName() + " DIED in combat!!!");
-				new TransferGoods(second.person, first.person, 0.8).execute();
+				world.executeAction(new TransferGoods(second.person, first.person, 0.8));
 				return;
 			}
 

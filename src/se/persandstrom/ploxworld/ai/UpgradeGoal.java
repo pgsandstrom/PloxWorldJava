@@ -4,6 +4,7 @@ import se.persandstrom.ploxworld.action.TransferWeapon;
 import se.persandstrom.ploxworld.common.TransferType;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.property.Civilization;
+import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;
 
@@ -16,7 +17,7 @@ public class UpgradeGoal implements Goal {
 	}
 
 	@Override
-	public void execute(Person person) {
+	public void execute(World world, Person person) {
 		Location location = person.getLocation();
 		if (location.getCivilization().isPresent()) {
 			Civilization civilization = location.getCivilization().get();
@@ -24,7 +25,7 @@ public class UpgradeGoal implements Goal {
 				throw new IllegalStateException();
 			}
 
-			new TransferWeapon(person, civilization, weapon, TransferType.BUY).execute();
+			world.executeAction(new TransferWeapon(person, civilization, weapon, TransferType.BUY));
 			//TODO: Sell old weapon. This requires inventory and lots of stuff
 		}
 	}

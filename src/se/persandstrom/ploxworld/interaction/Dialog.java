@@ -1,16 +1,19 @@
 package se.persandstrom.ploxworld.interaction;
 
 import se.persandstrom.ploxworld.common.Log;
+import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 
 public class Dialog {
 
+	private final World world;
 	private final Person aggressor;
 	private final Person victim;
 
 	private final double powerRatio;
 
-	public Dialog(Person aggressor, Person victim) {
+	public Dialog(World world, Person aggressor, Person victim) {
+		this.world = world;
 		this.aggressor = aggressor;
 		this.victim = victim;
 		powerRatio = aggressor.getShip().getPower() / victim.getShip().getPower();
@@ -29,13 +32,13 @@ public class Dialog {
 				Log.dialog(victim + " decides to " + reactThreat);
 				switch (reactThreat) {
 					case ACCEPT:
-						new AcceptThreat(aggressor, victim).start(threat);
+						new AcceptThreat(world, aggressor, victim).start(threat);
 					case REFUSE:
 						ReactThreatRefusal reactThreatRefusal = reactThreatRefusal();
 						Log.dialog(aggressor + " reacts to refusal with " + reactThreatRefusal);
 						switch (reactThreatRefusal) {
 							case ATTACK:
-								new Fight(aggressor, victim).start();
+								new Fight(world, aggressor, victim).start();
 							case LEAVE:
 								return;
 						}
@@ -45,7 +48,7 @@ public class Dialog {
 				Log.dialog(victim + " reacts to leaving with " + reactLeave);
 				switch (reactLeave) {
 					case ATTACK:
-						new Fight(victim, aggressor).start();
+						new Fight(world, victim, aggressor).start();
 						return;
 					case LEAVE:
 						return;

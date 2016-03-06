@@ -17,14 +17,14 @@ public class MinerAi implements Ai {
 		}
 
 		if (person.getDecision() != null && person.getDecision().getGoal() != null) {
-			person.getDecision().getGoal().execute(person);
+			person.getDecision().getGoal().execute(world, person);
 		}
 
 		Ship ship = person.getShip();
 		person.setDecision(null);
 
 		if(ship.isDamaged() && person.getLocation().getCivilization().isPresent()) {
-			new Repair(person, person.getLocation().getCivilization().get()).execute();
+			world.executeAction(new Repair(person, person.getLocation().getCivilization().get()));
 		}
 
 		AiOperations.tryToSell(person);

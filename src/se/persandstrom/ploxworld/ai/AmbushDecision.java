@@ -27,7 +27,7 @@ public class AmbushDecision implements Decision {
 
 		if (ambushedPerson.isPresent()) {
 			Log.pirate(person + " ambushed " + ambushedPerson.get());
-			new Ambush(person, ambushedPerson.get()).start();
+			new Ambush(world, person, ambushedPerson.get()).start();
 		}
 	}
 
