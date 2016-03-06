@@ -3,6 +3,7 @@ package se.persandstrom.ploxworld.action;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.TransferType;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
+import se.persandstrom.ploxworld.main.WorldData;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.production.ProductionType;
 
@@ -40,5 +41,10 @@ public class TradeGoods implements Action {
 			throw new IllegalStateException();
 		}
 
+	}
+
+	@Override
+	public void saveData(WorldData worldData) {
+		worldData.addDataValue(WorldData.KEY_GOODS_TRADED, amount);
 	}
 }

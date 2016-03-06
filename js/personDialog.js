@@ -14,7 +14,6 @@ ploxworld.PersonDialog = React.createClass({
 		});
 	},
 	componentDidMount: function () {
-		console.log("componentDidMount");
 		var selectedPersonName = this.props.selectedPersonName;
 		if (selectedPersonName !== undefined) {
 			this.selectPerson(selectedPersonName);

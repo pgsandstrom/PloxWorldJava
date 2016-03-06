@@ -8,8 +8,6 @@ ploxworld.ShipInfo = React.createClass({
 		for (var item in this.props.ship.storage) {
 			storage.push({type: item, amount: this.props.ship.storage[item]});
 		}
-		//rows.push(<ObjectRow />);
-
 
 		return (
 			<div>

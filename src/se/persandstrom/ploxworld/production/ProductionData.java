@@ -2,13 +2,13 @@ package se.persandstrom.ploxworld.production;
 
 import com.google.gson.annotations.Expose;
 
-public class TotalProduction {
+public class ProductionData {
 
 	@Expose private final ProductionType productionType;
 	@Expose int storage = 0;
 	@Expose int production = 0;
 
-	public TotalProduction(ProductionType productionType) {
+	public ProductionData(ProductionType productionType) {
 		this.productionType = productionType;
 	}
 
@@ -36,7 +36,7 @@ public class TotalProduction {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		TotalProduction that = (TotalProduction) o;
+		ProductionData that = (ProductionData) o;
 		if (productionType != that.productionType) return false;
 		return true;
 	}

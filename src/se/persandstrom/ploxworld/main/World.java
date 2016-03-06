@@ -58,6 +58,8 @@ public class World {
 		persons.addAll(personCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
 
 		locations.forEach(Location::prepareStuff);
+
+		worldData = new WorldData(this);
 	}
 
 	public void progressTurn() {
@@ -83,7 +85,7 @@ public class World {
 			turn++;
 			turnToProgress--;
 		}
-		worldData = new WorldData(this);
+		worldData.calculateProductionData();
 	}
 
 	private void spawnNewPersons() {
@@ -103,6 +105,7 @@ public class World {
 
 	public void executeAction(Action action) {
 		action.execute();
+		action.saveData(worldData);
 	}
 
 	public Point getRandomPoint(int border) {

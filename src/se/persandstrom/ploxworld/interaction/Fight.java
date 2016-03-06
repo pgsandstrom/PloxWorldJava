@@ -42,7 +42,7 @@ public class Fight {
 
 			if (second.person.isAlive() == false) {
 				Log.fight(second.person.getName() + " DIED in combat!!!");
-				new TransferGoods(first.person, second.person, 0.8).execute();
+				world.executeAction(new TransferGoods(first.person, second.person, 0.8));
 				return;
 			}
 		}

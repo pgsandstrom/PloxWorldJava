@@ -1,6 +1,7 @@
 package se.persandstrom.ploxworld.action;
 
 import se.persandstrom.ploxworld.locations.property.Civilization;
+import se.persandstrom.ploxworld.main.WorldData;
 import se.persandstrom.ploxworld.person.Person;
 
 public class Repair implements Action {
@@ -36,6 +37,11 @@ public class Repair implements Action {
 		int cost = repairAmount * REPAIR_COST;
 		person.addMoney(-cost);
 		civilization.getTradeable().addMoney(cost);
+	}
+
+	@Override
+	public void saveData(WorldData worldData) {
+		worldData.addDataValue(WorldData.KEY_REPAIRED, repairAmount);
 	}
 
 }

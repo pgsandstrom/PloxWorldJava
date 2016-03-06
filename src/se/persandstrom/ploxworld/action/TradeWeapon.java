@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.action;
 
 import se.persandstrom.ploxworld.common.TransferType;
 import se.persandstrom.ploxworld.locations.property.Civilization;
+import se.persandstrom.ploxworld.main.WorldData;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;
 
@@ -36,5 +37,10 @@ public class TradeWeapon implements Action {
 				throw new NotImplementedException();
 		}
 
+	}
+
+	@Override
+	public void saveData(WorldData worldData) {
+		worldData.addDataValue(WorldData.KEY_WEAPONS_BOUGHT, 1);
 	}
 }
