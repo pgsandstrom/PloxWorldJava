@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,6 @@ import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.AsteroidCreater;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.PlanetCreater;
-import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.person.PersonCreater;
 import se.persandstrom.ploxworld.person.PersonalityType;

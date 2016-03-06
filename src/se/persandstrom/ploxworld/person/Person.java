@@ -20,17 +20,18 @@ public class Person implements Comparable<Person> {
 	@Expose private Point point;
 	@Expose private Location location;
 
-	@Expose private int money = 1000;
+	@Expose private int money;
 
 	@Expose private Ship ship = new Ship();
 
 	private Decision decision;
 
-	public Person(Ai ai, Personality personality, String name, Location location) {
+	public Person(Ai ai, Personality personality, String name, Location location, int money) {
 		this.ai = ai;
 		this.personality = personality;
 		this.name = name;
 		setLocation(location);
+		this.money = money;
 	}
 
 	public void executeDecision() {

@@ -13,8 +13,8 @@ public enum Weapon {
 	BARR(			"BARR",			5,	12,	0.5,	7000,	2000),
 	BARR_X(			"BARR-X",		7,	14,	0.55,	9000,	3000),
 	ASSAULT_MC1(	"Assault MC1",	10,	15,	0.6,	14000,	4000),
-	ASSAULT_MC2(	"Assault MC1",	12,	17,	0.6,	20000,	10000),
-	ASSAULT_MC3(	"Assault MC1",	14,	19,	0.65,	25000,	15000);
+	ASSAULT_MC2(	"Assault MC2",	12,	17,	0.6,	20000,	10000),
+	ASSAULT_MC3(	"Assault MC3",	14,	19,	0.65,	25000,	15000);
 
 	public final String name;
 	public final int minDamage;

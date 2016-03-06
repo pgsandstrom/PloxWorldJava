@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.interaction;
 
+import se.persandstrom.ploxworld.action.TransferGoods;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.person.Person;
 
@@ -35,6 +36,6 @@ public class AcceptThreat {
 		} else {
 			throw new IllegalStateException();
 		}
-		new TransferResources(aggressor, victim).execute(quote);
+		new TransferGoods(aggressor, victim, quote).execute();
 	}
 }

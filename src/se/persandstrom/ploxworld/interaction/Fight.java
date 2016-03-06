@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.interaction;
 
+import se.persandstrom.ploxworld.action.TransferGoods;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.person.Person;
@@ -32,13 +33,13 @@ public class Fight {
 
 			if (first.person.isAlive() == false) {
 				Log.fight(first.person.getName() + " DIED in combat!!!");
-				new TransferResources(second.person, first.person).execute(0.8);
+				new TransferGoods(second.person, first.person, 0.8).execute();
 				return;
 			}
 
 			if (second.person.isAlive() == false) {
 				Log.fight(second.person.getName() + " DIED in combat!!!");
-				new TransferResources(first.person, second.person).execute(0.8);
+				new TransferGoods(first.person, second.person, 0.8).execute();
 				return;
 			}
 		}

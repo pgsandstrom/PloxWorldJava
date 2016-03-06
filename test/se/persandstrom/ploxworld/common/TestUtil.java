@@ -29,10 +29,10 @@ public class TestUtil {
 	}
 
 	public static Person getPerson() {
-		return new Person(new TraderAi(), PersonalityType.TRADE.getPersonality(), "person name", getPlanet());
+		return new Person(new TraderAi(), PersonalityType.TRADE.getPersonality(), "person name", getPlanet(), 1000);
 	}
 
 	public static Person getPerson(Point point) {
-		return new Person(new TraderAi(), PersonalityType.TRADE.getPersonality(), "person name", getPlanet(point));
+		return new Person(new TraderAi(), PersonalityType.TRADE.getPersonality(), "person name", getPlanet(point), 1000);
 	}
 }

@@ -54,7 +54,19 @@ public class PersonCreater {
 	public Person createPerson(PersonalityType personalityType) {
 		String name = getRandomName();
 		Location location = Rand.getRandom(world.getLocations());
-		return new Person(personalityType.getAi(), personalityType.getPersonality(), name, location);
+		int money = 0;
+		switch (personalityType) {
+			case MINER:
+				money = 1000;
+				break;
+			case TRADE:
+				money = 1000;
+				break;
+			case PIRATE:
+				money = 10000;
+				break;
+		}
+		return new Person(personalityType.getAi(), personalityType.getPersonality(), name, location, money);
 	}
 
 	private String getRandomName() {
