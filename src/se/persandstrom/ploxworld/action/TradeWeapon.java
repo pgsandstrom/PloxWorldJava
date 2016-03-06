@@ -7,14 +7,14 @@ import se.persandstrom.ploxworld.ship.Weapon;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class TransferWeapon implements Action {
+public class TradeWeapon implements Action {
 
 	private final Person person;
 	private final Civilization civilization;
 	private final Weapon weapon;
 	private final TransferType type;
 
-	public TransferWeapon(Person person, Civilization civilization, Weapon weapon, TransferType type) {
+	public TradeWeapon(Person person, Civilization civilization, Weapon weapon, TransferType type) {
 		this.person = person;
 		this.civilization = civilization;
 		this.weapon = weapon;

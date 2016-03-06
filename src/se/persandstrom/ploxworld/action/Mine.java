@@ -1,0 +1,22 @@
+package se.persandstrom.ploxworld.action;
+
+import se.persandstrom.ploxworld.common.Log;
+import se.persandstrom.ploxworld.person.Person;
+import se.persandstrom.ploxworld.production.ProductionType;
+
+public class Mine implements Action {
+
+	private final Person person;
+	private final int mined;
+
+	public Mine(Person person, int mined) {
+		this.person = person;
+		this.mined = mined;
+	}
+
+	@Override
+	public void execute() {
+		person.getShip().addStorage(ProductionType.MATERIAL, mined);	//TODO should be inside an action
+		Log.mine(person.getName() + " mined for " + mined);
+	}
+}

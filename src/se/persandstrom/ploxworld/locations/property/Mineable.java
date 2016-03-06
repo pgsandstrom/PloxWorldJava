@@ -1,9 +1,9 @@
 package se.persandstrom.ploxworld.locations.property;
 
-import se.persandstrom.ploxworld.common.Log;
+import se.persandstrom.ploxworld.action.Mine;
 import se.persandstrom.ploxworld.common.Rand;
+import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
-import se.persandstrom.ploxworld.production.ProductionType;
 
 import com.google.gson.annotations.Expose;
 
@@ -19,10 +19,9 @@ public class Mineable {
 		return miningEfficiency;
 	}
 
-	public void mine(Person person) {
+	public void mine(World world, Person person) {
 		double miningRoll = Rand.boundDouble(0, miningEfficiency);
 		int mined = (int) miningRoll;
-		person.getShip().addStorage(ProductionType.MATERIAL, mined);
-		Log.mine(person.getName() + " mined for " + mined);
+		world.executeAction(new Mine(person, mined));
 	}
 }

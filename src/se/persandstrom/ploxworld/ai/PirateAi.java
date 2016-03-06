@@ -27,7 +27,7 @@ public class PirateAi implements Ai {
 			world.executeAction(new Repair(person, person.getLocation().getCivilization().get()));
 		}
 
-		AiOperations.tryToSell(person);
+		AiOperations.tryToSell(world, person);
 
 		if (new CheckUpgrade().willTravelToUpgrade(world, person)) {
 			return;

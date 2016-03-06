@@ -92,11 +92,11 @@ public class World {
 			persons.add(personCreater.createPerson(PersonalityType.TRADE));
 		}
 		long minerCount = persons.stream().filter(person -> person.getAi() instanceof MinerAi).count();
-		if (minerCount < TRADER_NUMBER) {
+		if (minerCount < MINER_NUMBER) {
 			persons.add(personCreater.createPerson(PersonalityType.MINER));
 		}
 		long pirateCount = persons.stream().filter(person -> person.getAi() instanceof PirateAi).count();
-		if (pirateCount < TRADER_NUMBER) {
+		if (pirateCount < PIRATE_NUMBER) {
 			persons.add(personCreater.createPerson(PersonalityType.PIRATE));
 		}
 	}

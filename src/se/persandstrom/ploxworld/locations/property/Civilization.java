@@ -56,6 +56,7 @@ public class Civilization {
 
 		redistributePopulation();
 
+		//TODO: Evaluate. Should this as well be in an action?
 		tradeable.addMoney(getPopulation() * 100);
 		tradeable.getCommodity().addStorage(-getPopulation());
 

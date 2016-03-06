@@ -20,11 +20,11 @@ public class TransferGoods implements Action {
 	public void execute() {
 		for (ProductionType productionType : ProductionType.values()) {
 			int storage = victim.getShip().getStorage(productionType);
-			int payment = (int) (storage * quote);
-			victim.getShip().addStorage(productionType, -payment);
-			aggressor.getShip().addStorage(productionType, payment);
+			int amount = (int) (storage * quote);
+			victim.getShip().addStorage(productionType, -amount);
+			aggressor.getShip().addStorage(productionType, amount);
 
-			Log.dialog(victim + " transferring " + payment + " of " + storage + " " + productionType + " to " + aggressor);
+			Log.dialog(victim + " transferring " + amount + " of " + storage + " " + productionType + " to " + aggressor);
 		}
 	}
 }

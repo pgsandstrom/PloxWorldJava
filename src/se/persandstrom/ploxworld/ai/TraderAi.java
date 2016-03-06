@@ -34,8 +34,8 @@ public class TraderAi implements Ai {
 			world.executeAction(new Repair(person, person.getLocation().getCivilization().get()));
 		}
 
-		AiOperations.tryToSell(person);
-		tryToBuyCheap(person);
+		AiOperations.tryToSell(world, person);
+		tryToBuyCheap(world, person);
 
 		if (new CheckUpgrade().willTravelToUpgrade(world, person)) {
 			return;
@@ -64,7 +64,7 @@ public class TraderAi implements Ai {
 		Log.trade("");
 	}
 
-	private void tryToBuyCheap(Person person) {
+	private void tryToBuyCheap(World world, Person person) {
 		Location location = person.getLocation();
 		if (location.getTradeable().isPresent()) {
 			Tradeable tradeable = location.getTradeable().get();
@@ -72,7 +72,7 @@ public class TraderAi implements Ai {
 
 			productionsCheapestFirst.stream()
 					.filter(production -> production.getSellPrice() / production.getBasePrice() < BASE_PRICE_QUOTA_TO_BUY_AT)
-					.forEach(production -> AiOperations.buyMax(person, tradeable, production));
+					.forEach(production -> AiOperations.buyMax(world, person, tradeable, production));
 		}
 	}
 

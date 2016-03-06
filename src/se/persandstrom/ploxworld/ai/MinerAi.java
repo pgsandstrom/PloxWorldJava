@@ -23,11 +23,11 @@ public class MinerAi implements Ai {
 		Ship ship = person.getShip();
 		person.setDecision(null);
 
-		if(ship.isDamaged() && person.getLocation().getCivilization().isPresent()) {
+		if (ship.isDamaged() && person.getLocation().getCivilization().isPresent()) {
 			world.executeAction(new Repair(person, person.getLocation().getCivilization().get()));
 		}
 
-		AiOperations.tryToSell(person);
+		AiOperations.tryToSell(world, person);
 
 		if (new CheckUpgrade().willTravelToUpgrade(world, person)) {
 			return;
@@ -40,14 +40,14 @@ public class MinerAi implements Ai {
 			double percentageFree = ship.getFreeStorage() / (double) ship.getMaxStorage();
 			if (person.getLocation().getMineable().isPresent() == false && percentageFree >= 0.3) {
 				travelToMineableLocation(world, person);
-			} else if(percentageFree < 0.3){
+			} else if (percentageFree < 0.3) {
 				try {
 					AiOperations.travelToSell(world, person);
 				} catch (ConditionsChangedException e1) {
 					e = e1;
 				}
 			} else {
-				mine(person);
+				mine(world, person);
 			}
 		} while (e != null);
 
@@ -58,8 +58,8 @@ public class MinerAi implements Ai {
 		}
 	}
 
-	private void mine(Person person) {
-		person.setDecision(new MineDecision(person));
+	private void mine(World world, Person person) {
+		person.setDecision(new MineDecision(world, person));
 	}
 
 	private void travelToMineableLocation(World world, Person person) {

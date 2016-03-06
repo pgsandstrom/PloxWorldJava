@@ -1,6 +1,8 @@
 package se.persandstrom.ploxworld.ai;
 
+import se.persandstrom.ploxworld.action.TradeGoods;
 import se.persandstrom.ploxworld.common.Log;
+import se.persandstrom.ploxworld.common.TransferType;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.property.Tradeable;
 import se.persandstrom.ploxworld.main.World;
@@ -11,20 +13,20 @@ import se.persandstrom.ploxworld.ship.Ship;
 
 public class AiOperations {
 
-	public static void tryToSell(Person person) {
+	public static void tryToSell(World world, Person person) {
 		Location location = person.getLocation();
 		if (location.getTradeable().isPresent()) {
 			Tradeable tradeable = location.getTradeable().get();
 			for (ProductionType productionType : ProductionType.values()) {
 				Production production = tradeable.getProduction(productionType);
 				if (production.getBuyPrice() / production.getBasePrice() > TraderAi.BASE_PRICE_QUOTA_TO_SELL_AT) {
-					AiOperations.sellMax(person, tradeable, productionType);
+					AiOperations.sellMax(world, person, tradeable, productionType);
 				}
 			}
 		}
 	}
 
-	public static void buyMax(Person person, Tradeable tradeable, Production production) {
+	public static void buyMax(World world, Person person, Tradeable tradeable, Production production) {
 		Ship ship = person.getShip();
 		int freeStorage = ship.getFreeStorage();
 		int afford = person.getMoney() / production.getSellPrice();
@@ -40,16 +42,13 @@ public class AiOperations {
 			throw new RuntimeException();    //TODO this is thrown sometimes ;_;
 		}
 
-		int payAmount = tradeable.buyFrom(production.getProductionType(), buyAmount);
-		ship.addStorage(production.getProductionType(), buyAmount);
-		person.addMoney(-payAmount);
+		world.executeAction(new TradeGoods(person, tradeable, buyAmount, production.getProductionType(), TransferType.BUY));
 
 		if (ship.getFreeStorage() < 0) {
 			throw new RuntimeException();
 		}
 
-		Log.person(person + " bought " + buyAmount + " " + production + " from " + tradeable.getLocation()
-				+ " for " + production.getSellPrice() + " each. In total:  " + payAmount);
+
 	}
 
 	public static void travelToSell(World world, Person person) throws ConditionsChangedException {
@@ -68,7 +67,7 @@ public class AiOperations {
 
 		if (person.getLocation().equals(location)) {
 			Log.person("selling on same planet...");
-			AiOperations.sellMax(person, tradeable, goods);    //Sell the crappy resource and try again
+			AiOperations.sellMax(world, person, tradeable, goods);    //Sell the crappy resource and try again
 			throw new ConditionsChangedException();
 		}
 
@@ -76,7 +75,7 @@ public class AiOperations {
 				+ " to sell " + goods + " for " + tradeable.getProduction(goods).getBuyPrice() + " each");
 	}
 
-	public static void sellMax(Person person, Tradeable tradeable, ProductionType productionType) {
+	public static void sellMax(World world, Person person, Tradeable tradeable, ProductionType productionType) {
 		Production production = tradeable.getProduction(productionType);
 		Ship ship = person.getShip();
 		int maxBuy = tradeable.getMoney() / production.getBuyPrice();
@@ -91,16 +90,11 @@ public class AiOperations {
 			throw new RuntimeException();
 		}
 
-		int payAmount = tradeable.sellTo(production.getProductionType(), sellAmount);
-		person.getShip().addStorage(production.getProductionType(), -sellAmount);
-		person.addMoney(payAmount);
+		world.executeAction(new TradeGoods(person, tradeable, sellAmount, productionType, TransferType.SELL));
 
 		if (ship.getFreeStorage() < 0) {
 			throw new RuntimeException();
 		}
-
-		Log.person(person + " sold " + sellAmount + " " + production + " to " + tradeable
-				+ " for " + production.getBuyPrice() + " each. In total:  " + payAmount);
 	}
 
 	public static void travelToRepair(World world, Person person) {
