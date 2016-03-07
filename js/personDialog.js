@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.PersonDialog = React.createClass({
+const PersonDialog = React.createClass({
 	selectPerson: function (selectedPersonName) {
 		this.setState({selectedPersonName: selectedPersonName});
 	},
@@ -63,3 +64,5 @@ var PersonDetails = React.createClass({
 		);
 	}
 });
+
+export default PersonDialog;

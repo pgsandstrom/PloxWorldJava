@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.GameInfo = React.createClass({
+const GameInfo = React.createClass({
 	render: function () {
 		//console.log("GameInfo render: " + JSON.stringify(this.props));
 
@@ -23,3 +24,5 @@ ploxworld.GameInfo = React.createClass({
 		);
 	}
 });
+
+export default GameInfo;

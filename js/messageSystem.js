@@ -1,6 +1,4 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
-
-var MessageSystem = {
+const MessageSystem = {
 	_events: {},
 	dispatch: function (event, data) {
 		if (!this._events[event]) return; // no one is listening to this event
@@ -15,3 +13,5 @@ var MessageSystem = {
 
 MessageSystem.selectLocation = "SelectLocation";
 MessageSystem.selectPerson = "SelectPerson";
+
+export default MessageSystem;

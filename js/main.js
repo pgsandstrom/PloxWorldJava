@@ -1,3 +1,17 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+//var $ = require("jquery");
+import $ from 'jquery';
+
+import MessageSystem from './messageSystem.js'
+import Board from './board.js'
+import GameInfo from './gameInfo.js'
+import WorldStats from './worldStats.js'
+import LocationDialog from './locationDialog.js'
+import PersonDialog from './personDialog.js'
+
+
 var Main = React.createClass({
 	componentDidMount: function () {
 		var self = this;
@@ -17,7 +31,7 @@ var Main = React.createClass({
 				this.setState({data: data});
 			}.bind(this),
 			error: function (xhr, status, err) {
-				console.error(this.props.url, status, err.toString());
+				console.log(this.props.startUrl + "," + status + "," + err.toString());
 			}.bind(this)
 		});
 	},
@@ -40,7 +54,7 @@ var Main = React.createClass({
 				this.setState({data: data});
 			}.bind(this),
 			error: function (xhr, status, err) {
-				console.error(this.props.url, status, err.toString());
+				console.log(this.props.url, status, err.toString());
 			}.bind(this)
 		});
 	},
@@ -70,6 +84,8 @@ var Main = React.createClass({
 			</div>);
 		}
 
+		//console.log("this.state.data: "+JSON.stringify(this.state.data));
+
 		return (
 			<div>
 				<div>
@@ -80,17 +96,17 @@ var Main = React.createClass({
 					<button onClick={this.showPersonList}>Person list</button>
 				</div>
 
-				<ploxworld.Board data={this.state.data}/>
+				<Board data={this.state.data}/>
 
-				<ploxworld.GameInfo data={this.state.data}/>
+				<GameInfo data={this.state.data}/>
 
-				<ploxworld.WorldStats className="WorldStats" data={this.state.data.worldData}/>
+				<WorldStats className="WorldStats" data={this.state.data.worldData}/>
 
-				{ this.state.showLocationList ? <ploxworld.LocationDialog locations={this.state.data.locations}
+				{ this.state.showLocationList ? <LocationDialog locations={this.state.data.locations}
 																		  selectedLocationName={this.state.selectedLocationName}
 																		  requestClose={this.closeLocationList}/> : null }
 
-				{ this.state.showPersonList ? <ploxworld.PersonDialog persons={this.state.data.persons}
+				{ this.state.showPersonList ? <PersonDialog persons={this.state.data.persons}
 																	  selectedPersonName={this.state.selectedPersonName}
 																	  requestClose={this.closePersonList}/> : null }
 			</div>
@@ -98,13 +114,15 @@ var Main = React.createClass({
 
 
 		);
+
+
 	}
 });
 
 ReactDOM.render(
-	<Main startUrl="/backend"
-		  progressTurnUrl="/backend/progressTurn?turns=1"
-		  progress10TurnsUrl="/backend/progressTurn?turns=10"
-		  progress100TurnsUrl="/backend/progressTurn?turns=100"/>,
+	<Main startUrl="http://localhost:8000/backend"
+		  progressTurnUrl="http://localhost:8000/backend/progressTurn?turns=1"
+		  progress10TurnsUrl="http://localhost:8000/backend/progressTurn?turns=10"
+		  progress100TurnsUrl="http://localhost:8000/backend/progressTurn?turns=100"/>,
 	document.getElementById('content')
 );

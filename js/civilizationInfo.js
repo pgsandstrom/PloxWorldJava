@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.CivilizationInfo = React.createClass({
+const CivilizationInfo = React.createClass({
 	render: function () {
 		//console.log("CivilizationInfo render: " + JSON.stringify(this.props));
 		return (
@@ -30,3 +31,5 @@ ploxworld.CivilizationInfo = React.createClass({
 		);
 	}
 });
+
+export default CivilizationInfo;

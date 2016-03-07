@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.Board = React.createClass({
+const Board = React.createClass({
 	render: function () {
 
 		var style = {
@@ -77,3 +78,5 @@ var Person = React.createClass({
 		);
 	}
 });
+
+export default Board;

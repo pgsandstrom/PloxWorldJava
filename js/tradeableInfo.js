@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.TradeableInfo = React.createClass({
+const TradeableInfo = React.createClass({
 	render: function () {
 		//console.log("TradeableInfo render: " + JSON.stringify(this.props));
 		return (
@@ -137,3 +138,5 @@ ploxworld.TradeableInfo = React.createClass({
 		);
 	}
 });
+
+export default TradeableInfo;

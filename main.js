@@ -1,0 +1,1 @@
+import Main from './js/main.js';

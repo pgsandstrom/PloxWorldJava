@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.ShipInfo = React.createClass({
+const ShipInfo = React.createClass({
 	render: function () {
 		//console.log("ShipInfo render: " + JSON.stringify(this.props));
 
@@ -33,3 +34,5 @@ ploxworld.ShipInfo = React.createClass({
 		);
 	}
 });
+
+export default ShipInfo;

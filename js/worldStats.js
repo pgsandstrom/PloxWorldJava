@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.WorldStats = React.createClass({
+const WorldStats = React.createClass({
 	render: function () {
 		console.log("WorldStats render: " + JSON.stringify(this.props));
 
@@ -56,3 +57,5 @@ ploxworld.WorldStats = React.createClass({
 		);
 	}
 });
+
+export default WorldStats;

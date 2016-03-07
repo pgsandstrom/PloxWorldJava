@@ -110,6 +110,7 @@ public class Main {
 
 				Headers headers = httpExchange.getResponseHeaders();
 				headers.set("Content-Type", "application/json");
+				headers.set("Access-Control-Allow-Origin", "http://localhost:8080");
 				httpExchange.sendResponseHeaders(200, response.length());
 
 				OutputStream os = httpExchange.getResponseBody();

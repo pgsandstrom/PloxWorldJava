@@ -1,6 +1,7 @@
-var ploxworld = window.ploxworld = window.ploxworld || {};
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ploxworld.LocationDialog = React.createClass({
+const LocationDialog = React.createClass({
 	selectLocation: function (selectedLocationName) {
 		this.setState({selectedLocationName: selectedLocationName});
 	},
@@ -64,3 +65,5 @@ var LocationDetails = React.createClass({
 		);
 	}
 });
+
+export default LocationDialog;
