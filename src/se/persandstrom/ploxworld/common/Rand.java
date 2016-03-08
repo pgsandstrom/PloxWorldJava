@@ -11,6 +11,7 @@ public class Rand {
 	public static void reset() {
 		long seed = System.currentTimeMillis();
 		System.out.println("random seed: " + seed);
+		seed = 123132312L;
 		setSeed(seed);
 	}
 
@@ -59,7 +60,7 @@ public class Rand {
 	}
 
 	public static <T> T getRandom(Collection<T> collection) {
-		int index = (int) (Math.random() * collection.size());
+		int index = (int) (r.nextDouble() * collection.size());
 		for (T t : collection) {
 			if (--index < 0) {
 				return t;
