@@ -5,17 +5,20 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class WorldTest {
 
 	@Test
 	public void runSomeWorld() throws IOException, URISyntaxException {
-		for (int worldIndex = 0; worldIndex < 100; worldIndex++) {
+		for (int worldIndex = 0; worldIndex < 50; worldIndex++) {
 			World world = new World();
-			for (int turnIndex = 0; turnIndex < 500; turnIndex++) {
+			for (int turnIndex = 0; turnIndex < 5000; turnIndex++) {
 				world.progressTurn();
 			}
+		}
+
+		World world = new World();
+		for (int turnIndex = 0; turnIndex < 50000; turnIndex++) {
+			world.progressTurn();
 		}
 	}
 

@@ -8,14 +8,10 @@ public class Rand {
 
 	private static Random r;
 
-	static {
-		reset();
-	}
-
 	public static void reset() {
 		long seed = System.currentTimeMillis();
-		System.out.println("r seed: " + seed);
-		r = new Random(seed);
+		System.out.println("random seed: " + seed);
+		setSeed(seed);
 	}
 
 	public static void setSeed(long seed) {
@@ -52,6 +48,10 @@ public class Rand {
 
 	public static boolean roll(double chance) {
 		return chance > r.nextDouble();
+	}
+
+	public static Random getRandom() {
+		return r;
 	}
 
 	public static <T> T getRandom(List<T> list) {

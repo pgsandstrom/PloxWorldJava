@@ -2,13 +2,13 @@ package se.persandstrom.ploxworld.common;
 
 public class Log {
 
-	private static final boolean PERSON = true;
+	private static final boolean PERSON = false;
 	private static final boolean TRADE = false;
 	private static final boolean MINE = false;
 	private static final boolean PIRATE = false;
 	private static final boolean DIALOG = false;
 	private static final boolean FIGHT = false;
-	private static final boolean PLANET = true;
+	private static final boolean PLANET = false;
 
 	public static void person(String string) {
 		if (PERSON) {

@@ -47,6 +47,9 @@ public class World {
 	@Expose int turn = 0;
 
 	public World() throws IOException, URISyntaxException {
+		//TODO: make world hold a Rand instead
+		Rand.reset();
+
 		locations = new ArrayList<>();
 		PlanetCreater planetCreater = new PlanetCreater(this);
 		locations.addAll(planetCreater.createPlanets(PLANET_NUMBER));
@@ -139,28 +142,28 @@ public class World {
 
 	public List<Location> getLocationsShuffled() {
 		ArrayList<Location> locations = new ArrayList<>(this.locations);
-		Collections.shuffle(locations);
+		Collections.shuffle(locations, Rand.getRandom());
 		return locations;
 	}
 
 	public List<Location> getTradeableShuffled() {
 		List<Location> tradeable = this.locations.stream()
 				.filter(loc -> loc.getTradeable().isPresent()).collect(Collectors.toList());
-		Collections.shuffle(tradeable);
+		Collections.shuffle(tradeable, Rand.getRandom());
 		return tradeable;
 	}
 
 	public List<Location> getCivilizationsShuffled() {
 		List<Location> tradeable = this.locations.stream()
 				.filter(loc -> loc.getCivilization().isPresent()).collect(Collectors.toList());
-		Collections.shuffle(tradeable);
+		Collections.shuffle(tradeable, Rand.getRandom());
 		return tradeable;
 	}
 
 	public List<Location> getMineableShuffled() {
 		List<Location> tradeable = this.locations.stream()
 				.filter(loc -> loc.getMineable().isPresent()).collect(Collectors.toList());
-		Collections.shuffle(tradeable);
+		Collections.shuffle(tradeable, Rand.getRandom());
 		if (tradeable.size() == 0) {
 			throw new IllegalStateException();
 		}
@@ -173,7 +176,7 @@ public class World {
 
 	public List<Person> getPersonsShuffled() {
 		ArrayList<Person> personList = new ArrayList<>(this.persons);
-		Collections.shuffle(personList);
+		Collections.shuffle(personList, Rand.getRandom());
 		return personList;
 	}
 }
