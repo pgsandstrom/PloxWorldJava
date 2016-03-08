@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.locations.Location;
@@ -33,13 +34,19 @@ public class PersonCreater {
 		usedFullNames = new HashSet<>();
 
 		Path maleNamesPath = Paths.get(PersonCreater.class.getResource("/names/male.txt").toURI());
-		Files.lines(maleNamesPath).forEach(maleNames::add);
+		try (Stream<String> stream = Files.lines(maleNamesPath)) {
+			stream.forEach(maleNames::add);
+		}
 
 		Path femaleNamesPath = Paths.get(PersonCreater.class.getResource("/names/female.txt").toURI());
-		Files.lines(femaleNamesPath).forEach(femaleNames::add);
+		try (Stream<String> stream = Files.lines(femaleNamesPath)) {
+			stream.forEach(femaleNames::add);
+		}
 
 		Path surnamesPath = Paths.get(PersonCreater.class.getResource("/names/surname.txt").toURI());
-		Files.lines(surnamesPath).forEach(surnames::add);
+		try (Stream<String> stream = Files.lines(surnamesPath)) {
+			stream.forEach(surnames::add);
+		}
 	}
 
 	public List<Person> createPersons(int number, PersonalityType personalityType) {
