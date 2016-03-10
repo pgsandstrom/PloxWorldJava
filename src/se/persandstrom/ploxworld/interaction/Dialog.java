@@ -1,6 +1,7 @@
 package se.persandstrom.ploxworld.interaction;
 
 import se.persandstrom.ploxworld.common.Log;
+import se.persandstrom.ploxworld.fight.Fight;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 
