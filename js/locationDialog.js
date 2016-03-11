@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import CivilizationInfo from './civilizationInfo.js'
+import TradeableInfo from './tradeableInfo.js'
+
 const LocationDialog = React.createClass({
 	selectLocation: function (selectedLocationName) {
 		this.setState({selectedLocationName: selectedLocationName});
@@ -55,10 +58,10 @@ var LocationDetails = React.createClass({
 				<h1>{this.props.location.name}</h1>
 
 				{this.props.location.civilization != undefined ?
-					<ploxworld.CivilizationInfo civilization={this.props.location.civilization}/> : null
+					<CivilizationInfo civilization={this.props.location.civilization}/> : null
 				}
 				{this.props.location.tradeable != undefined ?
-					<ploxworld.TradeableInfo tradeable={this.props.location.tradeable}/> : null
+					<TradeableInfo tradeable={this.props.location.tradeable}/> : null
 				}
 
 			</div>

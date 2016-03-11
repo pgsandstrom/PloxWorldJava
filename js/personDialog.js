@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import ShipInfo from './shipInfo.js'
+
 const PersonDialog = React.createClass({
 	selectPerson: function (selectedPersonName) {
 		this.setState({selectedPersonName: selectedPersonName});
@@ -57,7 +59,7 @@ var PersonDetails = React.createClass({
 				<div>Money: {this.props.person.money}</div>
 
 				{this.props.person.ship != undefined ?
-					<ploxworld.ShipInfo ship={this.props.person.ship}/> : null
+					<ShipInfo ship={this.props.person.ship}/> : null
 				}
 
 			</div>
