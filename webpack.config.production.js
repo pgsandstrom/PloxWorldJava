@@ -29,6 +29,13 @@ module.exports = {
 	],
 	// This could in theory decrease size, but currently does not work:
 	// devtool: "source-map"
+
+	"babel": {
+		// https://babeljs.io/docs/plugins/transform-react-inline-elements/
+		// https://babeljs.io/docs/plugins/transform-react-constant-elements/
+		"plugins": ["transform-react-inline-elements", "transform-react-constant-elements"]
+
+	}
 };
 
 //TODO: Denna verkar krävas för css-mecket. Se https://github.com/webpack/css-loader/issues/145
