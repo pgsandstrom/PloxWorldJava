@@ -15,7 +15,7 @@ module.exports = {
 					presets: ['es2015', 'react']
 				}
 			},
-			{ test: /\.css$/, loader: "style-loader!css-loader" }
+			{test: /\.css$/, loader: "style-loader!css-loader"}
 		]
 	},
 	plugins: [
@@ -26,7 +26,9 @@ module.exports = {
 				'NODE_ENV': JSON.stringify('production')
 			}
 		})
-	]
+	],
+	// This could in theory decrease size, but currently does not work:
+	// devtool: "source-map"
 };
 
 //TODO: Denna verkar krävas för css-mecket. Se https://github.com/webpack/css-loader/issues/145
