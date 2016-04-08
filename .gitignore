@@ -3,6 +3,7 @@
 .idea/
 .settings/
 bin/
+dist/
 lib/
 node_modules/
 out/
