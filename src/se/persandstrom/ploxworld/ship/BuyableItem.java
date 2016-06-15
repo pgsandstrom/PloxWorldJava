@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.google.gson.annotations.Expose;
+
 public abstract class BuyableItem {
 
 
-	public final String name;
+	@Expose public final String name;
 	public final int purchaseCost;
 	public final int researchCost;
 

@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 
 const CivilizationInfo = React.createClass({
 	render: function () {
-		//console.log("CivilizationInfo render: " + JSON.stringify(this.props));
+		console.log("CivilizationInfo render: " + JSON.stringify(this.props));
+		this.props.civilization.weapons.map(function (weapon) {
+			console.log("weapon: " + weapon);
+		});
 		return (
 			<div>
 				<div>
@@ -21,8 +24,8 @@ const CivilizationInfo = React.createClass({
 					</span>
 					{this.props.civilization.weapons.map(function (weapon) {
 						return (
-							<span key={weapon} className="cellWide">
-								{weapon}
+							<span key={weapon.name} className="cellWide">
+								{weapon.name}
 							</span>
 						);
 					})}
