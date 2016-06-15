@@ -47,6 +47,10 @@ public class Rand {
 		return (r.nextDouble() * (max - min)) + min;
 	}
 
+	public static boolean roll() {
+		return 0.5 > r.nextDouble();
+	}
+
 	public static boolean roll(double chance) {
 		return chance > r.nextDouble();
 	}

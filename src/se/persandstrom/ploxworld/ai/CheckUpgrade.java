@@ -6,24 +6,30 @@ import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
-import se.persandstrom.ploxworld.ship.Ship;
-import se.persandstrom.ploxworld.ship.Weapon;
+import se.persandstrom.ploxworld.ship.BuyableItem;
 
 public class CheckUpgrade {
 
 	public boolean willTravelToUpgrade(World world, Person person) {
-		Ship ship = person.getShip();
-		Weapon currentWeapon = ship.getWeapon();
-		Optional<Weapon> nextWeaponOpt = Optional.of(ship.getWeapon());
+		// TODO: Should not buy expensive weapons if the ship is shitty...
+		if(person.getPersonality().getAggressionRoll() > 60) {
+			return willTravelToUpgradeItem(world, person, person.getShip().getWeapon());
+		} else {
+			return willTravelToUpgradeItem(world, person, person.getShip().getShipBase());
+		}
+	}
+
+	public boolean willTravelToUpgradeItem(World world, Person person, BuyableItem currentItem) {
+		Optional<BuyableItem> nextWeaponOpt = Optional.of(currentItem);
 
 		do {
-			nextWeaponOpt = Weapon.getNextWeapon(nextWeaponOpt.get());
+			nextWeaponOpt = BuyableItem.getNextItem(nextWeaponOpt.get());
 			if (nextWeaponOpt.isPresent() == false) {
 				return false;
 			}
-			Weapon nextWeapon = nextWeaponOpt.get();
+			BuyableItem nextWeapon = nextWeaponOpt.get();
 
-			int cost = nextWeapon.purchaseCost - currentWeapon.getSellCost();
+			int cost = nextWeapon.purchaseCost - currentItem.getSellCost();
 
 			//TODO: How much a person wants left after purchase should depend on AI-type and personality
 			if (cost < person.getMoney() / 2) {
@@ -39,8 +45,8 @@ public class CheckUpgrade {
 		} while (true);
 	}
 
-	private void travelToUpgrade(Person person, Location planet, Weapon nextWeapon) {
-		person.setDecision(new TravelDecision(person, planet, new UpgradeGoal(nextWeapon)));
-		Log.person(person + " is traveling to " + planet + " to buy " + nextWeapon);
+	private void travelToUpgrade(Person person, Location planet, BuyableItem buyableItem) {
+		person.setDecision(new TravelDecision(person, planet, new UpgradeGoal(buyableItem)));
+		Log.person(person + " is traveling to " + planet + " to buy " + buyableItem);
 	}
 }

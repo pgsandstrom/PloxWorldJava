@@ -17,6 +17,7 @@ public class TraderAi implements Ai {
 	public static final double BASE_PRICE_QUOTA_TO_BUY_AT = 0.95;
 	public static final double BASE_PRICE_QUOTA_TO_SELL_AT = 1.2;
 
+	@Override
 	public void makeDecision(World world, Person person) {
 
 		if (person.getLocation() == null) {

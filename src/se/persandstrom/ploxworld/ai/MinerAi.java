@@ -10,6 +10,7 @@ import se.persandstrom.ploxworld.ship.Ship;
 
 public class MinerAi implements Ai {
 
+	@Override
 	public void makeDecision(World world, Person person) {
 
 		if (person.getLocation() == null) {

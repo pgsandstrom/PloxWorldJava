@@ -10,8 +10,8 @@ import com.google.gson.annotations.Expose;
 
 public class Ship {
 
-	@Expose private ShipBase shipBase = ShipBase.SIMPLE;
-	@Expose private Weapon weapon = Weapon.SIMPLE;
+	@Expose private ShipBase shipBase = ShipBase.getFirst();
+	@Expose private Weapon weapon = Weapon.getFirst();
 
 	@Expose private int health = shipBase.health;
 	@Expose private int maxHealth = shipBase.health;
@@ -70,6 +70,30 @@ public class Ship {
 
 	public ShipBase getShipBase() {
 		return shipBase;
+	}
+
+	public void setShipBase(ShipBase shipBase) {
+		this.shipBase = shipBase;
+	}
+
+	public void setItem(BuyableItem item) {
+		if (item instanceof Weapon) {
+			this.weapon = (Weapon) item;
+		} else if (item instanceof ShipBase) {
+			this.shipBase = (ShipBase) item;
+		} else {
+			throw new IllegalStateException();
+		}
+	}
+
+	public BuyableItem getItemOfType(BuyableItem item) {
+		if(item instanceof Weapon) {
+			return weapon;
+		} else if(item instanceof ShipBase) {
+			return shipBase;
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 
 	public int getMaxHealth() {

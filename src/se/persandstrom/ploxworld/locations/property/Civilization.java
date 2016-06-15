@@ -15,6 +15,8 @@ import se.persandstrom.ploxworld.production.Material;
 import se.persandstrom.ploxworld.production.Production;
 import se.persandstrom.ploxworld.production.ProductionType;
 import se.persandstrom.ploxworld.production.Science;
+import se.persandstrom.ploxworld.ship.BuyableItem;
+import se.persandstrom.ploxworld.ship.ShipBase;
 import se.persandstrom.ploxworld.ship.Weapon;
 
 import com.google.gson.annotations.Expose;
@@ -31,10 +33,12 @@ public class Civilization {
 
 	private final List<Production> productions = new ArrayList<>();
 
+	@Expose private Set<ShipBase> shipBases = new HashSet<>();
 	@Expose private Set<Weapon> weapons = new HashSet<>();
 
 	{
-		weapons.add(Weapon.SIMPLE);
+		shipBases.add(ShipBase.getFirst());
+		weapons.add(Weapon.getFirst());
 	}
 
 	public Civilization(int maxPopulation, double population) {
@@ -222,8 +226,35 @@ public class Civilization {
 		return weapons;
 	}
 
-	public void addWeapon(Weapon weapon) {
-		weapons.add(weapon);
+	public Set<ShipBase> getShipBases() {
+		return shipBases;
+	}
+
+	public void addItem(BuyableItem item) {
+		if (item instanceof Weapon) {
+			this.weapons.add((Weapon) item);
+		} else if (item instanceof ShipBase) {
+			this.shipBases.add((ShipBase) item);
+		} else {
+			throw new IllegalStateException();
+		}
+	}
+
+	public Set<BuyableItem> getBuyableItems() {
+		HashSet<BuyableItem> buyableItems = new HashSet<>();
+		buyableItems.addAll(weapons);
+		buyableItems.addAll(shipBases);
+		return buyableItems;
+	}
+
+	public Set<? extends BuyableItem> getBuyableItemsOfType(BuyableItem item) {
+		if (item instanceof Weapon) {
+			return weapons;
+		} else if (item instanceof ShipBase) {
+			return shipBases;
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 
 	@Override

@@ -6,14 +6,14 @@ import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.property.Civilization;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
-import se.persandstrom.ploxworld.ship.Weapon;
+import se.persandstrom.ploxworld.ship.BuyableItem;
 
 public class UpgradeGoal implements Goal {
 
-	private final Weapon weapon;
+	private final BuyableItem buyableItem;
 
-	public UpgradeGoal(Weapon weapon) {
-		this.weapon = weapon;
+	public UpgradeGoal(BuyableItem buyableItem) {
+		this.buyableItem = buyableItem;
 	}
 
 	@Override
@@ -21,11 +21,11 @@ public class UpgradeGoal implements Goal {
 		Location location = person.getLocation();
 		if (location.getCivilization().isPresent()) {
 			Civilization civilization = location.getCivilization().get();
-			if (civilization.getWeapons().contains(weapon) == false) {
+			if (civilization.getBuyableItems().contains(buyableItem) == false) {
 				throw new IllegalStateException();
 			}
 
-			world.executeAction(new TradeWeapon(person, civilization, weapon, TransferType.BUY));
+			world.executeAction(new TradeWeapon(person, civilization, buyableItem, TransferType.BUY));
 			//TODO: Sell old weapon. This requires inventory and lots of stuff
 		}
 	}

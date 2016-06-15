@@ -12,23 +12,23 @@ public class WeaponTest {
 	@Test
 	public void testGetMissingWeaponEasistResearched() throws Exception {
 		Set<Weapon> weapons = new HashSet<>();
-		weapons.add(Weapon.SIMPLE);
+		weapons.add(Weapon.weapons.get(0));
 
-		Optional<Weapon> missingWeaponEasistResearched = Weapon.getMissingWeaponEasistResearched(weapons);
-		Assert.assertEquals(Weapon.X_LONG, missingWeaponEasistResearched.get());
+		Optional<BuyableItem> missingWeaponEasistResearched = Weapon.getMissingItemEasistResearched(weapons);
+		Assert.assertEquals(Weapon.weapons.get(1), missingWeaponEasistResearched.get());
 
-		weapons.add(Weapon.X_LONG);
+		weapons.add(Weapon.weapons.get(1));
 
-		missingWeaponEasistResearched = Weapon.getMissingWeaponEasistResearched(weapons);
-		Assert.assertEquals(Weapon.BARR, missingWeaponEasistResearched.get());
+		missingWeaponEasistResearched = Weapon.getMissingItemEasistResearched(weapons);
+		Assert.assertEquals(Weapon.weapons.get(2), missingWeaponEasistResearched.get());
 	}
 
 	@Test
 	public void testGetNextWeapon() throws Exception {
-		Optional<Weapon> nextWeapon = Weapon.getNextWeapon(Weapon.ASSAULT_MC1);
-		Assert.assertEquals(Weapon.ASSAULT_MC2, nextWeapon.get());
+		Optional<BuyableItem> nextWeapon = Weapon.getNextItem(Weapon.weapons.get(4));
+		Assert.assertEquals(Weapon.weapons.get(5), nextWeapon.get());
 
-		nextWeapon = Weapon.getNextWeapon(Weapon.ASSAULT_MC3);
+		nextWeapon = Weapon.getNextItem(Weapon.weapons.get(6));
 		Assert.assertFalse(nextWeapon.isPresent());
 
 	}
