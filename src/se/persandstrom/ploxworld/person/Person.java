@@ -1,5 +1,8 @@
 package se.persandstrom.ploxworld.person;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.Decision;
 import se.persandstrom.ploxworld.common.Point;
@@ -12,6 +15,11 @@ public class Person implements Comparable<Person> {
 
 	@Expose private final Ai ai;
 	private final Personality personality;
+
+	private final List<String> logs = new ArrayList<>();
+	{
+		logs.add("hej");
+	}
 
 	private boolean alive = true;
 
@@ -97,6 +105,14 @@ public class Person implements Comparable<Person> {
 
 	public void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+
+	public void addLog(String log) {
+		logs.add(log);
+	}
+
+	public List<String> getLogs() {
+		return logs;
 	}
 
 	@Override

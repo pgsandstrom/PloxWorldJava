@@ -179,4 +179,12 @@ public class World {
 		Collections.shuffle(personList, Rand.getRandom());
 		return personList;
 	}
+
+	public Person getPerson(String name) {
+		return persons.stream().filter(p -> p.getName().equals(name)).findAny().get();
+	}
+
+	public List<String> getPersonLogs(String name) {
+		return getPerson(name).getLogs();
+	}
 }

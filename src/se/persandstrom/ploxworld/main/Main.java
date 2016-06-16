@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.Files;
+import java.util.List;
 
 import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.MinerAi;
@@ -83,11 +84,14 @@ public class Main {
 //				System.out.println(path);
 
 				//TODO: Make some mechanism so the server can hold many worlds for different games :-)
-				String response;
+				String response = null;
 				if ("/backend".equals(path)) {
 					Rand.reset();
 					world = new World();
 					world.progressTurn();
+
+					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
+					response = gson.toJson(world);
 				} else if ("/backend/progressTurn".equals(path)) {
 					int turnToProgress = 1;
 					String query = uri.getQuery();
@@ -102,10 +106,28 @@ public class Main {
 						}
 					}
 					world.progressTurn(turnToProgress);
+
+					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
+					response = gson.toJson(world);
+				} else if ("/backend/log".equals(path)) {
+					String personName = null;
+					String query = uri.getQuery();
+					String[] arguments = query.split("&");
+					for (String argument : arguments) {
+						String[] split = argument.split("=");
+						if (split.length != 2) {
+							throw new IllegalArgumentException();
+						}
+						if ("name".equals(split[0])) {
+							personName = split[1];
+						}
+					}
+					List<String> personLogs = world.getPersonLogs(personName);
+					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
+					response = gson.toJson(personLogs);
 				}
 
-				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
-				response = gson.toJson(world);
+				
 
 
 				Headers headers = httpExchange.getResponseHeaders();

@@ -2,7 +2,7 @@ import React from 'react';
 
 const WorldStats = React.createClass({
 	render: function () {
-		console.log("WorldStats render: " + JSON.stringify(this.props));
+		// console.log("WorldStats render: " + JSON.stringify(this.props));
 
 		var data = [];
 		for (var item in this.props.data.data) {
