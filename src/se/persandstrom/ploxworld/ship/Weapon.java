@@ -9,7 +9,7 @@ public class Weapon extends BuyableItem {
 
 	public static List<Weapon> weapons = new ArrayList<>();
 	static {
-		weapons.add(new Weapon("simple",		3,	10,	0.5,	3000,	500));
+		weapons.add(new Weapon("Simple",		3,	10,	0.5,	3000,	500));
 		weapons.add(new Weapon("x-long",		3,	8,	1,		4000,	1000));
 		weapons.add(new Weapon("BARR",			5,	12,	0.5,	7000,	2000));
 		weapons.add(new Weapon("BARR-X",		7,	14,	0.55,	9000,	3000));

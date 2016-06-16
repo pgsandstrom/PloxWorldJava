@@ -12,6 +12,9 @@ public class CheckUpgrade {
 
 	public boolean willTravelToUpgrade(World world, Person person) {
 		// TODO: Should not buy expensive weapons if the ship is shitty...
+		if(person.getMoney() > 40000 ){
+			System.out.println("plox");
+		}
 		if(person.getPersonality().getAggressionRoll() > 60) {
 			return willTravelToUpgradeItem(world, person, person.getShip().getWeapon());
 		} else {
@@ -20,23 +23,23 @@ public class CheckUpgrade {
 	}
 
 	public boolean willTravelToUpgradeItem(World world, Person person, BuyableItem currentItem) {
-		Optional<BuyableItem> nextWeaponOpt = Optional.of(currentItem);
+		Optional<BuyableItem> nextItemOpt = Optional.of(currentItem);
 
 		do {
-			nextWeaponOpt = BuyableItem.getNextItem(nextWeaponOpt.get());
-			if (nextWeaponOpt.isPresent() == false) {
+			nextItemOpt = BuyableItem.getNextItem(nextItemOpt.get());
+			if (nextItemOpt.isPresent() == false) {
 				return false;
 			}
-			BuyableItem nextWeapon = nextWeaponOpt.get();
+			BuyableItem nextItem = nextItemOpt.get();
 
-			int cost = nextWeapon.purchaseCost - currentItem.getSellCost();
+			int cost = nextItem.purchaseCost - currentItem.getSellCost();
 
 			//TODO: How much a person wants left after purchase should depend on AI-type and personality
 			if (cost < person.getMoney() / 2) {
-				Optional<Location> weaponLocationOpt = world.getCivilizationsShuffled().stream()
-						.filter(planet -> planet.getCivilization().get().getWeapons().contains(nextWeapon)).findFirst();
-				if (weaponLocationOpt.isPresent()) {
-					travelToUpgrade(person, weaponLocationOpt.get(), nextWeapon);
+				Optional<Location> itemLocationOpt = world.getCivilizationsShuffled().stream()
+						.filter(planet -> planet.getCivilization().get().getBuyableItems().contains(nextItem)).findFirst();
+				if (itemLocationOpt.isPresent()) {
+					travelToUpgrade(person, itemLocationOpt.get(), nextItem);
 					return true;
 				}
 			} else {

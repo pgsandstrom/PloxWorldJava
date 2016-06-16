@@ -2,7 +2,7 @@ import React from 'react';
 
 const CivilizationInfo = React.createClass({
 	render: function () {
-		// console.log("CivilizationInfo render: " + JSON.stringify(this.props));
+		console.log("CivilizationInfo render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<div>
@@ -13,7 +13,6 @@ const CivilizationInfo = React.createClass({
 						{Number(this.props.civilization.population) | 0 } / {this.props.civilization.maxPopulation}
 					</span>
 				</div>
-
 				<div>
 					<span className="cell">
 						Weapons
@@ -22,6 +21,18 @@ const CivilizationInfo = React.createClass({
 						return (
 							<span key={weapon.name} className="cellWide">
 								{weapon.name}
+							</span>
+						);
+					})}
+				</div>
+				<div>
+					<span className="cell">
+						ShipBases
+					</span>
+					{this.props.civilization.shipBases.map(function (shipbase) {
+						return (
+							<span key={shipbase.name} className="cellWide">
+								{shipbase.name}
 							</span>
 						);
 					})}
