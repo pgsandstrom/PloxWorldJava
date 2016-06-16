@@ -19,7 +19,9 @@ public class AiOperations {
 			Tradeable tradeable = location.getTradeable().get();
 			for (ProductionType productionType : ProductionType.values()) {
 				Production production = tradeable.getProduction(productionType);
-				if (production.getBuyPrice() / production.getBasePrice() > TraderAi.BASE_PRICE_QUOTA_TO_SELL_AT) {
+				//TODO currently we do a stupid force sell if we have negative storage. This could be smarter
+				if (production.getBuyPrice() / production.getBasePrice() > TraderAi.BASE_PRICE_QUOTA_TO_SELL_AT
+						|| person.getShip().getFreeStorage() < 0) {
 					AiOperations.sellMax(world, person, tradeable, productionType);
 				}
 			}
@@ -39,7 +41,7 @@ public class AiOperations {
 		}
 
 		if (buyAmount < 0) {
-			throw new RuntimeException();    //TODO this is thrown sometimes ;_;
+			throw new RuntimeException();
 		}
 
 		world.executeAction(new TradeGoods(person, tradeable, buyAmount, production.getProductionType(), TransferType.BUY));

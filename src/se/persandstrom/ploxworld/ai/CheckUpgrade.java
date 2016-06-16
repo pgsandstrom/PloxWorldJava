@@ -12,9 +12,6 @@ public class CheckUpgrade {
 
 	public boolean willTravelToUpgrade(World world, Person person) {
 		// TODO: Should not buy expensive weapons if the ship is shitty...
-		if(person.getMoney() > 40000 ){
-			System.out.println("plox");
-		}
 		if(person.getPersonality().getAggressionRoll() > 60) {
 			return willTravelToUpgradeItem(world, person, person.getShip().getWeapon());
 		} else {

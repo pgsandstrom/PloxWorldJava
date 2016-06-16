@@ -11,7 +11,7 @@ public class Rand {
 	public static void reset() {
 		long seed = System.currentTimeMillis();
 		System.out.println("random seed: " + seed);
-		seed = 123132312L;
+//		seed = 123132312L;
 		setSeed(seed);
 	}
 

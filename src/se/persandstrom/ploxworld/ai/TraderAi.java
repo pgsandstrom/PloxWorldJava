@@ -50,7 +50,7 @@ public class TraderAi implements Ai {
 			if (percentageFree > 0.5 && person.getMoney() > 500) {
 				travelToBuy(world, person);
 			} else if (percentageFree == 1.0 && person.getMoney() < 200) {
-				Log.warning("no monies");
+//				Log.warning("no monies");
 			} else if (percentageFree == 1.0) {
 				travelToBuy(world, person);
 			} else {
