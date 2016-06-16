@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 
 import ShipInfo from './shipInfo.js';
 
@@ -49,8 +50,26 @@ const PersonDialog = React.createClass({
 });
 
 var PersonDetails = React.createClass({
+	componentDidMount: function () {
+		//TODO detta kan inte göras vid mount, det får göras när props ändras typ
+		console.log("componentDidMount");
+		$.ajax({
+			url: "http://localhost:8000/backend/log",
+			data: { name: this.props.person.name},
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				console.log("success");
+				this.setState({data: data});
+			}.bind(this),
+			error: function (xhr, status, err) {
+				console.log("fail");
+				console.log(this.props.startUrl + "," + status + "," + err.toString());
+			}.bind(this)
+		});
+	},
 	render: function () {
-		//console.log("personDetails render: " + JSON.stringify(this.props));
+		//TODO ta å måla ut infon som vi just nu får i state...
 		return (
 			<div>
 				<h1>{this.props.person.name}</h1>

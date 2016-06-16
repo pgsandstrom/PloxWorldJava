@@ -122,6 +122,7 @@ public class Main {
 							personName = split[1];
 						}
 					}
+					personName = personName.replace('+', ' ');	//fulfix på jquery skit
 					List<String> personLogs = world.getPersonLogs(personName);
 					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
 					response = gson.toJson(personLogs);

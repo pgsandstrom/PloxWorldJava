@@ -2,8 +2,7 @@ import React from 'react';
 
 const ShipInfo = React.createClass({
 	render: function () {
-		console.log("ShipInfo render: " + JSON.stringify(this.props));
-		console.log("ShipInfo render: " + JSON.stringify(this.props.ship.weapon.name));
+		// console.log("ShipInfo render: " + JSON.stringify(this.props));
 
 		var storage = [];
 		for (var item in this.props.ship.storage) {
