@@ -1,9 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const ShipInfo = React.createClass({
 	render: function () {
-		//console.log("ShipInfo render: " + JSON.stringify(this.props));
+		console.log("ShipInfo render: " + JSON.stringify(this.props));
+		console.log("ShipInfo render: " + JSON.stringify(this.props.ship.weapon.name));
 
 		var storage = [];
 		for (var item in this.props.ship.storage) {
@@ -17,10 +17,10 @@ const ShipInfo = React.createClass({
 					Health: {this.props.ship.health} / {this.props.ship.maxHealth}
 				</div>
 				<div>
-					Base: {this.props.ship.shipBase}
+					Base: {this.props.ship.shipBase.name}
 				</div>
 				<div>
-					Weapon: {this.props.ship.weapon}
+					Weapon: {this.props.ship.weapon.name}
 				</div>
 
 				{storage.map(function (storageItem) {

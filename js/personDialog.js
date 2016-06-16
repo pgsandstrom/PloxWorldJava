@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import ShipInfo from './shipInfo.js'
+import ShipInfo from './shipInfo.js';
 
 const PersonDialog = React.createClass({
 	selectPerson: function (selectedPersonName) {

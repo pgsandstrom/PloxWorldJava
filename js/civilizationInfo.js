@@ -1,12 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const CivilizationInfo = React.createClass({
 	render: function () {
-		console.log("CivilizationInfo render: " + JSON.stringify(this.props));
-		this.props.civilization.weapons.map(function (weapon) {
-			console.log("weapon: " + weapon);
-		});
+		// console.log("CivilizationInfo render: " + JSON.stringify(this.props));
 		return (
 			<div>
 				<div>

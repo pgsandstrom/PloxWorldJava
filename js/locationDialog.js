@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import CivilizationInfo from './civilizationInfo.js'
-import TradeableInfo from './tradeableInfo.js'
+import CivilizationInfo from './civilizationInfo.js';
+import TradeableInfo from './tradeableInfo.js';
 
 const LocationDialog = React.createClass({
 	selectLocation: function (selectedLocationName) {

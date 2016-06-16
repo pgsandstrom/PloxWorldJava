@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
-import MessageSystem from './messageSystem.js'
-import Board from './board.js'
-import GameInfo from './gameInfo.js'
-import WorldStats from './worldStats.js'
-import LocationDialog from './locationDialog.js'
-import PersonDialog from './personDialog.js'
+import MessageSystem from './messageSystem.js';
+import Board from './board.js';
+import GameInfo from './gameInfo.js';
+import WorldStats from './worldStats.js';
+import LocationDialog from './locationDialog.js';
+import PersonDialog from './personDialog.js';
 
 
 var Main = React.createClass({
