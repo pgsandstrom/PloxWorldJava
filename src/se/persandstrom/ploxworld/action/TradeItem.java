@@ -8,14 +8,14 @@ import se.persandstrom.ploxworld.ship.BuyableItem;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class TradeWeapon implements Action {
+public class TradeItem implements Action {
 
 	private final Person person;
 	private final Civilization civilization;
 	private final BuyableItem item;
 	private final TransferType type;
 
-	public TradeWeapon(Person person, Civilization civilization, BuyableItem item, TransferType type) {
+	public TradeItem(Person person, Civilization civilization, BuyableItem item, TransferType type) {
 		this.person = person;
 		this.civilization = civilization;
 		this.item = item;

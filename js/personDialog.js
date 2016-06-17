@@ -42,25 +42,31 @@ const PersonDialog = React.createClass({
 
 				<div style={{float:'left'}}>
 					{this.state != undefined && this.state.selectedPersonName != undefined ?
-						<PersonDetails person={this.getPerson(this.state.selectedPersonName)}/> : 'Choose a person'}
+						<PersonDetailsContainer person={this.getPerson(this.state.selectedPersonName)}/> : 'Choose a person'}
 				</div>
 			</div>
 		);
 	}
 });
 
-var PersonDetails = React.createClass({
-	componentDidMount: function () {
-		//TODO detta kan inte göras vid mount, det får göras när props ändras typ
-		console.log("componentDidMount");
+var PersonDetailsContainer = React.createClass({
+	componentWillMount: function () {
+		// console.log("componentWillMount PersonDetailsContainer ");
+		this.getLogs();
+	},
+	componentWillReceiveProps: function (nextProps) {
+		// console.log("componentWillReceiveProps");
+		this.getLogs();
+	},
+	getLogs: function () {
 		$.ajax({
 			url: "http://localhost:8000/backend/log",
-			data: { name: this.props.person.name},
+			data: {name: this.props.person.name},
 			dataType: 'json',
 			cache: false,
-			success: function (data) {
-				console.log("success");
-				this.setState({data: data});
+			success: function (logs) {
+				console.log("success: " + logs);
+				this.setState({logs: logs});
 			}.bind(this),
 			error: function (xhr, status, err) {
 				console.log("fail");
@@ -69,7 +75,22 @@ var PersonDetails = React.createClass({
 		});
 	},
 	render: function () {
-		//TODO ta å måla ut infon som vi just nu får i state...
+		var logs = this.state != undefined ? this.state.logs : undefined;
+		console.log("logs: " + logs);
+		console.log("state: " + JSON.stringify(this.state));
+		return (
+			<PersonDetails person={this.props.person} logs={logs}/>
+		);
+	}
+});
+
+var PersonDetails = React.createClass({
+	componentDidMount: function () {
+		console.log("componentDidMount PersonDetails ")
+	},
+	render: function () {
+		console.log("Person render: " + JSON.stringify(this.props));
+		var logs = this.props.logs != undefined ? this.props.logs : [];
 		return (
 			<div>
 				<h1>{this.props.person.name}</h1>
@@ -79,6 +100,17 @@ var PersonDetails = React.createClass({
 				{this.props.person.ship != undefined ?
 					<ShipInfo ship={this.props.person.ship}/> : null
 				}
+
+				<div>
+					<div className="cell header">The log</div>
+					{logs.map(function (log) {
+						return (
+							<div className="cellRow">
+								{log}
+							</div>
+						);
+					})}
+				</div>
 
 			</div>
 		);

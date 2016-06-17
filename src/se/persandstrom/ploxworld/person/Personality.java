@@ -6,7 +6,7 @@ public class Personality {
 
 	public final int aggression;
 
-	Personality(int aggression) {
+	public Personality(int aggression) {
 		this.aggression = aggression;
 	}
 

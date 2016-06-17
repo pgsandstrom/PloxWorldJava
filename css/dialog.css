@@ -26,3 +26,12 @@
 	width:150px;
 	border: 1px solid #cccccc;
 }
+
+.cellRow {
+	height: 25px;
+	border: 1px solid #cccccc;
+}
+
+.header {
+	margin-top: 10px;
+}

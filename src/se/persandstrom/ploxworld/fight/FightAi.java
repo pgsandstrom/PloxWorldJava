@@ -1,5 +1,10 @@
 package se.persandstrom.ploxworld.fight;
 
+import se.persandstrom.ploxworld.action.Action;
+import se.persandstrom.ploxworld.action.fight.Escape;
+import se.persandstrom.ploxworld.action.fight.Fire;
+import se.persandstrom.ploxworld.action.fight.MoveForward;
+
 public class FightAi {
 
 	private final Fight fight;
@@ -12,7 +17,7 @@ public class FightAi {
 		this.receiver = receiver;
 	}
 
-	public FightAction makeDecision() {
+	public Action makeDecision() {
 		double acterPower = acter.getShip().getPower();
 		double receiverPower = receiver.getShip().getPower();
 
@@ -23,16 +28,16 @@ public class FightAi {
 		}
 	}
 
-	private FightAction makeAggressiveMove() {
+	private Action makeAggressiveMove() {
 		double accuracy = fight.getAccuracy(acter);
 		if (accuracy < 0.5 && fight.getDistance() > 1) {
-			return FightAction.MOVE_FORWARD;
+			return new MoveForward(fight, acter, receiver);
 		} else {
-			return FightAction.FIRE;
+			return new Fire(fight, acter, receiver);
 		}
 	}
 
-	private FightAction makeDefensiveMove() {
-		return FightAction.ESCAPE;
+	private Action makeDefensiveMove() {
+		return new Escape(fight, acter, receiver);
 	}
 }

@@ -17,7 +17,7 @@ public class Mine implements Action {
 
 	@Override
 	public void execute() {
-		person.getShip().addStorage(ProductionType.MATERIAL, mined);	//TODO should be inside an action
+		person.getShip().addStorage(ProductionType.MATERIAL, mined);
 		Log.mine(person.getName() + " mined for " + mined);
 	}
 

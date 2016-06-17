@@ -1,8 +1,10 @@
 package se.persandstrom.ploxworld.fight;
 
+import se.persandstrom.ploxworld.action.Action;
 import se.persandstrom.ploxworld.action.TransferGoods;
+import se.persandstrom.ploxworld.action.fight.MoveBackward;
+import se.persandstrom.ploxworld.action.fight.MoveForward;
 import se.persandstrom.ploxworld.common.Log;
-import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;
@@ -26,12 +28,12 @@ public class Fight {
 
 		while (true) {
 			if (isFightOngoing()) {
-				FightAction fightAction = new FightAi(this, first, second).makeDecision();
-				applyAction(fightAction, first, second);
+				Action fightAction = new FightAi(this, first, second).makeDecision();
+				world.executeAction(fightAction);
 			}
 			if (isFightOngoing()) {
-				FightAction fightAction = new FightAi(this, second, first).makeDecision();
-				applyAction(fightAction, second, first);
+				Action fightAction = new FightAi(this, second, first).makeDecision();
+				world.executeAction(fightAction);
 			}
 
 			if (first.getPerson().isAlive() == false) {
@@ -52,55 +54,6 @@ public class Fight {
 		}
 	}
 
-	private void applyAction(FightAction fightAction, Combatant acter, Combatant receiver) {
-		switch (fightAction) {
-			case MOVE_FORWARD:
-				moveForward();
-				break;
-			case MOVE_BACKWARD:
-				moveBackward();
-				break;
-			case ESCAPE:
-				escape(acter);
-				break;
-			case FIRE:
-				fire(acter, receiver);
-				break;
-			case WAIT:
-				break;
-		}
-	}
-
-	private void moveForward() {
-		distance -= 1;
-	}
-
-	private void moveBackward() {
-		distance -= 1;
-	}
-
-	private void escape(Combatant acter) {
-		moveBackward();
-		if (distance >= 10) {
-			acter.setStillFighting(false);
-		} else if (Rand.roll(0.1)) {
-			acter.setStillFighting(false);
-		}
-	}
-
-	private void fire(Combatant acter, Combatant receiver) {
-		Weapon weapon = acter.getShip().getWeapon();
-		boolean hit = hitOrMiss(weapon, acter.getLastMove());
-		if (hit) {
-			int damage = weapon.rollDamage();
-			receiver.getShip().damage(damage);
-			if (receiver.getShip().isDead()) {
-				receiver.getPerson().setAlive(false);
-				receiver.setStillFighting(false);
-			}
-		}
-	}
-
 	public double getAccuracy(Combatant combatant) {
 		return getAccuracy(combatant.getShip().getWeapon(), combatant.getLastMove());
 	}
@@ -109,12 +62,13 @@ public class Fight {
 		return distance;
 	}
 
-	private boolean hitOrMiss(Weapon weapon, FightAction lastMove) {
-		return Rand.roll(getAccuracy(weapon, lastMove));
+	public void addDistance(int distanceDelta) {
+		this.distance += distanceDelta;
 	}
 
-	private double getAccuracy(Weapon weapon, FightAction lastMove) {
-		return weapon.accuracy - distance * 0.05 + (lastMove.isMovement() ? 0 : 0.05);
+	public double getAccuracy(Weapon weapon, Action lastMove) {
+		// fulkodat...
+		return weapon.accuracy - distance * 0.05 + (lastMove instanceof MoveForward || lastMove instanceof MoveBackward ? 0 : 0.05);
 	}
 
 	private boolean isFightOngoing() {

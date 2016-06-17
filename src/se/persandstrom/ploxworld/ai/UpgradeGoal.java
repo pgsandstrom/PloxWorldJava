@@ -1,6 +1,6 @@
 package se.persandstrom.ploxworld.ai;
 
-import se.persandstrom.ploxworld.action.TradeWeapon;
+import se.persandstrom.ploxworld.action.TradeItem;
 import se.persandstrom.ploxworld.common.TransferType;
 import se.persandstrom.ploxworld.locations.Location;
 import se.persandstrom.ploxworld.locations.property.Civilization;
@@ -25,7 +25,7 @@ public class UpgradeGoal implements Goal {
 				throw new IllegalStateException();
 			}
 
-			world.executeAction(new TradeWeapon(person, civilization, buyableItem, TransferType.BUY));
+			world.executeAction(new TradeItem(person, civilization, buyableItem, TransferType.BUY));
 			//TODO: Sell old weapon. This requires inventory and lots of stuff
 		}
 	}

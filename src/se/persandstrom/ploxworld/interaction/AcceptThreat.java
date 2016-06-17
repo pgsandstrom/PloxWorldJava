@@ -1,6 +1,7 @@
 package se.persandstrom.ploxworld.interaction;
 
 import se.persandstrom.ploxworld.action.TransferGoods;
+import se.persandstrom.ploxworld.action.dialog.Proposal;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
@@ -17,12 +18,12 @@ public class AcceptThreat {
 		this.aggressor = aggressor;
 	}
 
-	public void start(Dialog.Threat threat) {
+	public void start(Proposal.ProposalType proposal) {
 
-		if (threat == Dialog.Threat.BOARD) {
+		if (proposal == Proposal.ProposalType.BOARD) {
 			board();
 		} else {
-			pay(threat);
+			pay(proposal);
 		}
 	}
 
@@ -30,11 +31,11 @@ public class AcceptThreat {
 		Log.pirate(aggressor + " is BOARDING " + victim + "!!!");
 	}
 
-	private void pay(Dialog.Threat threat) {
+	private void pay(Proposal.ProposalType proposal) {
 		double quote;
-		if (threat == Dialog.Threat.GIVE_ALL) {
+		if (proposal == Proposal.ProposalType.GIVE_ALL) {
 			quote = 1;
-		} else if (threat == Dialog.Threat.GIVE_RANSOM) {
+		} else if (proposal == Proposal.ProposalType.GIVE_RANSOM) {
 			quote = 0.25;
 		} else {
 			throw new IllegalStateException();

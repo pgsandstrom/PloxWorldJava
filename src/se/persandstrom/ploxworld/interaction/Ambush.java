@@ -20,6 +20,7 @@ public class Ambush {
 	}
 
 	public void start() {
+		//TODO refactor to the same structure as dialog
 		ConfrontDialogRun confrontDialogRun = confrontTalkRun();
 
 		switch (confrontDialogRun) {

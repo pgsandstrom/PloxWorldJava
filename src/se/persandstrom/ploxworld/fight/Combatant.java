@@ -3,13 +3,15 @@ package se.persandstrom.ploxworld.fight;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.persandstrom.ploxworld.action.Action;
+import se.persandstrom.ploxworld.action.fight.Wait;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
 
 public class Combatant {
 	private final Person person;
 	private final Ship ship;
-	private final List<FightAction> fightActions = new ArrayList<>();
+	private final List<Action> fightActions = new ArrayList<>();
 	private boolean stillFighting = true;
 
 	public Combatant(Person person) {
@@ -25,17 +27,17 @@ public class Combatant {
 		return ship;
 	}
 
-	public List<FightAction> getFightActions() {
+	public List<Action> getFightActions() {
 		return fightActions;
 	}
 
-	public void addFightAction(FightAction fightAction) {
-		fightActions.add(fightAction);
+	public void addAction(Action Action) {
+		fightActions.add(Action);
 	}
 
-	public FightAction getLastMove() {
+	public Action getLastMove() {
 		if (fightActions.size() == 0) {
-			return FightAction.WAIT;
+			return new Wait();
 		} else {
 			return fightActions.get(fightActions.size() - 1);
 		}
