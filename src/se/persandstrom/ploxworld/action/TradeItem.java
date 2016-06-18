@@ -44,4 +44,14 @@ public class TradeItem implements Action {
 	public void saveData(WorldData worldData) {
 		worldData.addDataValue(WorldData.KEY_WEAPONS_BOUGHT, 1);
 	}
+
+	@Override
+	public boolean isDecided() {
+		return true;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		throw new IllegalStateException();
+	}
 }

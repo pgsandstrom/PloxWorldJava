@@ -47,4 +47,14 @@ public class TradeGoods implements Action {
 	public void saveData(WorldData worldData) {
 		worldData.addDataValue(WorldData.KEY_GOODS_TRADED, amount);
 	}
+
+	@Override
+	public boolean isDecided() {
+		return true;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		throw new IllegalStateException();
+	}
 }

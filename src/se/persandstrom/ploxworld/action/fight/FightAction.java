@@ -118,6 +118,16 @@ public class FightAction implements Action {
 		//XXX NOT IMPLEMENTED
 	}
 
+	@Override
+	public boolean isDecided() {
+		return actionType != null;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		actionType = ActionType.valueOf(decision);
+	}
+
 	public ActionType getActionType() {
 		return actionType;
 	}

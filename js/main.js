@@ -82,7 +82,23 @@ var Main = React.createClass({
 			</div>);
 		}
 
-		//console.log("this.state.data: "+JSON.stringify(this.state.data));
+		var stateAsString =JSON.stringify(this.state.data);
+		if(stateAsString.length < 50) {
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("WARNING WARNING");
+			console.log("this.state.data: "+stateAsString);
+		}
 
 		return (
 			<div>

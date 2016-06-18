@@ -9,6 +9,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.util.List;
 
+import se.persandstrom.ploxworld.action.Action;
 import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.MinerAi;
 import se.persandstrom.ploxworld.ai.PirateAi;
@@ -27,12 +28,15 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 //TODO: This is truly crappy code and very insecure. Plox change it someday :-)
-public class Main {
+public class Main implements PlayerInterface {
 
 	static World world;
 
 	public static void main(String[] args) throws Exception {
+		new Main().main2();
+	}
 
+	public void main2() throws Exception {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 //		HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 8000),0);	//For security lol
 		server.createContext("/", new FrontendHandler());
@@ -41,7 +45,7 @@ public class Main {
 		server.start();
 	}
 
-	private static class FrontendHandler implements HttpHandler {
+	private class FrontendHandler implements HttpHandler {
 
 		@Override
 		public void handle(HttpExchange httpExchange) throws IOException {
@@ -72,9 +76,13 @@ public class Main {
 		}
 	}
 
-	private static class BackendHandler implements HttpHandler {
+	private HttpExchange currentHttpExchange;
+	private Action currentAction;
+
+	private class BackendHandler implements HttpHandler {
 		@Override
 		public void handle(HttpExchange httpExchange) throws IOException {
+			currentHttpExchange = httpExchange;
 
 			try {
 
@@ -87,7 +95,7 @@ public class Main {
 				String response = null;
 				if ("/backend".equals(path)) {
 					Rand.reset();
-					world = new World();
+					world = new World(true);
 					world.progressTurn();
 
 					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
@@ -122,13 +130,29 @@ public class Main {
 							personName = split[1];
 						}
 					}
-					personName = personName.replace('+', ' ');	//fulfix på jquery skit
+					personName = personName.replace('+', ' ');    //fulfix på jquery skit
 					List<String> personLogs = world.getPersonLogs(personName);
 					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
 					response = gson.toJson(personLogs);
-				}
+				} else if ("/backend/action".equals(path)) {
+					String query = uri.getQuery();
+					String[] arguments = query.split("&");
+					for (String argument : arguments) {
+						String[] split = argument.split("=");
+						if (split.length != 2) {
+							throw new IllegalArgumentException();
+						}
+						if ("decision".equals(split[0])) {
+							String decision = split[1];
+							System.out.println("action received: " + decision);
+							currentAction.setDecision(decision);
+						}
+					}
 
-				
+					// amazing hacks! :)
+					currentHttpExchange = httpExchange;
+					return;
+				}
 
 
 				Headers headers = httpExchange.getResponseHeaders();
@@ -145,7 +169,40 @@ public class Main {
 		}
 	}
 
-	public static class AiSerializer implements JsonSerializer<Ai> {
+	@Override
+	public void completeAction(Action action) {
+		try {
+			currentAction = action;
+
+			String response = action.getClass().getSimpleName();
+
+			HttpExchange httpExchange = currentHttpExchange;
+			Headers headers = httpExchange.getResponseHeaders();
+			headers.set("Content-Type", "application/json");
+			headers.set("Access-Control-Allow-Origin", "http://localhost:8080");
+			httpExchange.sendResponseHeaders(200, response.length());
+			OutputStream os = httpExchange.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+
+			while (action.isDecided() == false) {
+				System.out.println("waiting for decision...");
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println("Received decision! Continuing!!!");
+
+			currentAction = null;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public class AiSerializer implements JsonSerializer<Ai> {
 		@Override
 		public JsonElement serialize(Ai ai, Type type, JsonSerializationContext jsonSerializationContext) {
 			if (ai instanceof TraderAi) {

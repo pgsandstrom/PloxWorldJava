@@ -35,6 +35,16 @@ public class Proposal implements Action {
 		//XXX NOT IMPLEMENTED
 	}
 
+	@Override
+	public boolean isDecided() {
+		return proposal != null;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		proposal = ProposalType.valueOf(decision);
+	}
+
 	public ProposalType getProposal() {
 		if (acter.getAi() == null) {
 			return null;

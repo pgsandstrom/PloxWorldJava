@@ -4,5 +4,5 @@ import se.persandstrom.ploxworld.action.Action;
 
 public interface PlayerInterface {
 
-	Action getAction();
+	void completeAction(Action action);
 }

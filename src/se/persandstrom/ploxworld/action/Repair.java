@@ -44,4 +44,14 @@ public class Repair implements Action {
 		worldData.addDataValue(WorldData.KEY_REPAIRED, repairAmount);
 	}
 
+	@Override
+	public boolean isDecided() {
+		return true;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		throw new IllegalStateException();
+	}
+
 }

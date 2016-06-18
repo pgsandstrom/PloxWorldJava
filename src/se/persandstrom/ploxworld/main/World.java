@@ -60,8 +60,8 @@ public class World {
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
 		locations.addAll(asteroidCreater.createAsteroids(ASTEROID_NUMBER));
 		personCreater = new PersonCreater(this);
-		persons = personCreater.createPersons(MINER_NUMBER, PersonalityType.MINER);
-		persons.addAll(personCreater.createPersons(TRADER_NUMBER, PersonalityType.TRADE));
+		persons = personCreater.createPersons(0, PersonalityType.MINER);
+		persons.addAll(personCreater.createPersons(0, PersonalityType.TRADE));
 		persons.addAll(personCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
 		if (withPlayer) {
 			persons.addAll(personCreater.createPersons(1, PersonalityType.PLAYER));

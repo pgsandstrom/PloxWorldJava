@@ -7,4 +7,8 @@ public interface Action {
 	void execute();
 
 	void saveData(WorldData worldData);
+
+	boolean isDecided();
+
+	void setDecision(String decision);
 }

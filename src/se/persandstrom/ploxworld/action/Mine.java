@@ -25,4 +25,14 @@ public class Mine implements Action {
 	public void saveData(WorldData worldData) {
 		worldData.addDataValue(WorldData.KEY_MINED, mined);
 	}
+
+	@Override
+	public boolean isDecided() {
+		return true;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		throw new IllegalStateException();
+	}
 }

@@ -48,6 +48,16 @@ public class AmbushAction implements Action {
 		//XXX NOT IMPLEMENTED
 	}
 
+	@Override
+	public boolean isDecided() {
+		return reaction != null;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		reaction = AmbushType.valueOf(decision);
+	}
+
 	public enum AmbushType {
 		ATTACK, DIALOG, LEAVE
 	}

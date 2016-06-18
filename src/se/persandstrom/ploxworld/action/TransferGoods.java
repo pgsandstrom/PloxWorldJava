@@ -37,4 +37,14 @@ public class TransferGoods implements Action {
 	public void saveData(WorldData worldData) {
 		worldData.addDataValue(WorldData.KEY_GOODS_STOLEN, totalTransfered);
 	}
+
+	@Override
+	public void setDecision(String decision) {
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public boolean isDecided() {
+		return true;
+	}
 }

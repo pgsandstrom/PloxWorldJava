@@ -33,6 +33,16 @@ public class ProposalRefusionReaction implements Action {
 		//XXX NOT IMPLEMENTED
 	}
 
+	@Override
+	public boolean isDecided() {
+		return reaction != null;
+	}
+
+	@Override
+	public void setDecision(String decision) {
+		reaction = ProposalRefusionReactionType.valueOf(decision);
+	}
+
 	public ProposalRefusionReactionType react(Proposal.ProposalType proposalType) {
 		if (acter.getAi() == null) {
 			return null;
