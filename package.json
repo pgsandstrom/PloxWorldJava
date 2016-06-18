@@ -1,6 +1,7 @@
 {
   "name": "PloxWorldJava",
   "version": "0.0.0",
+  "private": true,
   "description": "A cool space game",
   "main": "main.js",
   "directories": {
