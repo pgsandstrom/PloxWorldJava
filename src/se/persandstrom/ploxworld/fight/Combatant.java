@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.persandstrom.ploxworld.action.Action;
-import se.persandstrom.ploxworld.action.fight.Wait;
+import se.persandstrom.ploxworld.action.fight.FightAction;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
 
@@ -33,14 +33,6 @@ public class Combatant {
 
 	public void addAction(Action Action) {
 		fightActions.add(Action);
-	}
-
-	public Action getLastMove() {
-		if (fightActions.size() == 0) {
-			return new Wait();
-		} else {
-			return fightActions.get(fightActions.size() - 1);
-		}
 	}
 
 	@Override

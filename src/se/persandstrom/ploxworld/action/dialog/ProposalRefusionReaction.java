@@ -34,6 +34,10 @@ public class ProposalRefusionReaction implements Action {
 	}
 
 	public ProposalRefusionReactionType react(Proposal.ProposalType proposalType) {
+		if (acter.getAi() == null) {
+			return null;
+		}
+
 		double aggressionRoll = receiver.getPersonality().getAggressionRoll(dialog.getPowerRatio());
 		if (aggressionRoll > 50) {
 			return ProposalRefusionReactionType.ATTACK;

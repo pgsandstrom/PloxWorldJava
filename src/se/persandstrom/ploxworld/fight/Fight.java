@@ -2,8 +2,7 @@ package se.persandstrom.ploxworld.fight;
 
 import se.persandstrom.ploxworld.action.Action;
 import se.persandstrom.ploxworld.action.TransferGoods;
-import se.persandstrom.ploxworld.action.fight.MoveBackward;
-import se.persandstrom.ploxworld.action.fight.MoveForward;
+import se.persandstrom.ploxworld.action.fight.FightAction;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
@@ -28,11 +27,11 @@ public class Fight {
 
 		while (true) {
 			if (isFightOngoing()) {
-				Action fightAction = new FightAi(this, first, second).makeDecision();
+				Action fightAction = new FightAction(this, first, second);
 				world.executeAction(fightAction);
 			}
 			if (isFightOngoing()) {
-				Action fightAction = new FightAi(this, second, first).makeDecision();
+				Action fightAction = new FightAction(this, second, first);
 				world.executeAction(fightAction);
 			}
 
@@ -54,8 +53,8 @@ public class Fight {
 		}
 	}
 
-	public double getAccuracy(Combatant combatant) {
-		return getAccuracy(combatant.getShip().getWeapon(), combatant.getLastMove());
+	public double getAccuracy(Combatant shooter) {
+		return getAccuracy(shooter.getShip().getWeapon());
 	}
 
 	public int getDistance() {
@@ -66,9 +65,8 @@ public class Fight {
 		this.distance += distanceDelta;
 	}
 
-	public double getAccuracy(Weapon weapon, Action lastMove) {
-		// fulkodat...
-		return weapon.accuracy - distance * 0.05 + (lastMove instanceof MoveForward || lastMove instanceof MoveBackward ? 0 : 0.05);
+	public double getAccuracy(Weapon weapon) {
+		return weapon.accuracy - distance * 0.05;
 	}
 
 	private boolean isFightOngoing() {

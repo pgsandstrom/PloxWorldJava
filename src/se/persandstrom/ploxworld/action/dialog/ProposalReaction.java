@@ -34,7 +34,7 @@ public class ProposalReaction implements Action {
 	}
 
 	public ProposalReactionType react(Proposal.ProposalType proposalType) {
-		if(receiver.getAi() != null) {
+		if(receiver.getAi() == null) {
 			return null;
 		}
 

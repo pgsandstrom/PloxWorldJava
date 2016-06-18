@@ -19,7 +19,7 @@ public class Proposal implements Action {
 		this.acter = acter;
 		this.receiver = receiver;
 
-		proposal = getThreat();
+		proposal = getProposal();
 	}
 
 	@Override
@@ -35,7 +35,11 @@ public class Proposal implements Action {
 		//XXX NOT IMPLEMENTED
 	}
 
-	public ProposalType getThreat() {
+	public ProposalType getProposal() {
+		if (acter.getAi() == null) {
+			return null;
+		}
+
 		double aggressionRoll = acter.getPersonality().getAggressionRoll(dialog.getPowerRatio());
 		if (aggressionRoll > 90) {
 			return ProposalType.BOARD;
