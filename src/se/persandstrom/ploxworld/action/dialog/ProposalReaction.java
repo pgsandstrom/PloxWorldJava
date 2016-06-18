@@ -33,8 +33,7 @@ public class ProposalReaction implements Action {
 	}
 
 	public ProposalReactionType react(Proposal.ProposalType proposalType) {
-		//TODO should this powerratio be reversed?
-		double aggressionRoll = receiver.getPersonality().getAggressionRoll(dialog.getPowerRatio());
+		double aggressionRoll = receiver.getPersonality().getAggressionRoll(dialog.getPowerRatioForReceiver());
 		int choiceLimit;
 		switch (proposalType) {
 			case BOARD:

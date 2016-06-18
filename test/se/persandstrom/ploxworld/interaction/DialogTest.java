@@ -62,18 +62,18 @@ public class DialogTest {
 
 
 	private Person getAggressive() {
-		return new Person(new PirateAi(), new Personality(500), "aggressive", null, 1000);
+		return new Person(new PirateAi(), new Personality(200), "aggressive", null, 1000);
 	}
 
 	private Person getAggressiveStrong() {
-		Person person = new Person(new PirateAi(), new Personality(1000), "aggressive extreme", null, 1000);
+		Person person = new Person(new PirateAi(), new Personality(200), "aggressive extreme", null, 1000);
 		person.getShip().setWeapon(Weapon.weapons.get(5));
 		person.getShip().setShipBase(ShipBase.shipBases.get(1));
 		return person;
 	}
 
 	private Person getCoward() {
-		return new Person(new TraderAi(), new Personality(-500), "coward", null, 1000);
+		return new Person(new TraderAi(), new Personality(-100), "coward", null, 1000);
 	}
 
 

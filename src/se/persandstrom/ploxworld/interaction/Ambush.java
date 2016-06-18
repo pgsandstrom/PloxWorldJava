@@ -1,5 +1,6 @@
 package se.persandstrom.ploxworld.interaction;
 
+import se.persandstrom.ploxworld.action.ambush.AmbushAction;
 import se.persandstrom.ploxworld.fight.Fight;
 import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
@@ -7,28 +8,26 @@ import se.persandstrom.ploxworld.person.Person;
 public class Ambush {
 
 	private final World world;
-	private final Person aggressor;
-	private final Person victim;
+	private final Person acter;
+	private final Person receiver;
 
-	private final double powerRatio;
+	AmbushAction.AmbushType ambushType;
 
-	public Ambush(World world, Person aggressor, Person victim) {
+	public Ambush(World world, Person acter, Person receiver) {
 		this.world = world;
-		this.aggressor = aggressor;
-		this.victim = victim;
-		this.powerRatio = aggressor.getShip().getPower() / victim.getShip().getPower();
+		this.acter = acter;
+		this.receiver = receiver;
 	}
 
 	public void start() {
-		//TODO refactor to the same structure as dialog
-		ConfrontDialogRun confrontDialogRun = confrontTalkRun();
+		world.executeAction(new AmbushAction(this, acter, receiver));
 
-		switch (confrontDialogRun) {
+		switch (ambushType) {
 			case ATTACK:
-				new Fight(world, aggressor, victim).start();
+				new Fight(world, acter, receiver).start();
 				return;
 			case DIALOG:
-				new Dialog(world, aggressor, victim).start();
+				new Dialog(world, acter, receiver).start();
 				return;
 			case LEAVE:
 				//TODO: Other get chance to attack?
@@ -36,19 +35,7 @@ public class Ambush {
 		}
 	}
 
-	public ConfrontDialogRun confrontTalkRun() {
-		double aggressionRoll = aggressor.getPersonality().getAggressionRoll(powerRatio);
-
-		if (aggressionRoll > 100) {
-			return ConfrontDialogRun.ATTACK;
-		} else if (aggressionRoll > 50) {
-			return ConfrontDialogRun.DIALOG;
-		} else {
-			return ConfrontDialogRun.LEAVE;
-		}
-	}
-
-	enum ConfrontDialogRun {
-		ATTACK, DIALOG, LEAVE
+	public void setAmbushType(AmbushAction.AmbushType ambushType) {
+		this.ambushType = ambushType;
 	}
 }
