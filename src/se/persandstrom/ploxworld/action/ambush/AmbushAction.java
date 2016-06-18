@@ -14,16 +14,19 @@ public class AmbushAction implements Action {
 
 	private final double powerRatio;
 
+	AmbushType reaction;
+
 	public AmbushAction(Ambush ambush, Person acter, Person receiver) {
 		this.ambush = ambush;
 		this.acter = acter;
 		this.receiver = receiver;
 		this.powerRatio = acter.getShip().getPower() / receiver.getShip().getPower();
+
+		reaction = react();
 	}
 
 	@Override
 	public void execute() {
-		AmbushType reaction = react();
 		ambush.setAmbushType(reaction);
 		Log.fight("Ambush. " + acter + " decides to " + reaction);
 	}

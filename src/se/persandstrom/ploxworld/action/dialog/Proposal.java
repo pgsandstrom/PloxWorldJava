@@ -12,15 +12,18 @@ public class Proposal implements Action {
 	private final Person acter;
 	private final Person receiver;
 
+	ProposalType proposal;
+
 	public Proposal(Dialog dialog, Person acter, Person receiver) {
 		this.dialog = dialog;
 		this.acter = acter;
 		this.receiver = receiver;
+
+		proposal = getThreat();
 	}
 
 	@Override
 	public void execute() {
-		ProposalType proposal = getThreat();
 		dialog.setProposalType(proposal);
 
 		Log.dialog("");

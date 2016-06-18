@@ -8,10 +8,12 @@ import se.persandstrom.ploxworld.common.Rand;
 
 public enum PersonalityType {
 
-	TRADE, MINER, PIRATE;
+	PLAYER, TRADE, MINER, PIRATE;
 
 	public Personality getPersonality() {
 		switch (this) {
+			case PLAYER:
+				return null;
 			case TRADE:
 				return new Personality(Rand.bound(0, 60));
 			case MINER:
@@ -25,6 +27,8 @@ public enum PersonalityType {
 
 	public Ai getAi() {
 		switch (this) {
+			case PLAYER:
+				return null;
 			case TRADE:
 				return new TraderAi();
 			case MINER:

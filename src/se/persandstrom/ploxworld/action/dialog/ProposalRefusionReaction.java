@@ -12,15 +12,18 @@ public class ProposalRefusionReaction implements Action {
 	private final Person acter;
 	private final Person receiver;
 
+	ProposalRefusionReactionType reaction;
+
 	public ProposalRefusionReaction(Dialog dialog, Person acter, Person receiver) {
 		this.dialog = dialog;
 		this.acter = acter;
 		this.receiver = receiver;
+
+		reaction = react(dialog.getProposalType());
 	}
 
 	@Override
 	public void execute() {
-		ProposalRefusionReactionType reaction = react(dialog.getProposalType());
 		dialog.setProposalRefusionReaction(reaction);
 		Log.dialog(acter + " reacts to refusal with " + reaction);
 	}

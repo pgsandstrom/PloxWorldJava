@@ -47,6 +47,10 @@ public class World {
 	@Expose int turn = 0;
 
 	public World() throws IOException, URISyntaxException {
+		this(false);
+	}
+
+	public World(boolean withPlayer) throws IOException, URISyntaxException {
 		//TODO: make world hold a Rand instead
 		Rand.reset();
 
@@ -59,6 +63,9 @@ public class World {
 		persons = personCreater.createPersons(MINER_NUMBER, PersonalityType.MINER);
 		persons.addAll(personCreater.createPersons(TRADER_NUMBER, PersonalityType.TRADE));
 		persons.addAll(personCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
+		if (withPlayer) {
+			persons.addAll(personCreater.createPersons(1, PersonalityType.PLAYER));
+		}
 
 		locations.forEach(Location::prepareStuff);
 
