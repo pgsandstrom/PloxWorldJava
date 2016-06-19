@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import se.persandstrom.ploxworld.action.Action;
 import se.persandstrom.ploxworld.ai.Ai;
@@ -40,8 +41,9 @@ public class Main implements PlayerInterface {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 //		HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 8000),0);	//For security lol
 		server.createContext("/", new FrontendHandler());
-		server.createContext("/backend", new BackendHandler());
-		server.setExecutor(null); // creates a default executor
+		server.createContext("/backend", new BackendHandler(this));
+//		server.setExecutor(null); // creates a default executor
+		server.setExecutor(Executors.newCachedThreadPool());	//Allow multithread
 		server.start();
 	}
 
@@ -80,6 +82,13 @@ public class Main implements PlayerInterface {
 	private Action currentAction;
 
 	private class BackendHandler implements HttpHandler {
+
+		private final PlayerInterface playerInterface;
+
+		public BackendHandler(PlayerInterface playerInterface) {
+			this.playerInterface = playerInterface;
+		}
+
 		@Override
 		public void handle(HttpExchange httpExchange) throws IOException {
 			currentHttpExchange = httpExchange;
@@ -91,11 +100,13 @@ public class Main implements PlayerInterface {
 
 //				System.out.println(path);
 
+
+
 				//TODO: Make some mechanism so the server can hold many worlds for different games :-)
 				String response = null;
 				if ("/backend".equals(path)) {
 					Rand.reset();
-					world = new World(true);
+					world = new World(playerInterface);
 					world.progressTurn();
 
 					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
@@ -152,6 +163,8 @@ public class Main implements PlayerInterface {
 					// amazing hacks! :)
 					currentHttpExchange = httpExchange;
 					return;
+				} else {
+					System.out.println("errro!!!");
 				}
 
 
@@ -172,9 +185,10 @@ public class Main implements PlayerInterface {
 	@Override
 	public void completeAction(Action action) {
 		try {
+			System.out.println("starting to wait for decision");
 			currentAction = action;
 
-			String response = action.getClass().getSimpleName();
+			String response = "{\"action\":\"" + action.getClass().getSimpleName() + "\"}";
 
 			HttpExchange httpExchange = currentHttpExchange;
 			Headers headers = httpExchange.getResponseHeaders();
@@ -186,9 +200,9 @@ public class Main implements PlayerInterface {
 			os.close();
 
 			while (action.isDecided() == false) {
-				System.out.println("waiting for decision...");
+//				System.out.println("waiting for decision...");
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

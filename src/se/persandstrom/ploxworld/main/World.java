@@ -28,14 +28,16 @@ public class World {
 	private static final int SIZE_X = 800;
 	private static final int SIZE_Y = 500;
 
-	private static final int PLANET_NUMBER = 25;
-	private static final int ASTEROID_NUMBER = 5;
+	private static final int PLANET_NUMBER = 1;
+	private static final int ASTEROID_NUMBER = 1;
 
-	private static final int MINER_NUMBER = 5;
-	private static final int TRADER_NUMBER = 5;
-	private static final int PIRATE_NUMBER = 5;
+	private static final int MINER_NUMBER = 0;
+	private static final int TRADER_NUMBER = 0;
+	private static final int PIRATE_NUMBER = 1;
 
 	private final PersonCreater personCreater;
+
+	private final PlayerInterface playerInterface;
 
 	@Expose private final int height = SIZE_Y;
 	@Expose private final int width = SIZE_X;
@@ -47,12 +49,14 @@ public class World {
 	@Expose int turn = 0;
 
 	public World() throws IOException, URISyntaxException {
-		this(false);
+		this(null);
 	}
 
-	public World(boolean withPlayer) throws IOException, URISyntaxException {
+	public World(PlayerInterface playerInterface) throws IOException, URISyntaxException {
 		//TODO: make world hold a Rand instead
 		Rand.reset();
+
+		this.playerInterface = playerInterface;
 
 		locations = new ArrayList<>();
 		PlanetCreater planetCreater = new PlanetCreater(this);
@@ -60,11 +64,14 @@ public class World {
 		AsteroidCreater asteroidCreater = new AsteroidCreater(this);
 		locations.addAll(asteroidCreater.createAsteroids(ASTEROID_NUMBER));
 		personCreater = new PersonCreater(this);
-		persons = personCreater.createPersons(0, PersonalityType.MINER);
-		persons.addAll(personCreater.createPersons(0, PersonalityType.TRADE));
+		persons = personCreater.createPersons(MINER_NUMBER, PersonalityType.MINER);
+		persons.addAll(personCreater.createPersons(TRADER_NUMBER, PersonalityType.TRADE));
 		persons.addAll(personCreater.createPersons(PIRATE_NUMBER, PersonalityType.PIRATE));
-		if (withPlayer) {
-			persons.addAll(personCreater.createPersons(1, PersonalityType.PLAYER));
+		if (playerInterface != null) {
+			List<Person> players = personCreater.createPersons(1, PersonalityType.PLAYER);
+			Location someAsteroid = locations.get(locations.size() - 1);
+			players.get(0).setLocation(someAsteroid);
+			this.persons.addAll(players);
 		}
 
 		locations.forEach(Location::prepareStuff);
@@ -84,6 +91,11 @@ public class World {
 			persons.stream().forEach(
 					person -> {
 						if (person.isAlive()) {
+
+							if(person.getAi() == null) {
+								return;	//TODO temp
+							}
+
 							person.getAi().makeDecision(World.this, person);
 							person.executeDecision();
 						}
@@ -114,6 +126,10 @@ public class World {
 	}
 
 	public void executeAction(Action action) {
+		if(action.isDecided() == false) {
+			playerInterface.completeAction(action);
+		}
+
 		action.execute();
 		action.saveData(worldData);
 	}

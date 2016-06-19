@@ -4,10 +4,12 @@ import $ from 'jquery';
 
 import MessageSystem from './messageSystem.js';
 import Board from './board.js';
+import Dialog from './dialog.js';
+import Fight from './fight.js';
 import GameInfo from './gameInfo.js';
-import WorldStats from './worldStats.js';
 import LocationDialog from './locationDialog.js';
 import PersonDialog from './personDialog.js';
+import WorldStats from './worldStats.js';
 
 
 var Main = React.createClass({
@@ -25,7 +27,7 @@ var Main = React.createClass({
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
-				//console.log("data: " + JSON.stringify(data));
+				//console.log("main ajax data: " + JSON.stringify(data));
 				this.setState({data: data});
 			}.bind(this),
 			error: function (xhr, status, err) {
@@ -49,7 +51,14 @@ var Main = React.createClass({
 			cache: false,
 			success: function (data) {
 				//console.log("data: " + JSON.stringify(data));
-				this.setState({data: data});
+				if (data.action != undefined) {
+					console.log("got action: " + JSON.stringify(data));
+					var state = this.state;
+					state.action = data.action;
+					this.setState(state);
+				} else {
+					this.setState({data: data});
+				}
 			}.bind(this),
 			error: function (xhr, status, err) {
 				console.log(this.props.url, status, err.toString());
@@ -82,23 +91,23 @@ var Main = React.createClass({
 			</div>);
 		}
 
-		var stateAsString =JSON.stringify(this.state.data);
-		if(stateAsString.length < 50) {
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("WARNING WARNING");
-			console.log("this.state.data: "+stateAsString);
-		}
+		//var stateAsString = JSON.stringify(this.state.data);
+		//if (stateAsString.length < 50) {
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("WARNING WARNING");
+		//	console.log("this.state.data: " + stateAsString);
+		//}
 
 		return (
 			<div>
@@ -117,12 +126,15 @@ var Main = React.createClass({
 				<WorldStats className="WorldStats" data={this.state.data.worldData}/>
 
 				{ this.state.showLocationList ? <LocationDialog locations={this.state.data.locations}
-																		  selectedLocationName={this.state.selectedLocationName}
-																		  requestClose={this.closeLocationList}/> : null }
+																selectedLocationName={this.state.selectedLocationName}
+																requestClose={this.closeLocationList}/> : null }
 
 				{ this.state.showPersonList ? <PersonDialog persons={this.state.data.persons}
-																	  selectedPersonName={this.state.selectedPersonName}
-																	  requestClose={this.closePersonList}/> : null }
+															selectedPersonName={this.state.selectedPersonName}
+															requestClose={this.closePersonList}/> : null }
+
+				{ this.state.action === "ProposalAction" ? <Dialog data={this.state.action}/> : null }
+				{ this.state.action === "FightAction" ? <Fight data={this.state.action}/> : null }
 			</div>
 
 
