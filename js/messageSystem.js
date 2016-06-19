@@ -18,5 +18,6 @@ const MessageSystem = {
 
 MessageSystem.selectLocation = "SelectLocation";
 MessageSystem.selectPerson = "SelectPerson";
+MessageSystem.makeAjax = "MakeAjax";
 
 export default MessageSystem;

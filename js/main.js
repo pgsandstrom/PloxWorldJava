@@ -21,6 +21,9 @@ var Main = React.createClass({
 		MessageSystem.subscribe(MessageSystem.selectPerson, function (selectedPersonName) {
 			self.showPerson(selectedPersonName);
 		});
+		MessageSystem.subscribe(MessageSystem.makeAjax, function (ajax) {
+			self.makeAjax(ajax.url, ajax.data);
+		});
 
 		$.ajax({
 			url: this.props.startUrl,
@@ -36,28 +39,31 @@ var Main = React.createClass({
 		});
 	},
 	progressTurn: function () {
-		this.progress(this.props.progressTurnUrl);
+		this.makeAjax(this.props.progressTurnUrl);
 	},
 	progress10Turns: function () {
-		this.progress(this.props.progress10TurnsUrl);
+		this.makeAjax(this.props.progress10TurnsUrl);
 	},
 	progress100Turns: function () {
-		this.progress(this.props.progress100TurnsUrl);
+		this.makeAjax(this.props.progress100TurnsUrl);
 	},
-	progress: function (url) {
+	makeAjax: function (url, data) {
+		//console.log("making ajax");
 		$.ajax({
 			url: url,
+			data: data,
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
 				//console.log("data: " + JSON.stringify(data));
 				if (data.action != undefined) {
-					console.log("got action: " + JSON.stringify(data));
+					//console.log("ajax response had action: "+data.action);
 					var state = this.state;
 					state.action = data.action;
 					this.setState(state);
 				} else {
-					this.setState({data: data});
+					//console.log("ajax response no action");
+					this.setState({data: data, action: undefined});
 				}
 			}.bind(this),
 			error: function (xhr, status, err) {
@@ -90,6 +96,8 @@ var Main = React.createClass({
 				laodin
 			</div>);
 		}
+
+		console.log("main render method: " + this.state.action);
 
 		//var stateAsString = JSON.stringify(this.state.data);
 		//if (stateAsString.length < 50) {

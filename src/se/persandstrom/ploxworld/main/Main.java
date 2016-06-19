@@ -43,7 +43,7 @@ public class Main implements PlayerInterface {
 		server.createContext("/", new FrontendHandler());
 		server.createContext("/backend", new BackendHandler(this));
 //		server.setExecutor(null); // creates a default executor
-		server.setExecutor(Executors.newCachedThreadPool());	//Allow multithread
+		server.setExecutor(Executors.newCachedThreadPool());    //Allow multithread
 		server.start();
 	}
 
@@ -100,8 +100,6 @@ public class Main implements PlayerInterface {
 
 //				System.out.println(path);
 
-
-
 				//TODO: Make some mechanism so the server can hold many worlds for different games :-)
 				String response = null;
 				if ("/backend".equals(path)) {
@@ -155,7 +153,7 @@ public class Main implements PlayerInterface {
 						}
 						if ("decision".equals(split[0])) {
 							String decision = split[1];
-							System.out.println("action received: " + decision);
+//							System.out.println("action received: " + decision + ", " + currentAction);
 							currentAction.setDecision(decision);
 						}
 					}
@@ -167,6 +165,8 @@ public class Main implements PlayerInterface {
 					System.out.println("errro!!!");
 				}
 
+				// switch back to the current http before responding:
+				httpExchange = currentHttpExchange;
 
 				Headers headers = httpExchange.getResponseHeaders();
 				headers.set("Content-Type", "application/json");
@@ -202,7 +202,7 @@ public class Main implements PlayerInterface {
 			while (action.isDecided() == false) {
 //				System.out.println("waiting for decision...");
 				try {
-					Thread.sleep(1);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

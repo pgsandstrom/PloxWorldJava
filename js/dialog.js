@@ -1,6 +1,8 @@
 import React from 'react';
 import $ from 'jquery';
 
+import MessageSystem from './messageSystem.js';
+
 const Dialog = React.createClass({
 	render: function () {
 		console.log("Dialog render: " + JSON.stringify(this.props));
