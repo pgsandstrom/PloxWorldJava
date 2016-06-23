@@ -188,7 +188,9 @@ public class Main implements PlayerInterface {
 			System.out.println("starting to wait for decision");
 			currentAction = action;
 
-			String response = "{\"action\":\"" + action.getClass().getSimpleName() + "\"}";
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Ai.class, new AiSerializer()).create();
+			String response = "{\"action\":\"" + action.getClass().getSimpleName() + "\", \"info\":"+gson.toJson(action)+"}";
+//			String response = "{\"action\":\"" + action.getClass().getSimpleName() + "\"}";
 
 			HttpExchange httpExchange = currentHttpExchange;
 			Headers headers = httpExchange.getResponseHeaders();

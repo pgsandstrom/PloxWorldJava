@@ -8,13 +8,15 @@ import se.persandstrom.ploxworld.main.World;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;
 
+import com.google.gson.annotations.Expose;
+
 public class Fight {
 
 	private final World world;
 	private final Combatant first;
 	private final Combatant second;
 
-	private int distance = 6;
+	@Expose private int distance = 6;
 
 	public Fight(World world, Person first, Person second) {
 		this.world = world;

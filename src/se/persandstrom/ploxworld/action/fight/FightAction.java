@@ -8,11 +8,13 @@ import se.persandstrom.ploxworld.fight.Fight;
 import se.persandstrom.ploxworld.main.WorldData;
 import se.persandstrom.ploxworld.ship.Weapon;
 
+import com.google.gson.annotations.Expose;
+
 public class FightAction implements Action {
 
-	private final Fight fight;
-	private final Combatant acter;
-	private final Combatant receiver;
+	@Expose private final Fight fight;
+	@Expose private final Combatant acter;
+	@Expose private final Combatant receiver;
 
 	private ActionType actionType;
 

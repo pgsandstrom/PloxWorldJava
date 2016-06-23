@@ -25,18 +25,7 @@ var Main = React.createClass({
 			self.makeAjax(ajax.url, ajax.data);
 		});
 
-		$.ajax({
-			url: this.props.startUrl,
-			dataType: 'json',
-			cache: false,
-			success: function (data) {
-				//console.log("main ajax data: " + JSON.stringify(data));
-				this.setState({data: data});
-			}.bind(this),
-			error: function (xhr, status, err) {
-				console.log(this.props.startUrl + "," + status + "," + err.toString());
-			}.bind(this)
-		});
+		this.makeAjax(this.props.startUrl);
 	},
 	progressTurn: function () {
 		this.makeAjax(this.props.progressTurnUrl);
@@ -55,21 +44,22 @@ var Main = React.createClass({
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
-				//console.log("data: " + JSON.stringify(data));
-				if (data.action != undefined) {
-					//console.log("ajax response had action: "+data.action);
-					var state = this.state;
-					state.action = data.action;
-					this.setState(state);
-				} else {
-					//console.log("ajax response no action");
-					this.setState({data: data, action: undefined});
-				}
+				this.prepareState(data);
 			}.bind(this),
 			error: function (xhr, status, err) {
 				console.log(this.props.url, status, err.toString());
 			}.bind(this)
 		});
+	},
+	prepareState: function (data) {
+		//console.log("data: " + JSON.stringify(data));
+		if (data.action != undefined) {
+			//console.log("ajax response had action: "+data.action);
+			this.setState({data: undefined, action: data.action, info: data.info});
+		} else {
+			//console.log("ajax response no action");
+			this.setState({data: data, action: undefined, info: undefined});
+		}
 	},
 	showLocationList: function () {
 		this.setState({showLocationList: true, selectedLocationName: undefined, showPersonList: false});
@@ -99,23 +89,9 @@ var Main = React.createClass({
 
 		console.log("main render method: " + this.state.action);
 
-		//var stateAsString = JSON.stringify(this.state.data);
-		//if (stateAsString.length < 50) {
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("WARNING WARNING");
-		//	console.log("this.state.data: " + stateAsString);
-		//}
+		if (this.state.action != undefined) {
+			console.log("main render method: " + this.state.info);
+		}
 
 		return (
 			<div>
@@ -127,11 +103,11 @@ var Main = React.createClass({
 					<button onClick={this.showPersonList}>Person list</button>
 				</div>
 
-				<Board data={this.state.data}/>
+				{ this.state.data ? <Board data={this.state.data}/> : null }
 
-				<GameInfo data={this.state.data}/>
+				{ this.state.data ? <GameInfo data={this.state.data}/> : null }
 
-				<WorldStats className="WorldStats" data={this.state.data.worldData}/>
+				{ this.state.data && this.state.data.worldData ? <WorldStats className="WorldStats" data={this.state.data.worldData}/> : null }
 
 				{ this.state.showLocationList ? <LocationDialog locations={this.state.data.locations}
 																selectedLocationName={this.state.selectedLocationName}
@@ -141,8 +117,8 @@ var Main = React.createClass({
 															selectedPersonName={this.state.selectedPersonName}
 															requestClose={this.closePersonList}/> : null }
 
-				{ this.state.action === "ProposalAction" ? <Dialog data={this.state.action}/> : null }
-				{ this.state.action === "FightAction" ? <Fight data={this.state.action}/> : null }
+				{ this.state.action === "ProposalAction" ? <Dialog data={this.state.info}/> : null }
+				{ this.state.action === "FightAction" ? <Fight data={this.state.info}/> : null }
 			</div>
 
 

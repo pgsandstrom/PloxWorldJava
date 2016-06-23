@@ -8,9 +8,11 @@ import se.persandstrom.ploxworld.action.fight.FightAction;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
 
+import com.google.gson.annotations.Expose;
+
 public class Combatant {
 	private final Person person;
-	private final Ship ship;
+	@Expose private final Ship ship;
 	private final List<Action> fightActions = new ArrayList<>();
 	private boolean stillFighting = true;
 

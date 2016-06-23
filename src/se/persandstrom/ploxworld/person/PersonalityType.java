@@ -19,7 +19,7 @@ public enum PersonalityType {
 			case MINER:
 				return new Personality(Rand.bound(20, 90));
 			case PIRATE:
-				return new Personality(Rand.bound(70, 100));
+				return new Personality(Rand.bound(700, 10000));
 			default:
 				throw new IllegalStateException();
 		}
