@@ -93,12 +93,14 @@ var Main = React.createClass({
 			console.log("main render method: " + this.state.info);
 		}
 
+		var disableProgress = this.state.action !== undefined;
+
 		return (
 			<div>
 				<div>
-					<button onClick={this.progressTurn}>Progress Turn</button>
-					<button onClick={this.progress10Turns}>Progress 10 Turns</button>
-					<button onClick={this.progress100Turns}>Progress 100 Turns</button>
+					<button onClick={this.progressTurn} disabled={disableProgress}>Progress Turn</button>
+					<button onClick={this.progress10Turns} disabled={disableProgress}>Progress 10 Turns</button>
+					<button onClick={this.progress100Turns} disabled={disableProgress}>Progress 100 Turns</button>
 					<button onClick={this.showLocationList}>Location list</button>
 					<button onClick={this.showPersonList}>Person list</button>
 				</div>
