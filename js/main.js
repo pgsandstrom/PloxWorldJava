@@ -47,7 +47,8 @@ var Main = React.createClass({
 				this.prepareState(data);
 			}.bind(this),
 			error: function (xhr, status, err) {
-				console.log(this.props.url, status, err.toString());
+				console.log(url, status, err.toString());
+				this.setState({error: url + ", " + status + ", " + err.toString()});
 			}.bind(this)
 		});
 	},
@@ -84,6 +85,12 @@ var Main = React.createClass({
 		if (!this.state) {
 			return (<div className="main">
 				laodin
+			</div>);
+		}
+
+		if (this.state.error != undefined) {
+			return (<div className="main">
+				ERROR: {this.state.error}
 			</div>);
 		}
 
