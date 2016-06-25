@@ -1,0 +1,26 @@
+.fight-board {
+	position: relative;
+	height: 300px;
+	width: 500px;
+	background: url(../img/stars.png) repeat;
+}
+
+.fight-board > .ship {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+
+	-webkit-transition: all 0.1s linear;
+	-moz-transition: all 0.1s linear;
+	-o-transition: all 0.1s linear;
+	transition: all 0.1s linear;
+}
+
+.fight-board > .player {
+	left: 20px
+}
+
+.fight-board > .opponent {
+	right: 20px
+}

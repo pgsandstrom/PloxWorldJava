@@ -23,9 +23,11 @@
     "url": "https://github.com/pgsandstrom/PloxWorldJava/issues"
   },
   "dependencies": {
+    "file-loader": "^0.9.0",
+    "jquery": "~2.2.3",
     "react": "~15.0.0",
     "react-dom": "~15.0.0",
-    "jquery": "~2.2.3"
+    "url-loader": "^0.5.7"
   },
   "devDependencies": {
     "babel-core": "~6.7.5",
@@ -37,8 +39,13 @@
     "css-loader": "~0.23.1",
     "enzyme": "^2.3.0",
     "es6-promise": "~3.1.2",
+<<<<<<< ff8b27122fd471026f48f07d2fc17e2b6ead52aa
     "react-addons-test-utils": "^15.1.0",
     "style-loader": "~0.13.1",
     "webpack": "~1.12.14"
+=======
+    "babel-plugin-transform-react-inline-elements": "~6.6.5",
+    "babel-plugin-transform-react-constant-elements": "~6.5.0"
+>>>>>>> Transitions implemented, fighting made prettier
   }
 }

@@ -22,6 +22,13 @@ const Fight = React.createClass({
 		console.log("Fight render: " + JSON.stringify(this.props));
 		var self = this;
 
+		var player_style = {
+			'left': (50 - this.props.data.fight.distance * 4) + '%'
+		};
+		var opponent_style = {
+			'right': (50 - this.props.data.fight.distance * 4) + '%'
+		};
+
 		return (
 			<div className="dialog">
 				<h2>OMG LE FIGHT</h2>
@@ -40,6 +47,10 @@ const Fight = React.createClass({
 				<button onClick={self.makeAction.bind(self, "WAIT")}>
 					WAIT
 				</button>
+				<div className="fight-board">
+					<img className="ship player" style={player_style} src="img/ship_ai.png" alt=""/>
+					<img className="ship opponent" style={opponent_style} src="img/ship_ai.png" alt=""/>
+				</div>
 			</div>
 		);
 	}

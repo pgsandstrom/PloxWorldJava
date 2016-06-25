@@ -3,8 +3,7 @@ package se.persandstrom.ploxworld.fight;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.persandstrom.ploxworld.action.Action;
-import se.persandstrom.ploxworld.action.fight.FightAction;
+import se.persandstrom.ploxworld.action.fight.FightTransition;
 import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Ship;
 
@@ -13,7 +12,7 @@ import com.google.gson.annotations.Expose;
 public class Combatant {
 	private final Person person;
 	@Expose private final Ship ship;
-	private final List<Action> fightActions = new ArrayList<>();
+	@Expose private final List<FightTransition> unseenTransitions = new ArrayList<>();
 	private boolean stillFighting = true;
 
 	public Combatant(Person person) {
@@ -29,12 +28,12 @@ public class Combatant {
 		return ship;
 	}
 
-	public List<Action> getFightActions() {
-		return fightActions;
+	public void clearUnseenTransitions() {
+		unseenTransitions.clear();
 	}
 
-	public void addAction(Action Action) {
-		fightActions.add(Action);
+	public void addUnseenTransition(FightTransition transition) {
+		unseenTransitions.add(transition);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package se.persandstrom.ploxworld.fight;
 
-import se.persandstrom.ploxworld.action.Action;
 import se.persandstrom.ploxworld.action.TransferGoods;
 import se.persandstrom.ploxworld.action.fight.FightAction;
 import se.persandstrom.ploxworld.common.Log;
@@ -29,12 +28,18 @@ public class Fight {
 
 		while (true) {
 			if (isFightOngoing()) {
-				Action fightAction = new FightAction(this, first, second);
+				FightAction fightAction = new FightAction(this, first, second);
 				world.executeAction(fightAction);
+				first.clearUnseenTransitions();
+				first.addUnseenTransition(fightAction.getTransition());
+				second.addUnseenTransition(fightAction.getTransition());
 			}
 			if (isFightOngoing()) {
-				Action fightAction = new FightAction(this, second, first);
+				FightAction fightAction = new FightAction(this, second, first);
 				world.executeAction(fightAction);
+				second.clearUnseenTransitions();
+				first.addUnseenTransition(fightAction.getTransition());
+				second.addUnseenTransition(fightAction.getTransition());
 			}
 
 			if (first.getPerson().isAlive() == false) {

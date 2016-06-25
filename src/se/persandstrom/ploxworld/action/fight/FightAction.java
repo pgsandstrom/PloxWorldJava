@@ -12,11 +12,13 @@ import com.google.gson.annotations.Expose;
 
 public class FightAction implements Action {
 
-	@Expose private final Fight fight;
+	@Expose private Fight fight;
 	@Expose private final Combatant acter;
 	@Expose private final Combatant receiver;
 
 	private ActionType actionType;
+
+	private int damageDone;
 
 	public FightAction(Fight fight, Combatant acter, Combatant receiver) {
 		this.fight = fight;
@@ -59,22 +61,24 @@ public class FightAction implements Action {
 		switch (actionType) {
 			case FIRE:
 				fire();
-				return;
+				break;
 			case MOVE_FORWARD:
 				moveForward();
-				return;
+				break;
 			case MOVE_BACKWARD:
 				moveBackward();
-				return;
+				break;
 			case WAIT:
 				waitLol();
-				return;
+				break;
 			case ESCAPE:
 				escape();
-				return;
+				break;
 			default:
 				throw new IllegalStateException();
 		}
+
+		fight = null;
 	}
 
 	private void escape() {
@@ -103,6 +107,7 @@ public class FightAction implements Action {
 		if (hit) {
 			int damage = weapon.rollDamage();
 			receiver.getShip().damage(damage);
+			this.damageDone = damage;
 			if (receiver.getShip().isDead()) {
 				receiver.getPerson().setAlive(false);
 				receiver.setStillFighting(false);
@@ -128,6 +133,10 @@ public class FightAction implements Action {
 	@Override
 	public void setDecision(String decision) {
 		actionType = ActionType.valueOf(decision);
+	}
+
+	public FightTransition getTransition() {
+		return new FightTransition(actionType, damageDone);
 	}
 
 	public ActionType getActionType() {

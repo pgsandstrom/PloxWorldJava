@@ -15,7 +15,8 @@ module.exports = {
 					presets: ['es2015', 'react']
 				}
 			},
-			{test: /\.css$/, loader: "style-loader!css-loader"}
+			{test: /\.css$/, loader: "style-loader!css-loader"},
+			{test: /\.png$/, loader: "url-loader?mimetype=image/png"}
 		]
 	},
 	plugins: [

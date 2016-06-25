@@ -129,12 +129,7 @@ var Main = React.createClass({
 				{ this.state.action === "ProposalAction" ? <Dialog data={this.state.info}/> : null }
 				{ this.state.action === "FightAction" ? <Fight data={this.state.info}/> : null }
 			</div>
-
-
-
 		);
-
-
 	}
 });
 
