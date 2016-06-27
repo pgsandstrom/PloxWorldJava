@@ -25,6 +25,11 @@ module.exports = {
 				// This has effect on the react lib size
 				'NODE_ENV': JSON.stringify('production')
 			}
+		}),
+		new webpack.optimize.UglifyJsPlugin({
+			compress:{
+				warnings: true
+			}
 		})
 	],
 	// This could in theory decrease size, but currently does not work:
