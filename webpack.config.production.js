@@ -42,6 +42,3 @@ module.exports = {
 
 	}
 };
-
-//TODO: Denna verkar krävas för css-mecket. Se https://github.com/webpack/css-loader/issues/145
-require('es6-promise').polyfill();

@@ -1,4 +1,3 @@
-
 module.exports = {
 	entry: './main.js',
 	output: {path: __dirname, filename: 'bundle.js'},
@@ -17,6 +16,3 @@ module.exports = {
 		]
 	}
 };
-
-//TODO: Denna verkar krävas för css-mecket. Se https://github.com/webpack/css-loader/issues/145
-require('es6-promise').polyfill();
