@@ -136,7 +136,7 @@ public class FightAction implements Action {
 	}
 
 	public FightTransition getTransition() {
-		return new FightTransition(actionType, damageDone);
+		return new FightTransition(fight, actionType, damageDone);
 	}
 
 	public ActionType getActionType() {
