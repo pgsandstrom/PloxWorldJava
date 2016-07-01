@@ -3,6 +3,8 @@ import React from 'react';
 import MessageSystem from './messageSystem.js';
 
 const Board = React.createClass({
+	componentDidMount: function () {
+	},
 	render: function () {
 
 		var style = {
