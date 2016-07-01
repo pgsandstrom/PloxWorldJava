@@ -18,5 +18,3 @@ global.navigator = {
 };
 
 documentRef = document;
-
-require("./board-test");
