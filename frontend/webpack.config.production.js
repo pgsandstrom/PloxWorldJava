@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
 	entry: './main.js',
-	output: {path: path.join(__dirname, '/dist/'), filename: 'bundle.js'},
+	output: {path: path.join(__dirname, '/dist/'), filename: 'bundle_prod.js'},
 	module: {
 		loaders: [
 			{
@@ -20,13 +20,14 @@ module.exports = {
 		]
 	},
 	plugins: [
-		//suggested in http://stackoverflow.com/a/31042143/249871
+		// Suggested in http://stackoverflow.com/a/31042143/249871
 		new webpack.DefinePlugin({
 			'process.env': {
 				// This has effect on the react lib size
 				'NODE_ENV': JSON.stringify('production')
 			}
 		}),
+		// this makes the -p flag redundant. Optimized and minimizes
 		new webpack.optimize.UglifyJsPlugin({
 			compress:{
 				warnings: true
