@@ -12,7 +12,7 @@ import com.google.gson.annotations.Expose;
 
 public class FightAction implements Action {
 
-	@Expose private Fight fight;
+	@Expose private final Fight fight;
 	@Expose private final Combatant acter;
 	@Expose private final Combatant receiver;
 
@@ -77,8 +77,6 @@ public class FightAction implements Action {
 			default:
 				throw new IllegalStateException();
 		}
-
-		fight = null;
 	}
 
 	private void escape() {
