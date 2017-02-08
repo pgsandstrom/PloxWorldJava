@@ -1,0 +1,37 @@
+.dialog {
+	position: absolute;
+	top: 40px;
+	left: 40px;
+	right: 40px;
+	bottom: 40px;
+	border: 1px solid #ccc;
+	background: #fff;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	border-radius: 4px;
+	outline: none;
+	padding: 20px;
+}
+
+.cell {
+	display: inline-block;
+	height: 25px;
+	width:100px;
+	border: 1px solid #cccccc;
+}
+
+.cellWide {
+	display: inline-block;
+	height: 25px;
+	width:150px;
+	border: 1px solid #cccccc;
+}
+
+.cellRow {
+	height: 25px;
+	border: 1px solid #cccccc;
+}
+
+.header {
+	margin-top: 10px;
+}

@@ -1,0 +1,33 @@
+@keyframes animatedBackgroundLeft {
+	0% { background-position: 0 0; }
+	100% { background-position: -200px 0; }
+}
+
+@keyframes animatedBackgroundRight {
+	0% { background-position: 0 0; }
+	100% { background-position: 200px 0; }
+}
+
+.fight-board {
+  position: relative;
+  height: 300px;
+  width: 1100px;
+  background: url(../../img/stars.png) repeat;
+
+  > .ship {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    transition: all 0.5s linear;
+  }
+
+  > .player {
+    left: 20px
+  }
+
+  > .opponent {
+    right: 20px
+  }
+}
+

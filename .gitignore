@@ -5,8 +5,6 @@
 bin/
 dist/
 lib/
-node_modules/
 out/
 target/
 *.iml
-bundle.js

@@ -1,21 +1,63 @@
-var path = require('path');
+const webpack = require('webpack'); // eslint-disable-line import/no-extraneous-dependencies
+const path = require('path');
 
 module.exports = {
-	entry: './main.js',
-	output: {path: path.join(__dirname, '/dist/'), filename: 'bundle_dev.js'},
-	module: {
-		loaders: [
-			{
-				// Why does this test-line work even with jsx instead of js?
-				test: /.js?$/,
-				loader: 'babel-loader',
-				exclude: /node_modules/,
-				query: {
-					presets: ['es2015', 'react']
-				}
-			},
-			{test: /\.css$/, loader: "style-loader!css-loader"},
-			{test: /\.png$/, loader: "url-loader?mimetype=image/png"}
-		]
-	}
+  // devtool: 'cheap-module-eval-source-map',
+  entry: [
+    'webpack-dev-server/client?http://0.0.0.0:8080', // WebpackDevServer host and port
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+    'react-hot-loader/patch',
+    'whatwg-fetch', 'babel-polyfill', './src/entry.jsx'],
+  output: { path: path.join(__dirname, '/assets/'), publicPath: '/assets/', filename: 'bundle_dev.js' },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['airbnb'],
+          },
+        },
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: 'url-loader?limit=10000&minetype=application/font-woff' },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: 'file-loader' },
+      { test: /\.eot$/, use: 'file-loader' },
+      { test: /\.svg$/, use: 'file-loader' },
+      { test: /\.(jpg|png)$/, use: 'url-loader?limit=25000' },
+    ],
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        USE_FAKE_DATA: process.argv.includes('--env.fake-data'),
+      },
+    }),
+  ],
+  performance: {
+    hints: false,
+  },
+  devServer: {
+    proxy: {
+      '/backend/*': {
+        changeOrigin: true,
+        secure: false,
+        target: 'http://localhost:8000',
+      },
+    },
+    historyApiFallback: true,
+    host: '0.0.0.0',
+    hot: true,
+    inline: true,
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
 };

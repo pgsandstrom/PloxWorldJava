@@ -1,7 +1,7 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow, mount, render} from 'enzyme';
-import Board from '../src/board.js';
+import Board from './board.jsx';
 
 describe("The board", function () {
 

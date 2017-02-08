@@ -1,12 +1,10 @@
 package se.persandstrom.ploxworld.main;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -40,42 +38,11 @@ public class Main implements PlayerInterface {
 	public void main2() throws Exception {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 //		HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 8000),0);	//For security lol
-		server.createContext("/", new FrontendHandler());
 		server.createContext("/backend", new BackendHandler(this));
 //		server.setExecutor(null); // creates a default executor
 		server.setExecutor(Executors.newCachedThreadPool());    //Allow multithread
 		server.start();
-	}
-
-	private class FrontendHandler implements HttpHandler {
-
-		@Override
-		public void handle(HttpExchange httpExchange) throws IOException {
-
-			URI uri = httpExchange.getRequestURI();
-			String path = uri.getPath();
-
-			if ("/".equals(path)) {
-				path = "/index.html";
-			}
-
-			File file = new File("." + path);
-
-//			System.out.println(uri.getPath());
-
-			Headers headers = httpExchange.getResponseHeaders();
-			if (path.endsWith(".css")) {
-				headers.set("Content-Type", "text/css");
-			}
-
-			httpExchange.sendResponseHeaders(200, file.length());
-			try (OutputStream out = httpExchange.getResponseBody()) {
-				Files.copy(file.toPath(), out);
-				out.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		System.out.println("started");
 	}
 
 	private HttpExchange currentHttpExchange;
@@ -98,7 +65,7 @@ public class Main implements PlayerInterface {
 				URI uri = httpExchange.getRequestURI();
 				String path = uri.getPath();
 
-//				System.out.println(path);
+				System.out.println(path);
 
 				//TODO: Make some mechanism so the server can hold many worlds for different games :-)
 				String response = null;
