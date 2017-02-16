@@ -2,6 +2,7 @@ package se.persandstrom.ploxworld.person;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,7 +33,6 @@ public class PersonCreater {
 		surnames = new HashSet<>();
 
 		usedFullNames = new HashSet<>();
-
 		Path maleNamesPath = Paths.get(PersonCreater.class.getResource("/names/male.txt").toURI());
 		try (Stream<String> stream = Files.lines(maleNamesPath)) {
 			stream.forEach(maleNames::add);
