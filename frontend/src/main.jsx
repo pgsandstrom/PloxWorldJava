@@ -21,9 +21,10 @@ class Main extends React.Component {
       </div>);
     }
 
-    // const disableProgress = this.state.action != undefined;
+
     const disableProgress = false;
 
+    // TODO make a better check if Board and gameinfo is to be rendered lol.... also board should keep on living, wtf, its overridden...
     return (
       <div>
         <div>
@@ -35,19 +36,20 @@ class Main extends React.Component {
           <button onClick={() => this.props.setShowPersonList(true)}>Person list</button>
         </div>
 
-        <Board />
+        {this.props.world.width &&
+        <Board /> }
 
-        <GameInfo world={this.props.world} />
+        {this.props.world.width &&
+        <GameInfo world={this.props.world} />}
 
-        { this.props.world.worldData != null &&
-        <WorldStats className="WorldStats" worldData={this.props.world.worldData} />
-        }
+        {this.props.world.worldData != null &&
+        <WorldStats className="WorldStats" worldData={this.props.world.worldData} />}
 
-        { this.props.showLocationList &&
-        <LocationDialog /> }
+        {this.props.showLocationList &&
+        <LocationDialog />}
 
-        { this.props.showPersonList &&
-        <PersonDialog /> }
+        {this.props.showPersonList &&
+        <PersonDialog />}
 
         {/* { this.state.action === 'ProposalAction' ? <Dialog data={this.state.info} /> : null }*/}
         {/* { this.state.action === 'FightAction' ? <Fight data={this.state.info} /> : null }*/}

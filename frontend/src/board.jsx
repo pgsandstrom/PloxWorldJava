@@ -34,9 +34,9 @@ const Location = (props) => {
   };
 
   let image;
-  if (props.location.Style === 'PLANET') {
+  if (props.location.locationStyle === 'PLANET') {
     image = 'img/planet.png';
-  } else if (props.location.Style === 'ASTEROID') {
+  } else if (props.location.locationStyle === 'ASTEROID') {
     image = 'img/asteroid.png';
   } else {
     image = 'img/BUGG.png';
