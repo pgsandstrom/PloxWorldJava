@@ -88,7 +88,7 @@ public class World {
 
 			spawnNewPersons();
 
-			persons.stream().forEach(
+			persons.forEach(
 					person -> {
 						if (person.isAlive()) {
 

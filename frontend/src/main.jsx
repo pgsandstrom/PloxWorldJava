@@ -2,19 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { newGame, progressTurn, setShowLocationList, setShowPersonList } from './actions';
-// import MessageSystem from './messageSystem.js';
 import Board from './board';
-// import Dialog from './dialog.js';
-// import Fight from './fight/fight.js';
+import Dialog from './dialog';
+import Fight from './fight/fight';
 import GameInfo from './gameInfo';
 import LocationDialog from './locationDialog';
 import PersonDialog from './personDialog';
 import WorldStats from './worldStats';
 
-
 class Main extends React.Component {
   render() {
-    if (this.props.world == null) {
+    if (this.props.world == null && this.props.action == null) {
       return (<div className="main">
         <span>wanna start a game?</span>
         <button onClick={this.props.newGame}>New game</button>
@@ -24,7 +22,6 @@ class Main extends React.Component {
 
     const disableProgress = false;
 
-    // TODO make a better check if Board and gameinfo is to be rendered lol.... also board should keep on living, wtf, its overridden...
     return (
       <div>
         <div>
@@ -36,13 +33,13 @@ class Main extends React.Component {
           <button onClick={() => this.props.setShowPersonList(true)}>Person list</button>
         </div>
 
-        {this.props.world.width &&
+        {this.props.world &&
         <Board /> }
 
-        {this.props.world.width &&
+        {this.props.world &&
         <GameInfo world={this.props.world} />}
 
-        {this.props.world.worldData != null &&
+        {this.props.world && this.props.world.worldData != null &&
         <WorldStats className="WorldStats" worldData={this.props.world.worldData} />}
 
         {this.props.showLocationList &&
@@ -51,14 +48,15 @@ class Main extends React.Component {
         {this.props.showPersonList &&
         <PersonDialog />}
 
-        {/* { this.state.action === 'ProposalAction' ? <Dialog data={this.state.info} /> : null }*/}
-        {/* { this.state.action === 'FightAction' ? <Fight data={this.state.info} /> : null }*/}
+        { this.props.action && this.props.action.action === 'ProposalAction' && <Dialog info={this.props.action.info} /> }
+        { this.props.action && this.props.action.action === 'FightAction' && <Fight info={this.props.action.info} /> }
       </div>
     );
   }
 }
 Main.propTypes = {
   world: React.PropTypes.object,
+  action: React.PropTypes.object,
   showLocationList: React.PropTypes.bool.isRequired,
   showPersonList: React.PropTypes.bool.isRequired,
   newGame: React.PropTypes.func.isRequired,
@@ -69,6 +67,7 @@ Main.propTypes = {
 
 export default connect(state => ({
   world: state.worldReducer.world,
+  action: state.worldReducer.action,
   showLocationList: state.worldReducer.showLocationList,
   showPersonList: state.worldReducer.showPersonList,
 }), {

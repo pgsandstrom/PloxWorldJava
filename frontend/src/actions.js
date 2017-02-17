@@ -1,6 +1,8 @@
 import {
-  NEW_GAME,
+  // NEW_GAME,
   PROGRESS_TURN,
+  SET_ACTION,
+  // MAKE_DECISION,
   SET_SHOW_LOCATION_LIST,
   SET_SHOW_PERSON_LIST,
   SET_SELECTED_LOCATION,
@@ -11,18 +13,25 @@ import { doFetch } from './global/actions';
 
 export const newGame = () => (dispatch) => {
   dispatch(doFetch('new game', '/backend'))
-    .then(data =>
-      dispatch({ type: NEW_GAME, payload: { data },
-      }),
-    );
+    .then(data => handleProgress(dispatch, data));
 };
 
 export const progressTurn = turns => (dispatch) => {
   dispatch(doFetch('progress turn', '/backend/progressTurn', { turns }))
-    .then(data =>
-      dispatch({ type: PROGRESS_TURN, payload: { data },
-      }),
-    );
+    .then(data => handleProgress(dispatch, data));
+};
+
+export const makeDecision = decision => (dispatch) => {
+  dispatch(doFetch('make decision', '/backend/action', { decision }))
+    .then(data => handleProgress(dispatch, data));
+};
+
+const handleProgress = (dispatch, data) => {
+  if (data.action) {
+    dispatch({ type: SET_ACTION, payload: { data } });
+  } else {
+    dispatch({ type: PROGRESS_TURN, payload: { data } });
+  }
 };
 
 export const setShowLocationList = bool => ({

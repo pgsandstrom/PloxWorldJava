@@ -1,39 +1,38 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import { makeDecision } from '../actions';
 
 import './fight.scss';
 
-import MessageSystem from '../messageSystem.js';
+class Fight extends React.Component {
 
-const Fight = React.createClass({
   componentWillMount() {
-    console.log('componentWillMount Fight');
     this.startStuff();
-  },
+  }
+
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps Fight');
     this.startStuff(nextProps);
-  },
+  }
+
   startStuff(nextProps) {
     const state = this.state || {};
     const props = nextProps || this.props;
-    if (props.data.acter.unseenTransitions.length > 0) {
-      state.transitions = props.data.acter.unseenTransitions;
+    if (props.info.acter.unseenTransitions.length > 0) {
+      state.transitions = props.info.acter.unseenTransitions;
       // between every transition we need a reset. Because ugly code.
       for (let i = 1; i < state.transitions.length; i += 2) {
         state.transitions.splice(i, 0, { 'actionType': 'RESET' });
       }
     }
     this.setState(state);
-  },
-  makeAction(decision) {
-    MessageSystem.dispatch(MessageSystem.makeAjax,
-      { url: 'http://localhost:8000/backend/action', data: { decision } });
-  },
+  }
+
   render() {
     // console.log("Fight render: " + JSON.stringify(this.props));
     const self = this;
-    const distance = this.props.data.fight.distance;
+    const distance = this.props.info.fight.distance;
 
     const backgroundStyle = {};
     let playingTransitions = false;
@@ -78,30 +77,36 @@ const Fight = React.createClass({
     return (
       <div className="dialog">
         <h2>OMG LE FIGHT</h2>
-        <button disabled={playingTransitions} onClick={self.makeAction.bind(self, 'FIRE')}>
+        <button disabled={playingTransitions} onClick={() => this.props.makeDecision('FIRE')}>
           FIRE
         </button>
-        <button disabled={playingTransitions || distance == 1} onClick={self.makeAction.bind(self, 'MOVE_FORWARD')}>
+        <button disabled={playingTransitions || distance === 1} onClick={() => this.props.makeDecision('MOVE_FORWARD')}>
           MOVE_FORWARD
         </button>
-        <button disabled={playingTransitions} onClick={self.makeAction.bind(self, 'MOVE_BACKWARD')}>
+        <button disabled={playingTransitions} onClick={() => this.props.makeDecision('MOVE_BACKWARD')}>
           MOVE_BACKWARD
         </button>
-        <button disabled={playingTransitions} onClick={self.makeAction.bind(self, 'ESCAPE')}>
+        <button disabled={playingTransitions} onClick={() => this.props.makeDecision('ESCAPE')}>
           ESCAPE
         </button>
-        <button disabled={playingTransitions} onClick={self.makeAction.bind(self, 'WAIT')}>
+        <button disabled={playingTransitions} onClick={() => this.props.makeDecision('WAIT')}>
           WAIT
         </button>
         <ReactCSSTransitionGroup>
           <div className="fight-board" style={backgroundStyle}>
-            <img className="ship player" style={playerStyle} src="img/ship_ai.png" alt=""/>
-            <img className="ship opponent" style={opponentStyle} src="img/ship_ai.png" alt=""/>
+            <img className="ship player" style={playerStyle} src="img/ship_ai.png" alt="" />
+            <img className="ship opponent" style={opponentStyle} src="img/ship_ai.png" alt="" />
           </div>
         </ReactCSSTransitionGroup>
       </div>
     );
-  },
-});
+  }
+}
+Fight.propTypes = {
+  info: React.PropTypes.object.isRequired,
+  makeDecision: React.PropTypes.func.isRequired,
+};
 
-export default Fight;
+export default connect(null, {
+  makeDecision,
+})(Fight);

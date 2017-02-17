@@ -20,6 +20,6 @@ export default (state = initialState, action) => {
       navigateTo(action.payload.url);
       return { ...state, error: null };
     default:
-      return { ...state };
+      return state;
   }
 };

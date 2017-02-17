@@ -2,6 +2,7 @@ import { pending, fulfilled } from './errorHandlerMiddleware';
 import {
   NEW_GAME,
   PROGRESS_TURN,
+  SET_ACTION,
   SET_SHOW_LOCATION_LIST,
   SET_SHOW_PERSON_LIST,
   SET_SELECTED_LOCATION,
@@ -11,6 +12,7 @@ import {
 
 const initialState = {
   world: null,
+  action: null,
   showLocationList: false,
   showPersonList: false,
   selectedLocation: null,
@@ -25,6 +27,8 @@ export default (state = initialState, action) => {
       return { ...state, world: action.payload.data };
     case PROGRESS_TURN:
       return { ...state, world: action.payload.data };
+    case SET_ACTION:
+      return { ...state, action: action.payload.data };
     case SET_SHOW_LOCATION_LIST:
       return { ...state, showLocationList: action.payload.bool };
     case SET_SHOW_PERSON_LIST:
