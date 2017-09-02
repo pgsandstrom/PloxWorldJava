@@ -1,6 +1,7 @@
 package se.persandstrom.ploxworld.action.fight;
 
 import se.persandstrom.ploxworld.action.Action;
+import se.persandstrom.ploxworld.action.Transition;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.fight.Combatant;
@@ -89,20 +90,20 @@ public class FightAction implements Action {
 			acter.setStillFighting(false);
 			Log.fight(acter.getPerson().getName() + " escaped from combat!");
 		}
-		// TODO add transition
+		// TODO
 	}
 
 	public void moveBackward() {
 		int distanceChange = 1;
-		acter.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
-		receiver.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
+		acter.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
+		receiver.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
 		fight.addDistance(distanceChange);
 	}
 
 	public void moveForward() {
 		int distanceChange = -1;
-		acter.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
-		receiver.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
+		acter.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
+		receiver.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
 		fight.addDistance(distanceChange);
 	}
 
@@ -123,7 +124,8 @@ public class FightAction implements Action {
 				receiver.setStillFighting(false);
 			}
 		}
-		// TODO add transition
+		acter.getPerson().addUnseenTransition(new ShootTransition(acter.getPerson(), hit, damage));
+		receiver.getPerson().addUnseenTransition(new ShootTransition(acter.getPerson(), hit, damage));
 	}
 
 
@@ -144,20 +146,6 @@ public class FightAction implements Action {
 	@Override
 	public void setDecision(String decision) {
 		actionType = ActionType.valueOf(decision);
-	}
-
-	public FightTransition getTransition() {
-		// TODO
-//		return new MoveTransition(fight, actionType, damageDone);
-		return new MoveTransition(0,0);
-	}
-
-	public ActionType getActionType() {
-		return actionType;
-	}
-
-	public void setActionType(ActionType actionType) {
-		this.actionType = actionType;
 	}
 
 	public enum ActionType {

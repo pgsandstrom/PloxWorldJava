@@ -75,7 +75,6 @@ class Fight extends React.Component {
       'right': `${575 - (distance * 100)}px`,
     };
 
-    // TODO do I really need the ReactCSSTransitionGroup? If not, remove from package.json
     return (
       <div className="dialog">
         <h2>OMG LE FIGHT</h2>

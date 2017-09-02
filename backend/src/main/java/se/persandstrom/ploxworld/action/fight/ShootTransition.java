@@ -1,24 +1,19 @@
 package se.persandstrom.ploxworld.action.fight;
 
-import se.persandstrom.ploxworld.fight.Fight;
+import se.persandstrom.ploxworld.action.Transition;
+import se.persandstrom.ploxworld.person.Person;
 
 import com.google.gson.annotations.Expose;
 
-public class ShootTransition implements FightTransition {
+public class ShootTransition implements Transition {
 
-	@Expose private final FightAction.ActionType actionType;
-	@Expose private int startDistance;
-	@Expose private int finishDistance;
+	@Expose private final String actorName;
+	@Expose private final boolean hit;
+	@Expose private final int damage;
 
-	public ShootTransition(Fight fight, FightAction.ActionType actionType) {
-		startDistance = fight.getDistance();
-		finishDistance = fight.getDistance();
-		this.actionType = actionType;
-
-		if (actionType == FightAction.ActionType.MOVE_FORWARD) {
-			startDistance++;
-		} else if (actionType == FightAction.ActionType.MOVE_BACKWARD || actionType == FightAction.ActionType.ESCAPE) {
-			startDistance--;
-		}
+	public ShootTransition(Person actor, boolean hit, int damage) {
+		this.actorName = actor.getName();
+		this.hit = hit;
+		this.damage = damage;
 	}
 }
