@@ -129,7 +129,7 @@ public class World {
 		if(action.isDecided() == false) {
 			playerInterface.completeAction(action);
 		}
-
+		action.getActor().clearUnseenTransitions();
 		action.execute();
 		action.saveData(worldData);
 	}

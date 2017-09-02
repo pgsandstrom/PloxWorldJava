@@ -29,6 +29,11 @@ public class ProposalReaction implements Action {
 	}
 
 	@Override
+	public Person getActor() {
+		return acter;
+	}
+
+	@Override
 	public void saveData(WorldData worldData) {
 		//XXX NOT IMPLEMENTED
 	}
@@ -44,7 +49,7 @@ public class ProposalReaction implements Action {
 	}
 
 	public ProposalReactionType react(Proposal.ProposalType proposalType) {
-		if(receiver.getAi() == null) {
+		if (receiver.getAi() == null) {
 			return null;
 		}
 

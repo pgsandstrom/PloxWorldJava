@@ -6,6 +6,7 @@ import se.persandstrom.ploxworld.common.Rand;
 import se.persandstrom.ploxworld.fight.Combatant;
 import se.persandstrom.ploxworld.fight.Fight;
 import se.persandstrom.ploxworld.main.WorldData;
+import se.persandstrom.ploxworld.person.Person;
 import se.persandstrom.ploxworld.ship.Weapon;
 
 import com.google.gson.annotations.Expose;
@@ -17,8 +18,6 @@ public class FightAction implements Action {
 	@Expose private final Combatant receiver;
 
 	private ActionType actionType;
-
-	private int damageDone;
 
 	public FightAction(Fight fight, Combatant acter, Combatant receiver) {
 		this.fight = fight;
@@ -79,38 +78,52 @@ public class FightAction implements Action {
 		}
 	}
 
+	@Override
+	public Person getActor() {
+		return acter.getPerson();
+	}
+
 	private void escape() {
 		fight.addDistance(1);
 		if (fight.getDistance() >= 10 || Rand.roll(0.1)) {
 			acter.setStillFighting(false);
 			Log.fight(acter.getPerson().getName() + " escaped from combat!");
 		}
+		// TODO add transition
 	}
 
 	public void moveBackward() {
-		fight.addDistance(1);
+		int distanceChange = 1;
+		acter.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
+		receiver.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
+		fight.addDistance(distanceChange);
 	}
 
 	public void moveForward() {
-		fight.addDistance(-1);
+		int distanceChange = -1;
+		acter.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
+		receiver.getPerson().addUnseenTransition(new MoveTransition(fight.getDistance(), fight.getDistance() + distanceChange));
+		fight.addDistance(distanceChange);
 	}
 
 	public void waitLol() {
 		// do nothing...
+		// TODO add transition
 	}
 
 	public void fire() {
 		Weapon weapon = acter.getShip().getWeapon();
 		boolean hit = hitOrMiss(weapon);
+		int damage = 0;
 		if (hit) {
-			int damage = weapon.rollDamage();
+			damage = weapon.rollDamage();
 			receiver.getShip().damage(damage);
-			this.damageDone = damage;
 			if (receiver.getShip().isDead()) {
 				receiver.getPerson().setAlive(false);
 				receiver.setStillFighting(false);
 			}
 		}
+		// TODO add transition
 	}
 
 
@@ -134,7 +147,9 @@ public class FightAction implements Action {
 	}
 
 	public FightTransition getTransition() {
-		return new FightTransition(fight, actionType, damageDone);
+		// TODO
+//		return new MoveTransition(fight, actionType, damageDone);
+		return new MoveTransition(0,0);
 	}
 
 	public ActionType getActionType() {

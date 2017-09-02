@@ -31,6 +31,11 @@ public class Proposal implements Action {
 	}
 
 	@Override
+	public Person getActor() {
+		return acter;
+	}
+
+	@Override
 	public void saveData(WorldData worldData) {
 		//XXX NOT IMPLEMENTED
 	}

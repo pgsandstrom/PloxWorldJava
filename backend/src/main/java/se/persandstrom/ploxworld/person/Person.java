@@ -3,6 +3,7 @@ package se.persandstrom.ploxworld.person;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.persandstrom.ploxworld.action.fight.FightTransition;
 import se.persandstrom.ploxworld.ai.Ai;
 import se.persandstrom.ploxworld.ai.Decision;
 import se.persandstrom.ploxworld.common.Point;
@@ -12,6 +13,8 @@ import se.persandstrom.ploxworld.ship.Ship;
 import com.google.gson.annotations.Expose;
 
 public class Person implements Comparable<Person> {
+
+	@Expose private final List<FightTransition> unseenTransitions = new ArrayList<>();
 
 	@Expose private final Ai ai;
 	private final Personality personality;
@@ -40,6 +43,14 @@ public class Person implements Comparable<Person> {
 		this.name = name;
 		setLocation(location);
 		this.money = money;
+	}
+
+	public void clearUnseenTransitions() {
+		unseenTransitions.clear();
+	}
+
+	public void addUnseenTransition(FightTransition transition) {
+		unseenTransitions.add(transition);
 	}
 
 	public void executeDecision() {

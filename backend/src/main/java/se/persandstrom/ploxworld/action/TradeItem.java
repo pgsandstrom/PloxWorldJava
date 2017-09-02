@@ -41,6 +41,11 @@ public class TradeItem implements Action {
 	}
 
 	@Override
+	public Person getActor() {
+		return person;
+	}
+
+	@Override
 	public void saveData(WorldData worldData) {
 		worldData.addDataValue(WorldData.KEY_WEAPONS_BOUGHT, 1);
 	}

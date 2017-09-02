@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import TransitionGroup from 'react-addons-transition-group';
 
 import { makeDecision } from '../actions';
 
@@ -19,33 +19,33 @@ class Fight extends React.Component {
   startStuff(nextProps) {
     const state = this.state || {};
     const props = nextProps || this.props;
-    if (props.info.acter.unseenTransitions.length > 0) {
-      state.transitions = props.info.acter.unseenTransitions;
+    if (props.info.acter.person.unseenTransitions.length > 0) {
+      state.transitions = [...props.info.acter.person.unseenTransitions];
       // between every transition we need a reset. Because ugly code.
       for (let i = 1; i < state.transitions.length; i += 2) {
         state.transitions.splice(i, 0, { 'actionType': 'RESET' });
       }
+      state.transitions.splice(0, 0, { 'actionType': 'RESET' });
     }
     this.setState(state);
   }
 
   render() {
-    // console.log("Fight render: " + JSON.stringify(this.props));
     const self = this;
-    const distance = this.props.info.fight.distance;
+    let distance;
 
     const backgroundStyle = {};
     let playingTransitions = false;
     if (this.state && this.state.transitions && this.state.transitions.length > 0) {
+      distance = this.state.transitions[0].finishDistance;
       playingTransitions = true;
       const transition = this.state.transitions[0];
-      console.log(`transition: ${JSON.stringify(transition)}`);
       let timeoutTime;
-      if (transition.actionType === 'MOVE_FORWARD') {
-        backgroundStyle.animation = 'animatedBackgroundLeft 0.5s ease-in-out normal';
+      if (transition.startDistance < transition.finishDistance) {
+        backgroundStyle.animation = 'animatedBackgroundLeft 0.5s linear normal';
         timeoutTime = 1000;
-      } else if (transition.actionType === 'MOVE_BACKWARD') {
-        backgroundStyle.animation = 'animatedBackgroundRight 0.5s ease-in-out normal';
+      } else if (transition.startDistance > transition.finishDistance) {
+        backgroundStyle.animation = 'animatedBackgroundRight 0.5s linear normal';
         timeoutTime = 1000;
       } else if (transition.actionType === 'FIRE') {
         // TODO
@@ -64,13 +64,15 @@ class Fight extends React.Component {
         self.state.transitions.splice(0, 1);
         self.setState(self.state);
       }, timeoutTime);
+    } else {
+      distance = this.props.info.fight.distance;
     }
 
     const playerStyle = {
-      'left': `${575 - (distance * 50)}px`,
+      'left': `${575 - (distance * 100)}px`,
     };
     const opponentStyle = {
-      'right': `${575 - (distance * 50)}px`,
+      'right': `${575 - (distance * 100)}px`,
     };
 
     // TODO do I really need the ReactCSSTransitionGroup? If not, remove from package.json
@@ -92,12 +94,12 @@ class Fight extends React.Component {
         <button disabled={playingTransitions} onClick={() => this.props.makeDecision('WAIT')}>
           WAIT
         </button>
-        <ReactCSSTransitionGroup>
+        <TransitionGroup>
           <div className="fight-board" style={backgroundStyle}>
             <img className="ship player" style={playerStyle} src="img/ship_ai.png" alt="" />
             <img className="ship opponent" style={opponentStyle} src="img/ship_ai.png" alt="" />
           </div>
-        </ReactCSSTransitionGroup>
+        </TransitionGroup>
       </div>
     );
   }

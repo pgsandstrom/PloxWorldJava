@@ -34,6 +34,11 @@ public class TransferGoods implements Action {
 	}
 
 	@Override
+	public Person getActor() {
+		return aggressor;
+	}
+
+	@Override
 	public void saveData(WorldData worldData) {
 		worldData.addDataValue(WorldData.KEY_GOODS_STOLEN, totalTransfered);
 	}

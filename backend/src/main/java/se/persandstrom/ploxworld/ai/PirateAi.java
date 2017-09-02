@@ -1,5 +1,7 @@
 package se.persandstrom.ploxworld.ai;
 
+import java.util.Comparator;
+
 import se.persandstrom.ploxworld.action.Repair;
 import se.persandstrom.ploxworld.common.Log;
 import se.persandstrom.ploxworld.common.Rand;
@@ -69,13 +71,13 @@ public class PirateAi implements Ai {
 		Location location;
 		if (Rand.bool()) {    // most efficient
 			location = world.getMineableShuffled().stream()
-					.max((o1, o2) -> Double.compare(o1.getMineable().get().getMiningEfficiency(), o2.getMineable().get().getMiningEfficiency()))
+					.max(Comparator.comparingDouble(o -> o.getMineable().get().getMiningEfficiency()))
 					.get();
 			Log.pirate(person.getName() + " travels to most efficient asteroid " + location.getName()
 					+ " to mine at an efficiancy of " + location.getMineable().get().getMiningEfficiency());
 		} else {    // closest
 			location = world.getMineableShuffled().stream()
-					.min((o1, o2) -> Double.compare(o1.getDistance(person.getPoint()), o2.getDistance(person.getPoint())))
+					.min(Comparator.comparingDouble(o -> o.getDistance(person.getPoint())))
 					.get();
 			Log.pirate(person.getName() + " travels to closest asteroid " + location.getName()
 					+ " to mine at an efficiancy of " + location.getMineable().get().getMiningEfficiency());

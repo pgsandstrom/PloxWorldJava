@@ -30,16 +30,10 @@ public class Fight {
 			if (isFightOngoing()) {
 				FightAction fightAction = new FightAction(this, first, second);
 				world.executeAction(fightAction);
-				first.clearUnseenTransitions();
-				first.addUnseenTransition(fightAction.getTransition());
-				second.addUnseenTransition(fightAction.getTransition());
 			}
 			if (isFightOngoing()) {
 				FightAction fightAction = new FightAction(this, second, first);
 				world.executeAction(fightAction);
-				second.clearUnseenTransitions();
-				first.addUnseenTransition(fightAction.getTransition());
-				second.addUnseenTransition(fightAction.getTransition());
 			}
 
 			if (first.getPerson().isAlive() == false) {

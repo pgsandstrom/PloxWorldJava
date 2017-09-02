@@ -31,6 +31,11 @@ public class AmbushAction implements Action {
 		Log.fight("Ambush. " + acter + " decides to " + reaction);
 	}
 
+	@Override
+	public Person getActor() {
+		return acter;
+	}
+
 	private AmbushType react() {
 		double aggressionRoll = acter.getPersonality().getAggressionRoll(powerRatio);
 
