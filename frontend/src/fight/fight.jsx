@@ -41,12 +41,17 @@ class Fight extends React.Component {
       playingTransitions = true;
       const transition = this.state.transitions[0];
       let timeoutTime;
-      if (transition.startDistance < transition.finishDistance) {
-        backgroundStyle.animation = 'animatedBackgroundLeft 0.5s linear normal';
-        timeoutTime = 1000;
-      } else if (transition.startDistance > transition.finishDistance) {
-        backgroundStyle.animation = 'animatedBackgroundRight 0.5s linear normal';
-        timeoutTime = 1000;
+      const isMovement = transition.startDistance !== transition.finishDistance;
+      if (isMovement) {
+        const isClosing = transition.startDistance < transition.finishDistance;
+        const isPlayerTransition = this.props.info.acter.person.name === transition.actorName;
+        if (isClosing !== isPlayerTransition) {
+          backgroundStyle.animation = 'animatedBackgroundLeft 0.5s linear normal';
+          timeoutTime = 1000;
+        } else {
+          backgroundStyle.animation = 'animatedBackgroundRight 0.5s linear normal';
+          timeoutTime = 1000;
+        }
       } else if (transition.actionType === 'FIRE') {
         // TODO
         timeoutTime = 100;
@@ -103,6 +108,7 @@ class Fight extends React.Component {
     );
   }
 }
+
 Fight.propTypes = {
   info: React.PropTypes.object.isRequired,
   makeDecision: React.PropTypes.func.isRequired,
