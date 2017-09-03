@@ -7,6 +7,8 @@ import com.google.gson.annotations.Expose;
 
 public class MoveTransition implements Transition {
 
+	@Expose private final String name = "move";
+
 	@Expose private final String actorName;
 	@Expose private final int startDistance;
 	@Expose private final int finishDistance;

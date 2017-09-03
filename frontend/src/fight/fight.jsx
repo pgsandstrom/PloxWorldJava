@@ -32,17 +32,18 @@ class Fight extends React.Component {
 
   render() {
     const self = this;
-    let distance;
+    let distance = this.props.info.fight.distance;
 
     const backgroundStyle = {};
+    const shotStyle = {};
+    let isShooting = false;
     let playingTransitions = false;
     if (this.state && this.state.transitions && this.state.transitions.length > 0) {
-      distance = this.state.transitions[0].finishDistance;
       playingTransitions = true;
       const transition = this.state.transitions[0];
       let timeoutTime;
-      const isMovement = transition.startDistance !== transition.finishDistance;
-      if (isMovement) {
+      if (transition.name === 'move') {
+        distance = transition.finishDistance;
         const isClosing = transition.startDistance < transition.finishDistance;
         const isPlayerTransition = this.props.info.acter.person.name === transition.actorName;
         if (isClosing !== isPlayerTransition) {
@@ -52,25 +53,26 @@ class Fight extends React.Component {
           backgroundStyle.animation = 'animatedBackgroundRight 0.5s linear normal';
           timeoutTime = 1000;
         }
-      } else if (transition.actionType === 'FIRE') {
+      } else if (transition.name === 'shoot') {
+        isShooting = true;
+        shotStyle.left = `${575 - (distance * 100)}px`;
+        shotStyle.width = `${(distance * 200) - 50}px`;
+        timeoutTime = 1000;
+      } else if (transition.name === 'wait') {
         // TODO
         timeoutTime = 100;
-      } else if (transition.actionType === 'WAIT') {
+      } else if (transition.name === 'escape') {
         // TODO
         timeoutTime = 100;
-      } else if (transition.actionType === 'ESCAPE') {
-        // TODO
-        timeoutTime = 100;
-      } else if (transition.actionType === 'RESET') {
+      } else if (transition.name === 'reset') {
         backgroundStyle.animation = '';
+        shotStyle.left = '';
         timeoutTime = 1;
       }
       setTimeout(() => {
         self.state.transitions.splice(0, 1);
         self.setState(self.state);
       }, timeoutTime);
-    } else {
-      distance = this.props.info.fight.distance;
     }
 
     const playerStyle = {
@@ -102,6 +104,10 @@ class Fight extends React.Component {
           <div className="fight-board" style={backgroundStyle}>
             <img className="ship player" style={playerStyle} src="img/ship_ai.png" alt="" />
             <img className="ship opponent" style={opponentStyle} src="img/ship_ai.png" alt="" />
+            {
+              isShooting &&
+              <div id="shot" style={shotStyle} />
+            }
           </div>
         </TransitionGroup>
       </div>

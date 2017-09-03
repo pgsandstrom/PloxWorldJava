@@ -7,6 +7,8 @@ import com.google.gson.annotations.Expose;
 
 public class ShootTransition implements Transition {
 
+	@Expose private final String name = "shoot";
+
 	@Expose private final String actorName;
 	@Expose private final boolean hit;
 	@Expose private final int damage;

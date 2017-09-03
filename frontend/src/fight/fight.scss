@@ -8,6 +8,26 @@
 	100% { background-position: 100px 0; }
 }
 
+@keyframes shot {
+  from {
+    margin-left: 300px;
+    width:0px;
+  }
+
+  10% {
+    width: 50px;
+  }
+
+  90% {
+    width: 50px;
+  }
+
+  to {
+    margin-left:0px;
+    width:0px;
+  }
+}
+
 .fight-board {
   position: relative;
   height: 300px;
@@ -29,6 +49,18 @@
 
   > .opponent {
     right: 20px
+  }
+
+  > #shot {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 5px;
+    width: 25px;
+    animation: shot 1s linear normal;
+    background: red;
+    transition: all 0.1s linear;
   }
 }
 
