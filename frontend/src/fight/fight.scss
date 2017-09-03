@@ -8,9 +8,29 @@
 	100% { background-position: 100px 0; }
 }
 
-@keyframes shot {
+@keyframes shot-player {
   from {
-    margin-left: 100px;
+    margin-left: 0px;
+    width:0px;
+  }
+
+  10% {
+    width: 50px;
+  }
+
+  90% {
+    width: 50px;
+  }
+
+  to {
+    margin-left:100%;
+    width:0px;
+  }
+}
+
+@keyframes shot-enemy {
+  from {
+    margin-left: 100%;
     width:0px;
   }
 
@@ -51,16 +71,19 @@
     right: 20px
   }
 
-  > #shot {
+  #shot-container {
     position: absolute;
     top: 0;
     bottom: 0;
     margin: auto;
     height: 5px;
     width: 25px;
-    animation: shot 1s linear normal;
+
+  > #shot {
+    height: 100%;
+    animation: shot-enemy 1s linear normal;
     background: red;
-    transition: all 0.1s linear;
+  }
   }
 }
 

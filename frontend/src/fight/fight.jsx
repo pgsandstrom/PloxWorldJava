@@ -35,17 +35,18 @@ class Fight extends React.Component {
     let distance = this.props.info.fight.distance; // TODO make sure there is an initial transition instead?
 
     const backgroundStyle = {};
+    const shotContainerStyle = {};
     const shotStyle = {};
     let isShooting = false;
     let playingTransitions = false;
     if (this.state && this.state.transitions && this.state.transitions.length > 0) {
       playingTransitions = true;
       const transition = this.state.transitions[0];
+      const isPlayerTransition = this.props.info.acter.person.name === transition.actorName;
       distance = transition.distance;
       let timeoutTime;
       if (transition.name === 'move') {
         const isClosing = transition.startDistance < transition.distance;
-        const isPlayerTransition = this.props.info.acter.person.name === transition.actorName;
         if (isClosing !== isPlayerTransition) {
           backgroundStyle.animation = 'animatedBackgroundLeft 0.5s linear normal';
           timeoutTime = 1000;
@@ -55,8 +56,11 @@ class Fight extends React.Component {
         }
       } else if (transition.name === 'shoot') {
         isShooting = true;
-        shotStyle.left = `${575 - (distance * 100)}px`;
-        shotStyle.width = `${(distance * 200) - 50}px`;
+        shotContainerStyle.left = `${575 - (distance * 100)}px`;
+        shotContainerStyle.width = `${(distance * 200) - 50}px`;
+        if (isPlayerTransition) {
+          shotStyle['animation-name'] = 'shot-player';
+        }
         timeoutTime = 1000;
       } else if (transition.name === 'wait') {
         // TODO
@@ -66,7 +70,6 @@ class Fight extends React.Component {
         timeoutTime = 100;
       } else if (transition.name === 'reset') {
         backgroundStyle.animation = '';
-        shotStyle.left = '';
         timeoutTime = 1;
       }
       setTimeout(() => {
@@ -106,7 +109,9 @@ class Fight extends React.Component {
             <img className="ship opponent" style={opponentStyle} src="img/ship_ai.png" alt="" />
             {
               isShooting &&
-              <div id="shot" style={shotStyle} />
+              <div id="shot-container" style={shotContainerStyle}>
+                <div id="shot" style={shotStyle} />
+              </div>
             }
           </div>
         </TransitionGroup>
