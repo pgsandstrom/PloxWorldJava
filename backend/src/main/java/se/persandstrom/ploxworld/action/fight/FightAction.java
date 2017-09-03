@@ -94,17 +94,19 @@ public class FightAction implements Action {
 	}
 
 	public void moveBackward() {
+		int startDistance = fight.getDistance();
 		int distanceChange = 1;
-		acter.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
-		receiver.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
 		fight.addDistance(distanceChange);
+		acter.getPerson().addUnseenTransition(new MoveTransition(fight, acter.getPerson(), startDistance));
+		receiver.getPerson().addUnseenTransition(new MoveTransition(fight, acter.getPerson(), startDistance));
 	}
 
 	public void moveForward() {
+		int startDistance = fight.getDistance();
 		int distanceChange = -1;
-		acter.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
-		receiver.getPerson().addUnseenTransition(new MoveTransition(acter.getPerson(), fight.getDistance(), fight.getDistance() + distanceChange));
 		fight.addDistance(distanceChange);
+		acter.getPerson().addUnseenTransition(new MoveTransition(fight, acter.getPerson(), startDistance));
+		receiver.getPerson().addUnseenTransition(new MoveTransition(fight, acter.getPerson(), startDistance));
 	}
 
 	public void waitLol() {
@@ -124,8 +126,8 @@ public class FightAction implements Action {
 				receiver.setStillFighting(false);
 			}
 		}
-		acter.getPerson().addUnseenTransition(new ShootTransition(acter.getPerson(), hit, damage));
-		receiver.getPerson().addUnseenTransition(new ShootTransition(acter.getPerson(), hit, damage));
+		acter.getPerson().addUnseenTransition(new ShootTransition(fight, acter.getPerson(), hit, damage));
+		receiver.getPerson().addUnseenTransition(new ShootTransition(fight, acter.getPerson(), hit, damage));
 	}
 
 

@@ -32,7 +32,7 @@ class Fight extends React.Component {
 
   render() {
     const self = this;
-    let distance = this.props.info.fight.distance;
+    let distance = this.props.info.fight.distance; // TODO make sure there is an initial transition instead?
 
     const backgroundStyle = {};
     const shotStyle = {};
@@ -41,10 +41,10 @@ class Fight extends React.Component {
     if (this.state && this.state.transitions && this.state.transitions.length > 0) {
       playingTransitions = true;
       const transition = this.state.transitions[0];
+      distance = transition.distance;
       let timeoutTime;
       if (transition.name === 'move') {
-        distance = transition.finishDistance;
-        const isClosing = transition.startDistance < transition.finishDistance;
+        const isClosing = transition.startDistance < transition.distance;
         const isPlayerTransition = this.props.info.acter.person.name === transition.actorName;
         if (isClosing !== isPlayerTransition) {
           backgroundStyle.animation = 'animatedBackgroundLeft 0.5s linear normal';
